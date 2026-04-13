@@ -63,8 +63,10 @@
                             <article style="padding: 18px; border-radius: 20px; background: rgba(255,255,255,0.7); border: 1px solid rgba(106,65,45,0.1);">
                                 <div style="display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; align-items: start;">
                                     <div>
-                                        <strong style="display: block; font-size: 1.15rem; color: #3b2418;">{{ $device['device_id'] }}</strong>
-                                        <span style="color: #8a634b;">Terakhir kirim: {{ optional($device['last_seen'])->translatedFormat('d F Y H:i:s') ?? '-' }}</span>
+                                        <strong style="display: block; font-size: 1.15rem; color: #3b2418;">{{ $device['unit_name'] ?: $device['device_id'] }}</strong>
+                                        <span style="display: block; margin-top: 4px; color: #8a634b;">Device: {{ $device['device_id'] }}</span>
+                                        <span style="display: block; margin-top: 4px; color: #8a634b;">Driver aktif: {{ $device['driver_name'] ?: 'Belum di-assign' }}</span>
+                                        <span style="display: block; margin-top: 4px; color: #8a634b;">Terakhir kirim: {{ optional($device['last_seen'])->translatedFormat('d F Y H:i:s') ?? '-' }}</span>
                                     </div>
                                     <span style="display: inline-flex; padding: 8px 12px; border-radius: 999px; background: rgba(47,107,85,0.12); color: #2f6b55; font-weight: 700;">
                                         {{ $device['total_logs'] }} log

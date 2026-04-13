@@ -8,58 +8,130 @@
 
         <title>{{ config('app.name', 'Laravel') }}</title>
 
-        <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600;700&display=swap" rel="stylesheet" />
 
-        <!-- Scripts -->
         @if ($hasViteBuild)
             @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @else
-            <style>
-                body { font-family: Figtree, sans-serif; background: #f3f4f6; color: #111827; }
-                .min-h-screen { min-height: 100vh; }
-                .bg-gray-100 { background: #f3f4f6; }
-                .bg-white { background: #fff; }
-                .shadow { box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08); }
-                .shadow-sm { box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06); }
-                .rounded-lg { border-radius: 0.75rem; }
-                .rounded-md { border-radius: 0.5rem; }
-                .border-gray-200 { border-color: #e5e7eb; }
-                .max-w-7xl { max-width: 80rem; }
-                .mx-auto { margin-left: auto; margin-right: auto; }
-                .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-                .px-4 { padding-left: 1rem; padding-right: 1rem; }
-                .sm\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-                .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
-            </style>
         @endif
-    </head>
-    <body class="font-sans antialiased">
-        <a
-            href="{{ route('tracker.index') }}"
-            style="position: fixed; left: 20px; bottom: 20px; z-index: 60; display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; background: rgba(255, 250, 242, 0.94); border: 1px solid rgba(106, 65, 45, 0.14); box-shadow: 0 16px 34px rgba(59, 36, 24, 0.12); color: #6a412d; text-decoration: none; font-weight: 800;"
-        >
-            <span style="font-size: 1.1rem; line-height: 1;">←</span>
-            <span>Kembali</span>
-        </a>
 
-        <div class="min-h-screen bg-gray-100">
+        <style>
+            :root {
+                color-scheme: light;
+                --app-bg: #f3f6fb;
+                --sidebar-bg: #111827;
+                --sidebar-soft: #1f2937;
+                --sidebar-border: rgba(255, 255, 255, 0.08);
+                --text-main: #0f172a;
+                --text-soft: #64748b;
+                --panel: #ffffff;
+                --panel-border: #e2e8f0;
+                --accent: #2563eb;
+                --accent-soft: rgba(37, 99, 235, 0.12);
+                --success: #16a34a;
+                --danger: #dc2626;
+                --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.08);
+                --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                margin: 0;
+                font-family: Figtree, sans-serif;
+                background: var(--app-bg);
+                color: var(--text-main);
+            }
+
+            .dashboard-shell {
+                min-height: 100vh;
+                display: grid;
+                grid-template-columns: 280px minmax(0, 1fr);
+            }
+
+            .dashboard-main {
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .dashboard-topbar {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 16px;
+                padding: 28px 32px 0;
+            }
+
+            .dashboard-header-card {
+                width: 100%;
+                padding: 24px 28px;
+                border-bottom: 1px solid var(--panel-border);
+                background: rgba(255, 255, 255, 0.8);
+                backdrop-filter: blur(14px);
+            }
+
+            .dashboard-content {
+                flex: 1;
+                padding: 24px 32px 32px;
+            }
+
+            .dashboard-back {
+                display: inline-flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 16px;
+                border-radius: 12px;
+                background: #fff;
+                border: 1px solid var(--panel-border);
+                color: var(--text-main);
+                text-decoration: none;
+                font-weight: 600;
+                box-shadow: var(--shadow-sm);
+            }
+
+            @media (max-width: 1024px) {
+                .dashboard-shell {
+                    grid-template-columns: 1fr;
+                }
+
+                .dashboard-topbar,
+                .dashboard-content {
+                    padding-left: 18px;
+                    padding-right: 18px;
+                }
+
+                .dashboard-header-card {
+                    padding-left: 18px;
+                    padding-right: 18px;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <div class="dashboard-shell">
             @include('layouts.navigation')
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <div class="dashboard-main">
+                <div class="dashboard-topbar">
+                    <a href="{{ route('tracker.index') }}" class="dashboard-back">
+                        <span>←</span>
+                        <span>Kembali ke Peta</span>
+                    </a>
+                </div>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                @isset($header)
+                    <header class="dashboard-header-card">
+                        {{ $header }}
+                    </header>
+                @endisset
+
+                <main class="dashboard-content">
+                    {{ $slot }}
+                </main>
+            </div>
         </div>
     </body>
 </html>

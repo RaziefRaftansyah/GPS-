@@ -15,6 +15,22 @@ Route::post('/dashboard/users/{user}/kick', [DashboardController::class, 'kickUs
     ->middleware(['auth', 'verified'])
     ->name('dashboard.users.kick');
 
+Route::post('/dashboard/drivers', [DashboardController::class, 'storeDriver'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.drivers.store');
+
+Route::post('/dashboard/units', [DashboardController::class, 'storeUnit'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.units.store');
+
+Route::post('/dashboard/assignments', [DashboardController::class, 'assignDriver'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.assignments.store');
+
+Route::patch('/dashboard/assignments/{assignment}/finish', [DashboardController::class, 'finishAssignment'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.assignments.finish');
+
 Route::get('/dashboard/traccar', [DashboardController::class, 'traccar'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.traccar');

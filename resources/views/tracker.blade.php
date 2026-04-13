@@ -47,15 +47,28 @@
                 linear-gradient(145deg, #f2e6d5 0%, #f7f0e3 45%, #efe6d7 100%);
         }
 
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.48), transparent 18%),
+                radial-gradient(circle at 82% 10%, rgba(181, 106, 59, 0.14), transparent 16%),
+                radial-gradient(circle at 76% 78%, rgba(47, 107, 85, 0.08), transparent 18%);
+            pointer-events: none;
+        }
+
         a {
             color: inherit;
             text-decoration: none;
         }
 
         .page {
-            width: min(1460px, calc(100% - 24px));
+            position: relative;
+            width: calc(100% - 10px);
+            max-width: none;
             margin: 0 auto;
-            padding: 12px 0 48px;
+            padding: 6px 0 40px;
         }
 
         .nav {
@@ -63,14 +76,14 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            padding: 18px 22px;
+            padding: 18px 24px;
             border: 1px solid var(--line);
             border-radius: 999px;
-            background: rgba(255, 250, 242, 0.68);
+            background: rgba(255, 250, 242, 0.78);
             backdrop-filter: blur(14px);
             box-shadow: var(--shadow);
             position: sticky;
-            top: 10px;
+            top: 6px;
             z-index: 20;
         }
 
@@ -214,11 +227,11 @@
 
         .hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.85fr);
-            gap: 20px;
-            padding-top: 18px;
+            grid-template-columns: minmax(0, 1.58fr) minmax(400px, 0.82fr);
+            gap: 16px;
+            padding-top: 10px;
             align-items: stretch;
-            min-height: calc(100vh - 120px);
+            min-height: calc(100vh - 82px);
         }
 
         .hero-copy,
@@ -227,14 +240,14 @@
         .story-card,
         .menu-card {
             border: 1px solid var(--line);
-            border-radius: 32px;
-            background: var(--foam);
+            border-radius: 28px;
+            background: rgba(255, 249, 241, 0.9);
             backdrop-filter: blur(12px);
             box-shadow: var(--shadow);
         }
 
         .hero-copy {
-            padding: 44px 40px 34px;
+            padding: 52px 46px 30px;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -245,12 +258,23 @@
         .hero-copy::after {
             content: "";
             position: absolute;
-            width: 260px;
-            height: 260px;
-            right: -70px;
-            top: -90px;
+            width: 340px;
+            height: 340px;
+            right: -96px;
+            top: -120px;
             border-radius: 50%;
             background: radial-gradient(circle, rgba(181, 106, 59, 0.28), transparent 68%);
+        }
+
+        .hero-copy::before {
+            content: "";
+            position: absolute;
+            left: -120px;
+            bottom: -150px;
+            width: 360px;
+            height: 360px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.36), transparent 66%);
         }
 
         .eyebrow {
@@ -274,16 +298,16 @@
         }
 
         h1 {
-            margin-top: 18px;
-            font-size: clamp(4.4rem, 7vw, 7.8rem);
-            max-width: 8ch;
+            margin-top: 14px;
+            font-size: clamp(4.8rem, 8vw, 9rem);
+            max-width: 7ch;
         }
 
         .lead {
-            margin: 18px 0 0;
-            max-width: 66ch;
-            font-size: 1.08rem;
-            line-height: 1.9;
+            margin: 20px 0 0;
+            max-width: 72ch;
+            font-size: 1.12rem;
+            line-height: 1.95;
             color: rgba(59, 36, 24, 0.78);
         }
 
@@ -291,7 +315,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
-            margin-top: 28px;
+            margin-top: 32px;
         }
 
         .button {
@@ -299,7 +323,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            padding: 14px 20px;
+            padding: 15px 22px;
             border-radius: 999px;
             font-weight: 700;
             transition: transform 180ms ease, box-shadow 180ms ease;
@@ -324,7 +348,7 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 14px;
-            margin-top: 32px;
+            margin-top: 38px;
         }
 
         .hero-stat {
@@ -345,10 +369,10 @@
 
         .hero-card {
             min-height: 100%;
-            padding: 32px 30px;
+            padding: 34px 30px;
             display: grid;
-            gap: 20px;
-            align-content: stretch;
+            gap: 16px;
+            align-content: space-between;
             background:
                 linear-gradient(165deg, rgba(59, 36, 24, 0.94), rgba(106, 65, 45, 0.92)),
                 var(--foam);
@@ -384,16 +408,16 @@
         }
 
         .section {
-            margin-top: 24px;
+            margin-top: 18px;
             display: grid;
             grid-template-columns: 0.72fr 1.28fr;
-            gap: 24px;
+            gap: 18px;
         }
 
         .story-card,
         .menu-card,
         .panel {
-            padding: 26px;
+            padding: 28px;
         }
 
         .story-card h3,
@@ -463,9 +487,9 @@
         }
 
         .tracking {
-            margin-top: 24px;
+            margin-top: 18px;
             display: grid;
-            gap: 24px;
+            gap: 18px;
         }
 
         .map-panel {
@@ -539,7 +563,7 @@
         .tracking-details {
             display: grid;
             grid-template-columns: 1.08fr 0.92fr;
-            gap: 24px;
+            gap: 18px;
             align-items: start;
         }
 
@@ -663,7 +687,7 @@
         }
 
         footer {
-            margin-top: 28px;
+            margin-top: 20px;
             padding: 22px 8px 0;
             text-align: center;
             color: rgba(59, 36, 24, 0.62);
@@ -678,6 +702,7 @@
 
             .hero {
                 min-height: auto;
+                gap: 14px;
             }
 
             .menu-list {
@@ -691,8 +716,8 @@
 
         @media (max-width: 640px) {
             .page {
-                width: min(100% - 16px, 1460px);
-                padding-top: 8px;
+                width: calc(100% - 10px);
+                padding-top: 6px;
             }
 
             .nav {
@@ -916,8 +941,20 @@
                     <h3>Sekarang gerobak ada di sini.</h3>
                     <div class="meta-grid">
                         <div class="meta-item">
+                            <span>Nama Gerobak</span>
+                            <strong id="current-unit">{{ $latestLocation['unit_name'] ?? '-' }}</strong>
+                        </div>
+                        <div class="meta-item">
+                            <span>Driver Aktif</span>
+                            <strong id="current-driver">{{ $latestLocation['driver_name'] ?? '-' }}</strong>
+                        </div>
+                        <div class="meta-item">
                             <span>Device ID</span>
                             <strong id="current-device">{{ $latestLocation['device_id'] ?? '-' }}</strong>
+                        </div>
+                        <div class="meta-item">
+                            <span>Kode Unit</span>
+                            <strong id="current-code">{{ $latestLocation['unit_code'] ?? '-' }}</strong>
                         </div>
                         <div class="meta-item">
                             <span>Latitude</span>
@@ -1074,7 +1111,10 @@
         }
 
         function updateSummary(location) {
+            document.getElementById('current-unit').textContent = location?.unit_name || '-';
+            document.getElementById('current-driver').textContent = location?.driver_name || '-';
             document.getElementById('current-device').textContent = location?.device_id || '-';
+            document.getElementById('current-code').textContent = location?.unit_code || '-';
             document.getElementById('current-lat').textContent = location ? location.latitude : '-';
             document.getElementById('current-lng').textContent = location ? location.longitude : '-';
             document.getElementById('recorded-at').textContent = location ? (location.recorded_at || 'Belum tersimpan') : '-';
@@ -1104,7 +1144,8 @@
             [...state.locations].reverse().forEach((location) => {
                 const item = document.createElement('li');
                 item.innerHTML = `
-                    <strong>${location.device_id || 'Traccar Device'}</strong>
+                    <strong>${location.unit_name || location.device_id || 'Traccar Device'}</strong>
+                    <div class="history-coords">${location.driver_name ? `Driver: ${location.driver_name}` : 'Driver belum di-assign'}</div>
                     <div class="history-coords">${location.latitude}, ${location.longitude}</div>
                     <small>${location.recorded_at ?? 'Belum tersimpan ke database'}</small>
                 `;
@@ -1137,7 +1178,8 @@
                 state.marker = L.marker([latest.latitude, latest.longitude], {
                     icon: coffeeIcon,
                 }).addTo(map).bindPopup(`
-                    <strong>Gerobak Kopi</strong><br>
+                    <strong>${latest.unit_name || 'Gerobak Kopi'}</strong><br>
+                    Driver: ${latest.driver_name || '-'}<br>
                     Device: ${latest.device_id || '-'}<br>
                     Lat: ${latest.latitude}<br>
                     Lng: ${latest.longitude}<br>

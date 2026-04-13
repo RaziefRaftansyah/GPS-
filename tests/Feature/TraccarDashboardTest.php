@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Location;
 use App\Models\TraccarRequestLog;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -14,7 +15,17 @@ class TraccarDashboardTest extends TestCase
 
     public function test_traccar_dashboard_displays_device_status(): void
     {
-        $user = User::factory()->create();
+        $user = User::factory()->create([
+            'role' => 'owner',
+            'email' => 'admin@kopikeliling.com',
+        ]);
+
+        Unit::query()->create([
+            'name' => 'Gerobak Kopi 01',
+            'code' => 'GRBK-01',
+            'device_id' => 'gerobak-kopi-01',
+            'status' => 'ready',
+        ]);
 
         Location::query()->create([
             'device_id' => 'gerobak-kopi-01',
@@ -37,7 +48,7 @@ class TraccarDashboardTest extends TestCase
 
         $response->assertOk()
             ->assertSee('Monitoring Traccar')
-            ->assertSee('gerobak-kopi-01')
+            ->assertSee('Gerobak Kopi 01')
             ->assertSee('88%')
             ->assertSee('Request Mentah Traccar');
     }

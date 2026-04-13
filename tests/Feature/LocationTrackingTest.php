@@ -2,7 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\DriverUnitAssignment;
 use App\Models\Location;
+use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -115,6 +118,25 @@ class LocationTrackingTest extends TestCase
 
     public function test_api_location_latest_returns_recent_locations(): void
     {
+        $driver = User::factory()->create([
+            'name' => 'Driver Atlas',
+            'role' => 'driver',
+        ]);
+
+        $unit = Unit::query()->create([
+            'name' => 'Gerobak Atlas',
+            'code' => 'GRBK-ATLAS',
+            'device_id' => 'gerobak-kopi-01',
+            'status' => 'ready',
+        ]);
+
+        DriverUnitAssignment::query()->create([
+            'driver_id' => $driver->id,
+            'unit_id' => $unit->id,
+            'assigned_at' => now(),
+            'status' => 'active',
+        ]);
+
         Location::query()->create([
             'device_id' => 'gerobak-kopi-01',
             'latitude' => -5.147665,
@@ -125,6 +147,8 @@ class LocationTrackingTest extends TestCase
         $this->getJson(route('api.location.latest'))
             ->assertOk()
             ->assertJsonPath('latest.device_id', 'gerobak-kopi-01')
+            ->assertJsonPath('latest.unit_name', 'Gerobak Atlas')
+            ->assertJsonPath('latest.driver_name', 'Driver Atlas')
             ->assertJsonCount(1, 'locations');
     }
 

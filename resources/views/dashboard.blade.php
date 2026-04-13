@@ -1,136 +1,434 @@
 <x-app-layout>
     <style>
-        @media (max-width: 960px) {
-            #admin-dashboard-summary,
-            .admin-session-stats {
+        .owner-dashboard {
+            display: grid;
+            gap: 24px;
+        }
+
+        .owner-grid-4,
+        .owner-grid-3,
+        .owner-grid-main {
+            display: grid;
+            gap: 20px;
+        }
+
+        .owner-grid-4 {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+
+        .owner-grid-3 {
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .owner-grid-main {
+            grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
+        }
+
+        .panel-card {
+            background: var(--panel);
+            border: 1px solid var(--panel-border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .metric-card,
+        .section-card,
+        .mini-card {
+            padding: 24px;
+        }
+
+        .eyebrow {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--text-soft);
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            font-weight: 700;
+        }
+
+        .metric-card strong {
+            display: block;
+            font-size: 2.2rem;
+            line-height: 1;
+        }
+
+        .metric-card p,
+        .section-subtext,
+        .unit-meta,
+        .list-meta {
+            color: var(--text-soft);
+            line-height: 1.6;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+
+        .section-heading h3,
+        .form-card h3 {
+            margin: 0;
+            font-size: 1.6rem;
+        }
+
+        .section-button,
+        .primary-button,
+        .success-button,
+        .ghost-button,
+        .danger-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border: 0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-weight: 700;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .section-button,
+        .ghost-button {
+            background: #fff;
+            color: var(--text-main);
+            border: 1px solid var(--panel-border);
+        }
+
+        .primary-button {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .success-button {
+            background: var(--success);
+            color: #fff;
+        }
+
+        .danger-button {
+            background: rgba(220, 38, 38, 0.12);
+            color: var(--danger);
+        }
+
+        .form-stack {
+            display: grid;
+            gap: 12px;
+        }
+
+        .dashboard-input,
+        .dashboard-select,
+        .dashboard-textarea {
+            width: 100%;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            padding: 13px 14px;
+            font: inherit;
+            color: var(--text-main);
+            background: #fff;
+        }
+
+        .dashboard-textarea {
+            min-height: 96px;
+            resize: vertical;
+        }
+
+        .unit-list,
+        .mini-list {
+            display: grid;
+            gap: 14px;
+        }
+
+        .unit-item,
+        .mini-item {
+            border: 1px solid var(--panel-border);
+            border-radius: 18px;
+            background: #fff;
+        }
+
+        .unit-item {
+            padding: 18px;
+        }
+
+        .mini-item {
+            padding: 16px 18px;
+        }
+
+        .unit-head {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            align-items: start;
+            flex-wrap: wrap;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.82rem;
+        }
+
+        .unit-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 14px;
+        }
+
+        .unit-stat {
+            border-radius: 14px;
+            padding: 14px;
+            background: #f8fafc;
+            border: 1px solid var(--panel-border);
+        }
+
+        .unit-stat span {
+            display: block;
+            color: var(--text-soft);
+            font-size: 0.74rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .unit-stat strong {
+            display: block;
+            margin-top: 8px;
+        }
+
+        .status-banner {
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: rgba(22, 163, 74, 0.12);
+            border: 1px solid rgba(22, 163, 74, 0.16);
+            color: #166534;
+        }
+
+        .empty-state {
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px dashed var(--panel-border);
+            color: var(--text-soft);
+            background: #f8fafc;
+        }
+
+        @media (max-width: 1180px) {
+            .owner-grid-4,
+            .owner-grid-3,
+            .owner-grid-main,
+            .unit-stats {
                 grid-template-columns: 1fr !important;
             }
         }
     </style>
 
     <x-slot name="header">
-        <div>
-            <p style="margin: 0; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: #9a6b4d;">
-                Dashboard Admin
-            </p>
-            <h2 style="margin: 6px 0 0; font-size: 1.8rem; color: #3b2418;">
-                Pantau user yang sedang login
-            </h2>
+        <div style="display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap;">
+            <div>
+                <p style="margin: 0; color: var(--text-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">
+                    Dashboard Admin
+                </p>
+                <h2 style="margin: 8px 0 0; font-size: 2rem; color: var(--text-main);">
+                    Pantau user yang sedang login
+                </h2>
+                <p style="margin: 8px 0 0; color: var(--text-soft);">
+                    Kelola driver, gerobak, assignment, dan aktivitas operasional dari satu dashboard.
+                </p>
+            </div>
+            <a href="{{ route('dashboard.traccar') }}" class="section-button">
+                Monitoring Traccar
+            </a>
         </div>
     </x-slot>
 
-    <div style="padding: 32px 0 48px; background: linear-gradient(180deg, #f8f2e8 0%, #f3f4f6 100%); min-height: 100vh;">
-        <div style="max-width: 1120px; margin: 0 auto; padding: 0 16px;">
-            @if (session('dashboard_status'))
-                <section style="margin-bottom: 18px; padding: 18px 20px; border-radius: 22px; border: 1px solid rgba(47, 107, 85, 0.16); background: rgba(233, 247, 240, 0.9); color: #24503f; box-shadow: 0 14px 30px rgba(36, 80, 63, 0.08);">
-                    {{ session('dashboard_status') }}
-                </section>
-            @endif
-
-            <section id="admin-dashboard-summary" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px;">
-                <article style="padding: 24px; border-radius: 26px; border: 1px solid rgba(106, 65, 45, 0.12); background: rgba(255, 250, 242, 0.92); box-shadow: 0 18px 40px rgba(59, 36, 24, 0.08);">
-                    <p style="margin: 0; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a6b4d;">User Aktif</p>
-                    <strong style="display: block; margin-top: 10px; font-size: 2.4rem; color: #3b2418;">{{ $activeUserCount }}</strong>
-                    <span style="display: block; margin-top: 8px; color: #6c5244;">Jumlah akun yang sedang login sekarang.</span>
-                </article>
-
-                <article style="padding: 24px; border-radius: 26px; border: 1px solid rgba(106, 65, 45, 0.12); background: rgba(255, 250, 242, 0.92); box-shadow: 0 18px 40px rgba(59, 36, 24, 0.08);">
-                    <p style="margin: 0; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a6b4d;">Total Sesi Aktif</p>
-                    <strong style="display: block; margin-top: 10px; font-size: 2.4rem; color: #3b2418;">{{ $activeSessionCount }}</strong>
-                    <span style="display: block; margin-top: 8px; color: #6c5244;">Semua sesi browser yang masih aktif di server.</span>
-                </article>
-
-                <article style="padding: 24px; border-radius: 26px; border: 1px solid rgba(106, 65, 45, 0.12); background: rgba(255, 250, 242, 0.92); box-shadow: 0 18px 40px rgba(59, 36, 24, 0.08);">
-                    <p style="margin: 0; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a6b4d;">Update Terakhir</p>
-                    <strong style="display: block; margin-top: 10px; font-size: 1.45rem; color: #3b2418;">
-                        {{ $latestLoginAt?->translatedFormat('d M Y, H:i') ?? 'Belum ada sesi aktif' }}
-                    </strong>
-                    <span style="display: block; margin-top: 8px; color: #6c5244;">Admin utama: {{ $adminEmail }}</span>
-                </article>
+    <div class="owner-dashboard">
+        @if (session('dashboard_status'))
+            <section class="status-banner">
+                {{ session('dashboard_status') }}
             </section>
+        @endif
 
-            <section style="margin-top: 24px;">
-                <article style="padding: 26px; border-radius: 26px; border: 1px solid rgba(106, 65, 45, 0.12); background: rgba(255, 250, 242, 0.92); box-shadow: 0 18px 40px rgba(59, 36, 24, 0.08);">
-                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 18px; flex-wrap: wrap;">
-                        <div>
-                            <p style="margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a6b4d;">
-                                User Login
-                            </p>
-                            <h3 style="margin: 8px 0 0; font-size: 2rem; color: #3b2418;">Daftar user yang sedang aktif</h3>
-                        </div>
-                        <span style="display: inline-flex; align-items: center; padding: 10px 14px; border-radius: 999px; background: rgba(47, 107, 85, 0.12); color: #2f6b55; font-weight: 700;">
-                            {{ $activeUserCount }} user online
-                        </span>
+        <section class="owner-grid-4">
+            <article class="panel-card metric-card">
+                <span class="eyebrow">User Aktif</span>
+                <strong>{{ $activeUserCount }}</strong>
+                <p>{{ $activeUserCount }} user online</p>
+            </article>
+            <article class="panel-card metric-card">
+                <span class="eyebrow">Gerobak</span>
+                <strong>{{ $unitCount }}</strong>
+                <p>{{ $assignedUnitCount }} gerobak sedang terhubung dengan driver aktif.</p>
+            </article>
+            <article class="panel-card metric-card">
+                <span class="eyebrow">Driver</span>
+                <strong>{{ $driverCount }}</strong>
+                <p>{{ $availableDrivers->count() }} driver tersedia untuk di-assign.</p>
+            </article>
+            <article class="panel-card metric-card">
+                <span class="eyebrow">Owner Utama</span>
+                <strong style="font-size: 1.25rem; line-height: 1.35;">{{ $latestLoginAt?->translatedFormat('d M Y H:i') ?? 'Belum ada data' }}</strong>
+                <p>{{ $adminEmail }}</p>
+            </article>
+        </section>
+
+        <section class="owner-grid-3">
+            <article class="panel-card section-card form-card">
+                <span class="eyebrow">Data Unit</span>
+                <h3>Tambah gerobak</h3>
+                <p class="section-subtext">Buat master gerobak baru lengkap dengan kode unit dan `device_id` Traccar.</p>
+                <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
+                    @csrf
+                    <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ old('name') }}">
+                    <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}">
+                    <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID Traccar" value="{{ old('device_id') }}">
+                    <select class="dashboard-select" name="status">
+                        <option value="ready">Siap Operasi</option>
+                        <option value="maintenance">Maintenance</option>
+                        <option value="inactive">Nonaktif</option>
+                    </select>
+                    <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ old('notes') }}</textarea>
+                    <button type="submit" class="primary-button">Simpan Gerobak</button>
+                </form>
+            </article>
+
+            <article class="panel-card section-card form-card">
+                <span class="eyebrow">Data Driver</span>
+                <h3>Buat akun driver</h3>
+                <p class="section-subtext">Akun ini akan dipakai driver untuk melihat assignment gerobak aktifnya.</p>
+                <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
+                    @csrf
+                    <input class="dashboard-input" type="text" name="name" placeholder="Nama driver">
+                    <input class="dashboard-input" type="email" name="email" placeholder="Email driver">
+                    <input class="dashboard-input" type="password" name="password" placeholder="Password minimal 8 karakter">
+                    <button type="submit" class="primary-button">Buat Akun Driver</button>
+                </form>
+            </article>
+
+            <article class="panel-card section-card form-card">
+                <span class="eyebrow">Assignment</span>
+                <h3>Assign driver ke gerobak</h3>
+                <p class="section-subtext">Satu driver aktif untuk satu gerobak aktif. Assignment lama akan ditutup otomatis.</p>
+                <form method="POST" action="{{ route('dashboard.assignments.store') }}" class="form-stack">
+                    @csrf
+                    <select class="dashboard-select" name="driver_id">
+                        <option value="">Pilih driver</option>
+                        @foreach ($drivers as $driver)
+                            <option value="{{ $driver->id }}">{{ $driver->name }} - {{ $driver->email }}</option>
+                        @endforeach
+                    </select>
+                    <select class="dashboard-select" name="unit_id">
+                        <option value="">Pilih gerobak</option>
+                        @foreach ($units as $unit)
+                            <option value="{{ $unit['id'] }}">{{ $unit['name'] }} ({{ $unit['code'] }})</option>
+                        @endforeach
+                    </select>
+                    <textarea class="dashboard-textarea" name="notes" placeholder="Catatan assignment"></textarea>
+                    <button type="submit" class="success-button">Assign Sekarang</button>
+                </form>
+            </article>
+        </section>
+
+        <section class="owner-grid-main">
+            <article class="panel-card section-card">
+                <div class="section-heading">
+                    <div>
+                        <span class="eyebrow">Operasional</span>
+                        <h3>Status gerobak dan driver aktif</h3>
+                        <p class="section-subtext">Pantau gerobak mana yang sudah berjalan, siapa drivernya, dan update lokasi terakhir.</p>
                     </div>
+                </div>
 
-                    @if ($activeUsers->isEmpty())
-                        <div style="padding: 22px; border-radius: 20px; background: rgba(255,255,255,0.72); border: 1px dashed rgba(106, 65, 45, 0.26); color: #6c5244;">
-                            Belum ada user lain yang sedang login. Saat ada user aktif, namanya akan muncul di sini.
-                        </div>
-                    @else
-                        <div style="display: grid; gap: 14px;">
-                            @foreach ($activeUsers as $activeUser)
-                                <article style="padding: 18px; border-radius: 20px; background: rgba(255,255,255,0.74); border: 1px solid rgba(106, 65, 45, 0.1);">
-                                    <div style="display: flex; justify-content: space-between; gap: 16px; align-items: start; flex-wrap: wrap;">
-                                        <div style="flex: 1 1 320px;">
-                                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-                                                <strong style="font-size: 1.12rem; color: #3b2418;">{{ $activeUser['name'] }}</strong>
-                                                @if ($activeUser['is_current_admin'])
-                                                    <span style="display: inline-flex; align-items: center; padding: 6px 10px; border-radius: 999px; background: rgba(47, 107, 85, 0.12); color: #2f6b55; font-size: 0.82rem; font-weight: 700;">
-                                                        Sesi kamu
-                                                    </span>
-                                                @endif
-                                            </div>
-                                            <p style="margin: 6px 0 0; color: #6c5244;">{{ $activeUser['email'] }}</p>
+                <div class="unit-list">
+                    @forelse ($units as $unit)
+                        <article class="unit-item">
+                            <div class="unit-head">
+                                <div>
+                                    <strong style="display: block; font-size: 1.08rem;">{{ $unit['name'] }}</strong>
+                                    <span class="unit-meta" style="display: block; margin-top: 6px;">{{ $unit['code'] }} • {{ $unit['device_id'] }}</span>
+                                </div>
+                                <span class="status-pill">{{ ucfirst($unit['status']) }}</span>
+                            </div>
 
-                                            <div class="admin-session-stats" style="margin-top: 14px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px;">
-                                                <div style="padding: 12px; border-radius: 16px; background: rgba(248, 242, 232, 0.92);">
-                                                    <span style="display: block; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #9a6b4d;">Sesi Aktif</span>
-                                                    <strong style="display: block; margin-top: 6px; color: #3b2418;">{{ $activeUser['active_sessions'] }}</strong>
-                                                </div>
-                                                <div style="padding: 12px; border-radius: 16px; background: rgba(248, 242, 232, 0.92);">
-                                                    <span style="display: block; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #9a6b4d;">IP Terakhir</span>
-                                                    <strong style="display: block; margin-top: 6px; color: #3b2418;">{{ $activeUser['ip_address'] }}</strong>
-                                                </div>
-                                                <div style="padding: 12px; border-radius: 16px; background: rgba(248, 242, 232, 0.92);">
-                                                    <span style="display: block; font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #9a6b4d;">Terlihat</span>
-                                                    <strong style="display: block; margin-top: 6px; color: #3b2418;">{{ $activeUser['last_seen']->diffForHumans() }}</strong>
-                                                </div>
-                                            </div>
+                            <div class="unit-stats">
+                                <div class="unit-stat">
+                                    <span>Driver Aktif</span>
+                                    <strong>{{ $unit['active_assignment']?->driver?->name ?? 'Belum ada driver' }}</strong>
+                                </div>
+                                <div class="unit-stat">
+                                    <span>Update Lokasi</span>
+                                    <strong>{{ $unit['latest_location']?->recorded_at?->diffForHumans() ?? 'Belum ada data' }}</strong>
+                                </div>
+                                <div class="unit-stat">
+                                    <span>Baterai</span>
+                                    <strong>{{ $unit['latest_location']?->battery_level !== null ? $unit['latest_location']->battery_level.'%' : '-' }}</strong>
+                                </div>
+                            </div>
 
-                                            <p style="margin: 14px 0 0; color: #6c5244; line-height: 1.6;">
-                                                <strong style="color: #5a3726;">Browser:</strong> {{ $activeUser['user_agent'] }}
-                                            </p>
-                                        </div>
+                            @if ($unit['active_assignment'])
+                                <form method="POST" action="{{ route('dashboard.assignments.finish', $unit['active_assignment']) }}" style="margin-top: 14px;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="danger-button">Selesaikan Assignment</button>
+                                </form>
+                            @endif
+                        </article>
+                    @empty
+                        <div class="empty-state">Belum ada gerobak terdaftar.</div>
+                    @endforelse
+                </div>
+            </article>
 
-                                        <div style="display: flex; align-items: center;">
-                                            @if ($activeUser['is_current_admin'])
-                                                <button
-                                                    type="button"
-                                                    disabled
-                                                    style="padding: 12px 18px; border: 0; border-radius: 999px; background: rgba(106, 65, 45, 0.08); color: #8a634b; font-weight: 800; cursor: not-allowed;"
-                                                >
-                                                    Admin Aktif
-                                                </button>
-                                            @else
-                                                <form method="POST" action="{{ route('dashboard.users.kick', $activeUser['user_id']) }}" style="margin: 0;">
-                                                    @csrf
-                                                    <button
-                                                        type="submit"
-                                                        style="padding: 12px 18px; border: 0; border-radius: 999px; background: linear-gradient(135deg, #7b2f2f, #b55454); color: #fff; font-weight: 800; cursor: pointer;"
-                                                    >
-                                                        Kick User
-                                                    </button>
-                                                </form>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </article>
-                            @endforeach
-                        </div>
-                    @endif
+            <div style="display: grid; gap: 20px;">
+                <article class="panel-card mini-card">
+                    <span class="eyebrow">Assignment Aktif</span>
+                    <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Siapa bawa gerobak mana</h3>
+                    <div class="mini-list">
+                        @forelse ($activeAssignments as $assignment)
+                            <article class="mini-item">
+                                <strong style="display: block;">{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
+                                <span class="list-meta" style="display: block; margin-top: 6px;">Mulai {{ $assignment->assigned_at?->translatedFormat('d M Y H:i') }}</span>
+                            </article>
+                        @empty
+                            <div class="empty-state">Belum ada assignment aktif.</div>
+                        @endforelse
+                    </div>
                 </article>
-            </section>
-        </div>
+
+                <article class="panel-card mini-card">
+                    <span class="eyebrow">User Login</span>
+                    <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Daftar user yang sedang aktif</h3>
+                    <div class="mini-list">
+                        @forelse ($activeUsers as $activeUser)
+                            <article class="mini-item">
+                                <div style="display: flex; justify-content: space-between; gap: 12px; align-items: start; flex-wrap: wrap;">
+                                    <div>
+                                        <strong style="display: block;">{{ $activeUser['name'] }}</strong>
+                                        <span class="list-meta" style="display: block; margin-top: 6px;">{{ $activeUser['email'] }}</span>
+                                        <span class="list-meta" style="display: block; margin-top: 6px;">{{ $activeUser['last_seen']->diffForHumans() }}</span>
+                                    </div>
+                                    @if (! $activeUser['is_current_admin'])
+                                        <form method="POST" action="{{ route('dashboard.users.kick', $activeUser['user_id']) }}" style="margin: 0;">
+                                            @csrf
+                                            <button type="submit" class="danger-button">Kick</button>
+                                        </form>
+                                    @endif
+                                </div>
+                            </article>
+                        @empty
+                            <div class="empty-state">Belum ada user aktif.</div>
+                        @endforelse
+                    </div>
+                </article>
+            </div>
+        </section>
     </div>
 </x-app-layout>

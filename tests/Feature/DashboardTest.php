@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Models\DriverUnitAssignment;
+use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +18,7 @@ class DashboardTest extends TestCase
         $admin = User::factory()->create([
             'name' => 'Admin Kopi Keliling',
             'email' => 'admin@kopikeliling.com',
+            'role' => 'owner',
         ]);
 
         $customer = User::factory()->create([
@@ -55,6 +58,7 @@ class DashboardTest extends TestCase
     {
         $admin = User::factory()->create([
             'email' => 'admin@kopikeliling.com',
+            'role' => 'owner',
         ]);
 
         $customer = User::factory()->create([
@@ -87,5 +91,66 @@ class DashboardTest extends TestCase
         $this->actingAs($user)
             ->get(route('dashboard'))
             ->assertRedirect(route('profile.edit'));
+    }
+
+    public function test_owner_can_assign_driver_to_unit(): void
+    {
+        $owner = User::factory()->create([
+            'email' => 'admin@kopikeliling.com',
+            'role' => 'owner',
+        ]);
+
+        $driver = User::factory()->create([
+            'role' => 'driver',
+        ]);
+
+        $unit = Unit::query()->create([
+            'name' => 'Gerobak Sunset',
+            'code' => 'GRBK-01',
+            'device_id' => 'gerobak-sunset-01',
+            'status' => 'ready',
+        ]);
+
+        $this->actingAs($owner)
+            ->post(route('dashboard.assignments.store'), [
+                'driver_id' => $driver->id,
+                'unit_id' => $unit->id,
+                'notes' => 'Shift sore',
+            ])
+            ->assertRedirect(route('dashboard'));
+
+        $this->assertDatabaseHas('driver_unit_assignments', [
+            'driver_id' => $driver->id,
+            'unit_id' => $unit->id,
+            'status' => 'active',
+        ]);
+    }
+
+    public function test_driver_sees_driver_dashboard(): void
+    {
+        $driver = User::factory()->create([
+            'name' => 'Driver Senja',
+            'role' => 'driver',
+        ]);
+
+        $unit = Unit::query()->create([
+            'name' => 'Gerobak Senja',
+            'code' => 'GRBK-09',
+            'device_id' => 'gerobak-senja-09',
+            'status' => 'ready',
+        ]);
+
+        DriverUnitAssignment::query()->create([
+            'driver_id' => $driver->id,
+            'unit_id' => $unit->id,
+            'assigned_at' => now(),
+            'status' => 'active',
+        ]);
+
+        $this->actingAs($driver)
+            ->get(route('dashboard'))
+            ->assertOk()
+            ->assertSee('Dashboard Driver')
+            ->assertSee('Gerobak Senja');
     }
 }
