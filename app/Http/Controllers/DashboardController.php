@@ -139,19 +139,21 @@ class DashboardController extends Controller
             ->limit(25)
             ->get();
 
-        $unitsByDeviceId = Unit::query()
+        $driversByDeviceId = User::query()
+            ->where('role', 'driver')
             ->whereNotNull('device_id')
+            ->where('device_id', '!=', '')
             ->get()
-            ->keyBy(fn (Unit $unit): string => (string) $unit->device_id);
+            ->keyBy(fn (User $driver): string => (string) $driver->device_id);
 
-        $activeAssignmentsByUnit = DriverUnitAssignment::query()
-            ->with('driver')
+        $activeAssignmentsByDriver = DriverUnitAssignment::query()
+            ->with(['driver', 'unit'])
             ->where('status', 'active')
             ->whereNull('ended_at')
             ->latest('assigned_at')
             ->get()
-            ->unique('unit_id')
-            ->keyBy('unit_id');
+            ->unique('driver_id')
+            ->keyBy('driver_id');
 
         $deviceSummaries = Location::query()
             ->whereNotNull('device_id')
@@ -159,16 +161,17 @@ class DashboardController extends Controller
             ->latest('recorded_at')
             ->get()
             ->groupBy('device_id')
-            ->map(function (Collection $locations, string $deviceId) use ($unitsByDeviceId, $activeAssignmentsByUnit): array {
+            ->map(function (Collection $locations, string $deviceId) use ($driversByDeviceId, $activeAssignmentsByDriver): array {
                 $latest = $locations->first();
-                $unit = $unitsByDeviceId->get($deviceId);
-                $assignment = $unit ? $activeAssignmentsByUnit->get($unit->id) : null;
+                $driver = $driversByDeviceId->get($deviceId);
+                $assignment = $driver ? $activeAssignmentsByDriver->get($driver->id) : null;
+                $unit = $assignment?->unit;
 
                 return [
                     'device_id' => $deviceId,
                     'unit_name' => $unit?->name,
                     'unit_code' => $unit?->code,
-                    'driver_name' => $assignment?->driver?->name,
+                    'driver_name' => $driver?->name,
                     'last_seen' => $latest?->recorded_at,
                     'latitude' => $latest?->latitude,
                     'longitude' => $latest?->longitude,
@@ -212,6 +215,7 @@ class DashboardController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
+            'device_id' => ['required', 'string', 'max:120', 'unique:users,device_id'],
             'password' => ['required', 'string', 'min:8'],
         ]);
 
@@ -220,6 +224,7 @@ class DashboardController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'driver',
+            'device_id' => $validated['device_id'],
             'email_verified_at' => now(),
             'is_active' => true,
         ]);
@@ -238,7 +243,6 @@ class DashboardController extends Controller
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:80', 'unique:units,code'],
-            'device_id' => ['required', 'string', 'max:120', 'unique:units,device_id'],
             'status' => ['required', 'string', 'max:30'],
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
@@ -340,7 +344,7 @@ class DashboardController extends Controller
 
         if ($unit !== null) {
             $latestLocation = Location::query()
-                ->where('device_id', $unit->device_id)
+                ->where('device_id', $driver->device_id)
                 ->latest('recorded_at')
                 ->first();
         }
@@ -368,7 +372,7 @@ class DashboardController extends Controller
             ->first(fn (DriverUnitAssignment $assignment): bool => $assignment->status === 'active' && $assignment->ended_at === null);
 
         $latestLocation = Location::query()
-            ->where('device_id', $unit->device_id)
+            ->where('device_id', $activeAssignment?->driver?->device_id)
             ->latest('recorded_at')
             ->first();
 
@@ -376,7 +380,7 @@ class DashboardController extends Controller
             'id' => $unit->id,
             'name' => $unit->name,
             'code' => $unit->code,
-            'device_id' => $unit->device_id,
+            'device_id' => $activeAssignment?->driver?->device_id,
             'status' => $unit->status,
             'notes' => $unit->notes,
             'active_assignment' => $activeAssignment,

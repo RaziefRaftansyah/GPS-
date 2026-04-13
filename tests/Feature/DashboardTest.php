@@ -102,12 +102,12 @@ class DashboardTest extends TestCase
 
         $driver = User::factory()->create([
             'role' => 'driver',
+            'device_id' => 'hp-driver-sunset',
         ]);
 
         $unit = Unit::query()->create([
             'name' => 'Gerobak Sunset',
             'code' => 'GRBK-01',
-            'device_id' => 'gerobak-sunset-01',
             'status' => 'ready',
         ]);
 
@@ -131,12 +131,12 @@ class DashboardTest extends TestCase
         $driver = User::factory()->create([
             'name' => 'Driver Senja',
             'role' => 'driver',
+            'device_id' => 'hp-driver-senja',
         ]);
 
         $unit = Unit::query()->create([
             'name' => 'Gerobak Senja',
             'code' => 'GRBK-09',
-            'device_id' => 'gerobak-senja-09',
             'status' => 'ready',
         ]);
 

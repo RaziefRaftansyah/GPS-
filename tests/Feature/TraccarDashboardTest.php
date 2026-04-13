@@ -20,11 +20,23 @@ class TraccarDashboardTest extends TestCase
             'email' => 'admin@kopikeliling.com',
         ]);
 
-        Unit::query()->create([
+        $driver = User::factory()->create([
+            'name' => 'Driver Traccar',
+            'role' => 'driver',
+            'device_id' => 'gerobak-kopi-01',
+        ]);
+
+        $unit = Unit::query()->create([
             'name' => 'Gerobak Kopi 01',
             'code' => 'GRBK-01',
-            'device_id' => 'gerobak-kopi-01',
             'status' => 'ready',
+        ]);
+
+        \App\Models\DriverUnitAssignment::query()->create([
+            'driver_id' => $driver->id,
+            'unit_id' => $unit->id,
+            'assigned_at' => now(),
+            'status' => 'active',
         ]);
 
         Location::query()->create([

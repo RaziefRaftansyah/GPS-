@@ -924,11 +924,11 @@
                         <span class="eyebrow">Leaflet Tracking Map</span>
                         <h3>Lacak keberadaan gerobak kopi.</h3>
                         <p>
-                            Marker akan bergerak otomatis mengikuti lokasi paling baru dari HP penjual.
-                            Garis rute membantu pelanggan melihat arah pergerakan gerobak.
+                            Setiap marker mewakili posisi terbaru dari satu gerobak aktif.
+                            Kamu bisa melihat berapa gerobak yang sedang online langsung dari peta ini.
                         </p>
                     </div>
-                    <div class="live-pill">Live Gerobak</div>
+                    <div class="live-pill"><span id="active-unit-count">{{ count($activeUnits) }}</span> Gerobak Aktif</div>
                 </div>
                 <div class="map-stage">
                     <div id="map"></div>
@@ -1030,7 +1030,8 @@
     <script>
         const state = {
             locations: @json($locations),
-            marker: null,
+            activeUnits: @json($activeUnits),
+            markers: [],
             polyline: null,
             map: null,
         };
@@ -1128,6 +1129,7 @@
                 ? (location.is_moving ? 'Sedang bergerak' : 'Sedang diam')
                 : '-';
             document.getElementById('points-count').textContent = state.locations.length;
+            document.getElementById('active-unit-count').textContent = state.activeUnits.length;
         }
 
         function renderHistory() {
@@ -1154,12 +1156,10 @@
         }
 
         function renderMap() {
-            const latLngs = state.locations.map((location) => [location.latitude, location.longitude]);
+            const latLngs = state.activeUnits.map((location) => [location.latitude, location.longitude]);
 
-            if (state.marker) {
-                state.marker.remove();
-                state.marker = null;
-            }
+            state.markers.forEach((marker) => marker.remove());
+            state.markers = [];
 
             if (state.polyline) {
                 state.polyline.remove();
@@ -1172,21 +1172,23 @@
                 return;
             }
 
-            const latest = state.locations[state.locations.length - 1] || null;
+            const latest = state.activeUnits[state.activeUnits.length - 1] || state.locations[state.locations.length - 1] || null;
 
-            if (latest) {
-                state.marker = L.marker([latest.latitude, latest.longitude], {
+            state.activeUnits.forEach((unitLocation) => {
+                const marker = L.marker([unitLocation.latitude, unitLocation.longitude], {
                     icon: coffeeIcon,
                 }).addTo(map).bindPopup(`
-                    <strong>${latest.unit_name || 'Gerobak Kopi'}</strong><br>
-                    Driver: ${latest.driver_name || '-'}<br>
-                    Device: ${latest.device_id || '-'}<br>
-                    Lat: ${latest.latitude}<br>
-                    Lng: ${latest.longitude}<br>
-                    Battery: ${latest.battery_level !== null ? `${latest.battery_level}%` : '-'}<br>
-                    Updated: ${latest.recorded_at || '-'}
+                    <strong>${unitLocation.unit_name || 'Gerobak Kopi'}</strong><br>
+                    Driver: ${unitLocation.driver_name || '-'}<br>
+                    Device: ${unitLocation.device_id || '-'}<br>
+                    Lat: ${unitLocation.latitude}<br>
+                    Lng: ${unitLocation.longitude}<br>
+                    Battery: ${unitLocation.battery_level !== null ? `${unitLocation.battery_level}%` : '-'}<br>
+                    Updated: ${unitLocation.recorded_at || '-'}
                 `);
-            }
+
+                state.markers.push(marker);
+            });
 
             if (latLngs.length) {
                 state.polyline = L.polyline(latLngs, {
@@ -1224,6 +1226,7 @@
             }
 
             state.locations = payload.locations || [];
+            state.activeUnits = payload.active_units || [];
             renderMap();
 
             if (payload.latest) {

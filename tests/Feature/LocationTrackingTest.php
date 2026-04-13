@@ -121,12 +121,12 @@ class LocationTrackingTest extends TestCase
         $driver = User::factory()->create([
             'name' => 'Driver Atlas',
             'role' => 'driver',
+            'device_id' => 'gerobak-kopi-01',
         ]);
 
         $unit = Unit::query()->create([
             'name' => 'Gerobak Atlas',
             'code' => 'GRBK-ATLAS',
-            'device_id' => 'gerobak-kopi-01',
             'status' => 'ready',
         ]);
 
@@ -149,7 +149,69 @@ class LocationTrackingTest extends TestCase
             ->assertJsonPath('latest.device_id', 'gerobak-kopi-01')
             ->assertJsonPath('latest.unit_name', 'Gerobak Atlas')
             ->assertJsonPath('latest.driver_name', 'Driver Atlas')
+            ->assertJsonPath('active_unit_count', 1)
+            ->assertJsonCount(1, 'active_units')
             ->assertJsonCount(1, 'locations');
+    }
+
+    public function test_api_location_latest_returns_multiple_active_unit_markers(): void
+    {
+        $driverOne = User::factory()->create([
+            'name' => 'Driver A',
+            'role' => 'driver',
+            'device_id' => 'driver-a',
+        ]);
+
+        $driverTwo = User::factory()->create([
+            'name' => 'Driver B',
+            'role' => 'driver',
+            'device_id' => 'driver-b',
+        ]);
+
+        $unitOne = Unit::query()->create([
+            'name' => 'Gerobak A',
+            'code' => 'GA-1',
+            'status' => 'ready',
+        ]);
+
+        $unitTwo = Unit::query()->create([
+            'name' => 'Gerobak B',
+            'code' => 'GB-1',
+            'status' => 'ready',
+        ]);
+
+        DriverUnitAssignment::query()->create([
+            'driver_id' => $driverOne->id,
+            'unit_id' => $unitOne->id,
+            'assigned_at' => now(),
+            'status' => 'active',
+        ]);
+
+        DriverUnitAssignment::query()->create([
+            'driver_id' => $driverTwo->id,
+            'unit_id' => $unitTwo->id,
+            'assigned_at' => now(),
+            'status' => 'active',
+        ]);
+
+        Location::query()->create([
+            'device_id' => 'driver-a',
+            'latitude' => -5.1,
+            'longitude' => 119.4,
+            'recorded_at' => now()->subMinute(),
+        ]);
+
+        Location::query()->create([
+            'device_id' => 'driver-b',
+            'latitude' => -5.2,
+            'longitude' => 119.5,
+            'recorded_at' => now(),
+        ]);
+
+        $this->getJson(route('api.location.latest'))
+            ->assertOk()
+            ->assertJsonPath('active_unit_count', 2)
+            ->assertJsonCount(2, 'active_units');
     }
 
     public function test_browser_test_endpoint_returns_urls(): void

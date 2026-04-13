@@ -6,6 +6,7 @@ use App\Models\Location;
 use App\Models\DriverUnitAssignment;
 use App\Models\TraccarRequestLog;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -19,10 +20,12 @@ class LocationController extends Controller
     public function index(): View
     {
         $locations = $this->recentLocations();
+        $activeUnits = $this->activeUnitLocations();
 
         return view('tracker', [
             'locations' => $locations,
-            'latestLocation' => $locations->last(),
+            'activeUnits' => $activeUnits,
+            'latestLocation' => $activeUnits->last() ?? $locations->last(),
             'traccarEndpoint' => url('/api/location'),
         ]);
     }
@@ -78,18 +81,21 @@ class LocationController extends Controller
         $assignment = null;
 
         if ($location->device_id) {
-            $unit = Unit::query()
+            $driver = User::query()
+                ->where('role', 'driver')
                 ->where('device_id', $location->device_id)
                 ->first();
 
-            if ($unit !== null) {
+            if ($driver !== null) {
                 $assignment = DriverUnitAssignment::query()
-                    ->with('driver')
-                    ->where('unit_id', $unit->id)
+                    ->with(['driver', 'unit'])
+                    ->where('driver_id', $driver->id)
                     ->where('status', 'active')
                     ->whereNull('ended_at')
                     ->latest('assigned_at')
                     ->first();
+
+                $unit = $assignment?->unit;
             }
         }
 
@@ -103,10 +109,13 @@ class LocationController extends Controller
     public function latest(): JsonResponse
     {
         $locations = $this->recentLocations();
+        $activeUnits = $this->activeUnitLocations();
 
         return response()->json([
-            'latest' => $locations->last(),
+            'latest' => $activeUnits->last() ?? $locations->last(),
             'locations' => $locations,
+            'active_units' => $activeUnits,
+            'active_unit_count' => $activeUnits->count(),
         ]);
     }
 
@@ -149,24 +158,26 @@ class LocationController extends Controller
             ->unique()
             ->values();
 
-        $unitsByDeviceId = Unit::query()
+        $driversByDeviceId = User::query()
+            ->where('role', 'driver')
             ->whereIn('device_id', $deviceIds)
             ->get()
             ->keyBy('device_id');
 
         $activeAssignments = DriverUnitAssignment::query()
-            ->with('driver')
-            ->whereIn('unit_id', $unitsByDeviceId->pluck('id'))
+            ->with(['driver', 'unit'])
+            ->whereIn('driver_id', $driversByDeviceId->pluck('id'))
             ->where('status', 'active')
             ->whereNull('ended_at')
             ->latest('assigned_at')
             ->get()
-            ->unique('unit_id')
-            ->keyBy('unit_id');
+            ->unique('driver_id')
+            ->keyBy('driver_id');
 
-        return $locations->map(function (Location $location) use ($unitsByDeviceId, $activeAssignments): array {
-            $unit = $unitsByDeviceId->get($location->device_id);
-            $assignment = $unit ? $activeAssignments->get($unit->id) : null;
+        return $locations->map(function (Location $location) use ($driversByDeviceId, $activeAssignments): array {
+            $driver = $driversByDeviceId->get($location->device_id);
+            $assignment = $driver ? $activeAssignments->get($driver->id) : null;
+            $unit = $assignment?->unit;
 
             return $this->transformLocation($location, $unit, $assignment);
         });
@@ -197,6 +208,40 @@ class LocationController extends Controller
             'event_type' => $location->event_type,
             'recorded_at' => optional($location->recorded_at)->format('Y-m-d H:i:s'),
         ];
+    }
+
+    protected function activeUnitLocations(): Collection
+    {
+        $activeAssignments = DriverUnitAssignment::query()
+            ->with(['driver', 'unit'])
+            ->where('status', 'active')
+            ->whereNull('ended_at')
+            ->latest('assigned_at')
+            ->get()
+            ->unique('driver_id');
+
+        return $activeAssignments
+            ->map(function (DriverUnitAssignment $assignment): ?array {
+                $driver = $assignment->driver;
+
+                if ($driver === null || blank($driver->device_id)) {
+                    return null;
+                }
+
+                $location = Location::query()
+                    ->where('device_id', $driver->device_id)
+                    ->latest('recorded_at')
+                    ->first();
+
+                if ($location === null) {
+                    return null;
+                }
+
+                return $this->transformLocation($location, $assignment->unit, $assignment);
+            })
+            ->filter()
+            ->sortBy('unit_name')
+            ->values();
     }
 
     protected function normalizePayload(Request $request): array

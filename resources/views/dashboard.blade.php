@@ -284,12 +284,11 @@
             <article class="panel-card section-card form-card">
                 <span class="eyebrow">Data Unit</span>
                 <h3>Tambah gerobak</h3>
-                <p class="section-subtext">Buat master gerobak baru lengkap dengan kode unit dan `device_id` Traccar.</p>
+                <p class="section-subtext">Buat master gerobak baru. GPS akan dibaca dari HP driver yang sedang ditugaskan.</p>
                 <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
                     @csrf
                     <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ old('name') }}">
                     <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}">
-                    <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID Traccar" value="{{ old('device_id') }}">
                     <select class="dashboard-select" name="status">
                         <option value="ready">Siap Operasi</option>
                         <option value="maintenance">Maintenance</option>
@@ -303,11 +302,12 @@
             <article class="panel-card section-card form-card">
                 <span class="eyebrow">Data Driver</span>
                 <h3>Buat akun driver</h3>
-                <p class="section-subtext">Akun ini akan dipakai driver untuk melihat assignment gerobak aktifnya.</p>
+                <p class="section-subtext">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai `device_id` miliknya.</p>
                 <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
                     @csrf
                     <input class="dashboard-input" type="text" name="name" placeholder="Nama driver">
                     <input class="dashboard-input" type="email" name="email" placeholder="Email driver">
+                    <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID HP driver">
                     <input class="dashboard-input" type="password" name="password" placeholder="Password minimal 8 karakter">
                     <button type="submit" class="primary-button">Buat Akun Driver</button>
                 </form>
@@ -353,7 +353,7 @@
                             <div class="unit-head">
                                 <div>
                                     <strong style="display: block; font-size: 1.08rem;">{{ $unit['name'] }}</strong>
-                                    <span class="unit-meta" style="display: block; margin-top: 6px;">{{ $unit['code'] }} • {{ $unit['device_id'] }}</span>
+                                    <span class="unit-meta" style="display: block; margin-top: 6px;">{{ $unit['code'] }} • {{ $unit['device_id'] ? 'HP '.$unit['device_id'] : 'Belum ada HP driver aktif' }}</span>
                                 </div>
                                 <span class="status-pill">{{ ucfirst($unit['status']) }}</span>
                             </div>

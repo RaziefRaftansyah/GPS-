@@ -121,8 +121,8 @@
             </article>
             <article class="driver-card">
                 <span class="driver-label">Device Tracker</span>
-                <strong style="font-size: 1.4rem;">{{ $unit?->device_id ?? '-' }}</strong>
-                <span style="display: block; margin-top: 8px; color: var(--text-soft);">Gunakan `device_id` ini di aplikasi Traccar.</span>
+                <strong style="font-size: 1.4rem;">{{ $driver->device_id ?? '-' }}</strong>
+                <span style="display: block; margin-top: 8px; color: var(--text-soft);">Gunakan `device_id` HP ini di aplikasi Traccar.</span>
             </article>
         </section>
 
