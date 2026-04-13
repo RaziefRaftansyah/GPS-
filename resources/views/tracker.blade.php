@@ -53,9 +53,9 @@
         }
 
         .page {
-            width: min(1200px, calc(100% - 32px));
+            width: min(1460px, calc(100% - 24px));
             margin: 0 auto;
-            padding: 24px 0 56px;
+            padding: 12px 0 48px;
         }
 
         .nav {
@@ -63,14 +63,14 @@
             justify-content: space-between;
             align-items: center;
             gap: 16px;
-            padding: 16px 20px;
+            padding: 18px 22px;
             border: 1px solid var(--line);
             border-radius: 999px;
             background: rgba(255, 250, 242, 0.68);
             backdrop-filter: blur(14px);
             box-shadow: var(--shadow);
             position: sticky;
-            top: 18px;
+            top: 10px;
             z-index: 20;
         }
 
@@ -214,10 +214,11 @@
 
         .hero {
             display: grid;
-            grid-template-columns: 1.15fr 0.85fr;
-            gap: 24px;
-            padding-top: 28px;
+            grid-template-columns: minmax(0, 1.45fr) minmax(360px, 0.85fr);
+            gap: 20px;
+            padding-top: 18px;
             align-items: stretch;
+            min-height: calc(100vh - 120px);
         }
 
         .hero-copy,
@@ -233,9 +234,12 @@
         }
 
         .hero-copy {
-            padding: 34px;
+            padding: 44px 40px 34px;
             position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
 
         .hero-copy::after {
@@ -271,15 +275,15 @@
 
         h1 {
             margin-top: 18px;
-            font-size: clamp(3.2rem, 8vw, 6.4rem);
-            max-width: 9ch;
+            font-size: clamp(4.4rem, 7vw, 7.8rem);
+            max-width: 8ch;
         }
 
         .lead {
             margin: 18px 0 0;
-            max-width: 58ch;
-            font-size: 1.04rem;
-            line-height: 1.8;
+            max-width: 66ch;
+            font-size: 1.08rem;
+            line-height: 1.9;
             color: rgba(59, 36, 24, 0.78);
         }
 
@@ -320,11 +324,11 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 14px;
-            margin-top: 28px;
+            margin-top: 32px;
         }
 
         .hero-stat {
-            padding: 18px;
+            padding: 20px 18px;
             border-radius: 22px;
             background: rgba(255, 255, 255, 0.56);
             border: 1px solid rgba(106, 65, 45, 0.09);
@@ -340,10 +344,11 @@
         }
 
         .hero-card {
-            padding: 28px;
+            min-height: 100%;
+            padding: 32px 30px;
             display: grid;
-            gap: 18px;
-            align-content: start;
+            gap: 20px;
+            align-content: stretch;
             background:
                 linear-gradient(165deg, rgba(59, 36, 24, 0.94), rgba(106, 65, 45, 0.92)),
                 var(--foam);
@@ -351,18 +356,18 @@
         }
 
         .hero-card h2 {
-            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-size: clamp(2.6rem, 4vw, 4.1rem);
         }
 
         .hero-card p {
             margin: 0;
-            line-height: 1.8;
+            line-height: 1.85;
             color: rgba(255, 246, 239, 0.82);
         }
 
         .status {
-            padding: 14px 16px;
-            border-radius: 20px;
+            padding: 16px 18px;
+            border-radius: 22px;
             background: rgba(255, 255, 255, 0.12);
             border: 1px solid rgba(255, 255, 255, 0.14);
             color: #fff2e8;
@@ -422,10 +427,16 @@
 
         .bean-list li,
         .feature-list li {
-            padding: 14px 16px;
-            border-radius: 18px;
+            padding: 16px 18px;
+            border-radius: 20px;
             border: 1px solid var(--line);
             background: rgba(255, 255, 255, 0.6);
+        }
+
+        .feature-list li {
+            background: rgba(255, 255, 255, 0.16);
+            border-color: rgba(255, 255, 255, 0.12);
+            color: rgba(255, 246, 239, 0.84);
         }
 
         .menu-card {
@@ -454,29 +465,41 @@
         .tracking {
             margin-top: 24px;
             display: grid;
-            grid-template-columns: 1.18fr 0.82fr;
             gap: 24px;
         }
 
         .map-panel {
             overflow: hidden;
-            padding: 0;
+            padding: 28px;
+            display: grid;
+            gap: 22px;
+            background:
+                radial-gradient(circle at top right, rgba(181, 106, 59, 0.14), transparent 24%),
+                linear-gradient(180deg, rgba(255, 250, 242, 0.96), rgba(250, 244, 236, 0.94));
         }
 
         .map-header {
-            padding: 24px 24px 18px;
             display: flex;
             justify-content: space-between;
-            gap: 14px;
-            align-items: start;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .map-header-copy {
+            max-width: 64ch;
+        }
+
+        .map-header h3 {
+            margin-top: 12px;
+            font-size: clamp(2.4rem, 4vw, 3.7rem);
         }
 
         .map-header p {
-            margin: 10px 0 0;
+            margin: 12px 0 0;
         }
 
         .live-pill {
-            padding: 10px 14px;
+            padding: 11px 16px;
             border-radius: 999px;
             color: #fff;
             font-weight: 700;
@@ -485,55 +508,158 @@
             white-space: nowrap;
         }
 
+        .map-stage {
+            position: relative;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 1px solid rgba(76, 48, 33, 0.1);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0)),
+                rgba(255, 252, 247, 0.8);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+        }
+
+        .map-stage::after {
+            content: "";
+            position: absolute;
+            inset: auto 22px 18px auto;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(181, 106, 59, 0.14), transparent 68%);
+            pointer-events: none;
+            z-index: 401;
+        }
+
         #map {
-            height: 560px;
+            height: 460px;
             width: 100%;
         }
 
-        .side-stack {
+        .tracking-details {
             display: grid;
+            grid-template-columns: 1.08fr 0.92fr;
             gap: 24px;
+            align-items: start;
+        }
+
+        .location-panel {
+            display: grid;
+            gap: 20px;
+        }
+
+        .location-panel h3,
+        .history-panel h3,
+        .endpoint-panel h3 {
+            margin-top: 12px;
         }
 
         .meta-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+            gap: 14px;
         }
 
         .meta-item {
-            padding: 16px;
-            border-radius: 18px;
+            padding: 18px;
+            border-radius: 22px;
             border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.64);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 240, 227, 0.72));
+            box-shadow: 0 14px 24px rgba(59, 36, 24, 0.06);
         }
 
         .meta-item span {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             font-size: 0.76rem;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: rgba(59, 36, 24, 0.62);
         }
 
+        .meta-item strong {
+            display: block;
+            font-size: 1.12rem;
+            line-height: 1.45;
+        }
+
+        .tracking-secondary {
+            display: grid;
+            gap: 24px;
+        }
+
         .history-list {
             margin-top: 18px;
             display: grid;
             gap: 12px;
-            max-height: 320px;
+            max-height: 362px;
             overflow: auto;
+            padding-right: 4px;
         }
 
         .history-list li {
-            padding: 16px;
+            padding: 16px 18px;
             border-radius: 20px;
             border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.64);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(247, 240, 227, 0.72));
+        }
+
+        .history-list strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .history-coords {
+            color: rgba(59, 36, 24, 0.78);
+            line-height: 1.7;
         }
 
         .history-list small {
+            display: block;
+            margin-top: 8px;
             color: rgba(59, 36, 24, 0.62);
+        }
+
+        .endpoint-box {
+            margin-top: 18px;
+            padding: 16px 18px;
+            border-radius: 22px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(232, 217, 197, 0.6));
+            border: 1px solid rgba(76, 48, 33, 0.1);
+            word-break: break-all;
+            font-weight: 700;
+            color: #3b2418;
+        }
+
+        .endpoint-note {
+            margin-top: 14px;
+        }
+
+        .leaflet-container {
+            background: #f5efe6;
+            font-family: "Manrope", sans-serif;
+        }
+
+        .leaflet-control-zoom {
+            border: 0 !important;
+            border-radius: 18px !important;
+            overflow: hidden;
+            box-shadow: 0 16px 28px rgba(59, 36, 24, 0.18) !important;
+        }
+
+        .leaflet-control-zoom a {
+            width: 42px !important;
+            height: 42px !important;
+            line-height: 42px !important;
+            color: var(--espresso) !important;
+            background: rgba(255, 251, 246, 0.96) !important;
+            border-bottom: 1px solid rgba(76, 48, 33, 0.08) !important;
+        }
+
+        .leaflet-control-attribution {
+            border-radius: 14px 0 0 0;
+            background: rgba(255, 249, 241, 0.88) !important;
+            backdrop-filter: blur(10px);
         }
 
         footer {
@@ -546,19 +672,27 @@
         @media (max-width: 980px) {
             .hero,
             .section,
-            .tracking {
+            .tracking-details {
                 grid-template-columns: 1fr;
+            }
+
+            .hero {
+                min-height: auto;
             }
 
             .menu-list {
                 grid-template-columns: 1fr;
             }
+
+            .map-header {
+                flex-direction: column;
+            }
         }
 
         @media (max-width: 640px) {
             .page {
-                width: min(100% - 20px, 1200px);
-                padding-top: 14px;
+                width: min(100% - 16px, 1460px);
+                padding-top: 8px;
             }
 
             .nav {
@@ -581,13 +715,21 @@
                 padding: 22px;
             }
 
+            h1 {
+                font-size: clamp(3.2rem, 13vw, 4.8rem);
+            }
+
             .hero-stats,
             .meta-grid {
                 grid-template-columns: 1fr;
             }
 
             #map {
-                height: 380px;
+                height: 320px;
+            }
+
+            .map-panel {
+                padding: 22px;
             }
         }
     </style>
@@ -753,9 +895,9 @@
         <section class="tracking" id="lacak">
             <div class="panel map-panel">
                 <div class="map-header">
-                    <div>
+                    <div class="map-header-copy">
                         <span class="eyebrow">Leaflet Tracking Map</span>
-                        <h3 style="margin-top: 12px;">Lacak keberadaan gerobak kopi.</h3>
+                        <h3>Lacak keberadaan gerobak kopi.</h3>
                         <p>
                             Marker akan bergerak otomatis mengikuti lokasi paling baru dari HP penjual.
                             Garis rute membantu pelanggan melihat arah pergerakan gerobak.
@@ -763,14 +905,16 @@
                     </div>
                     <div class="live-pill">Live Gerobak</div>
                 </div>
-                <div id="map"></div>
+                <div class="map-stage">
+                    <div id="map"></div>
+                </div>
             </div>
 
-            <div class="side-stack">
-                <aside class="panel">
+            <div class="tracking-details">
+                <aside class="panel location-panel">
                     <span class="eyebrow">Lokasi Terbaru</span>
-                    <h3 style="margin-top: 12px;">Sekarang gerobak ada di sini.</h3>
-                    <div class="meta-grid" style="margin-top: 18px;">
+                    <h3>Sekarang gerobak ada di sini.</h3>
+                    <div class="meta-grid">
                         <div class="meta-item">
                             <span>Device ID</span>
                             <strong id="current-device">{{ $latestLocation['device_id'] ?? '-' }}</strong>
@@ -812,25 +956,27 @@
                     </div>
                 </aside>
 
-                <aside class="panel">
-                    <span class="eyebrow">Riwayat Gerak</span>
-                    <h3 style="margin-top: 12px;">Jejak titik lokasi gerobak.</h3>
-                    <p>Daftar ini hanya menampilkan data lokasi yang berhasil dikirim dari Traccar.</p>
-                    <ul id="history-list" class="history-list"></ul>
-                </aside>
+                <div class="tracking-secondary">
+                    <aside class="panel history-panel">
+                        <span class="eyebrow">Riwayat Gerak</span>
+                        <h3>Jejak titik lokasi gerobak.</h3>
+                        <p>Daftar ini hanya menampilkan data lokasi yang berhasil dikirim dari Traccar.</p>
+                        <ul id="history-list" class="history-list"></ul>
+                    </aside>
 
-                <aside class="panel">
-                    <span class="eyebrow">URL Traccar</span>
-                    <h3 style="margin-top: 12px;">Alamat server untuk aplikasi Traccar.</h3>
-                    <p>Masukkan URL penuh ini ke field <strong>Server URL</strong> di aplikasi Traccar Android.</p>
-                    <div style="padding: 14px 16px; border-radius: 18px; background: rgba(255,255,255,0.72); border: 1px solid rgba(76, 48, 33, 0.1); word-break: break-all; font-weight: 700; color: #3b2418;">
-                        {{ $traccarEndpoint }}
-                    </div>
-                    <p style="margin-top: 14px;">
-                        Isi <strong>Device Identifier</strong> di Traccar dengan ID unik, misalnya
-                        <code>gerobak-kopi-01</code>.
-                    </p>
-                </aside>
+                    <aside class="panel endpoint-panel">
+                        <span class="eyebrow">URL Traccar</span>
+                        <h3>Alamat server untuk aplikasi Traccar.</h3>
+                        <p>Masukkan URL penuh ini ke field <strong>Server URL</strong> di aplikasi Traccar Android.</p>
+                        <div class="endpoint-box">
+                            {{ $traccarEndpoint }}
+                        </div>
+                        <p class="endpoint-note">
+                            Isi <strong>Device Identifier</strong> di Traccar dengan ID unik, misalnya
+                            <code>gerobak-kopi-01</code>.
+                        </p>
+                    </aside>
+                </div>
             </div>
         </section>
 
@@ -865,9 +1011,11 @@
             position: 'bottomright',
         }).addTo(map);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; OpenStreetMap contributors',
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            subdomains: 'abcd',
+            maxZoom: 20,
+            detectRetina: true,
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
         }).addTo(map);
 
         const coffeeIcon = L.divIcon({
@@ -956,8 +1104,8 @@
             [...state.locations].reverse().forEach((location) => {
                 const item = document.createElement('li');
                 item.innerHTML = `
-                    <strong>${location.device_id || 'Traccar Device'}</strong><br>
-                    ${location.latitude}, ${location.longitude}<br>
+                    <strong>${location.device_id || 'Traccar Device'}</strong>
+                    <div class="history-coords">${location.latitude}, ${location.longitude}</div>
                     <small>${location.recorded_at ?? 'Belum tersimpan ke database'}</small>
                 `;
                 list.appendChild(item);
@@ -1011,6 +1159,10 @@
             } else if (latLngs.length > 1) {
                 map.fitBounds(latLngs, { padding: [24, 24] });
             }
+
+            requestAnimationFrame(() => {
+                map.invalidateSize();
+            });
 
             renderHistory();
             updateSummary(latest);
