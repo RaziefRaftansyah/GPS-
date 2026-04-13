@@ -64,16 +64,30 @@
         @endif
     </head>
     <body class="font-sans text-gray-900 antialiased">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
-            <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div>
+        <a
+            href="{{ route('tracker.index') }}"
+            style="position: fixed; left: 20px; bottom: 20px; z-index: 60; display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; background: rgba(255, 250, 242, 0.94); border: 1px solid rgba(106, 65, 45, 0.14); box-shadow: 0 16px 34px rgba(59, 36, 24, 0.12); color: #6a412d; text-decoration: none; font-weight: 800;"
+        >
+            <span style="font-size: 1.1rem; line-height: 1;">←</span>
+            <span>Kembali</span>
+        </a>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
-                {{ $slot }}
-            </div>
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
+            @if (request()->routeIs('login') || request()->routeIs('register'))
+                <div class="w-full" style="display: flex; justify-content: center; padding: 24px 16px 40px;">
+                    {{ $slot }}
+                </div>
+            @else
+                <div>
+                    <a href="/">
+                        <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                    </a>
+                </div>
+
+                <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+                    {{ $slot }}
+                </div>
+            @endif
         </div>
     </body>
 </html>

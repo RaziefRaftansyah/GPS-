@@ -96,4 +96,41 @@ class ProfileTest extends TestCase
 
         $this->assertNotNull($user->fresh());
     }
+
+    public function test_user_can_deactivate_their_account(): void
+    {
+        $user = User::factory()->create([
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->patch('/profile/deactivate', [
+                'password' => 'password',
+            ]);
+
+        $response->assertRedirect('/');
+        $this->assertGuest();
+        $this->assertFalse((bool) $user->fresh()->is_active);
+    }
+
+    public function test_correct_password_must_be_provided_to_deactivate_account(): void
+    {
+        $user = User::factory()->create([
+            'is_active' => true,
+        ]);
+
+        $response = $this
+            ->actingAs($user)
+            ->from('/profile')
+            ->patch('/profile/deactivate', [
+                'password' => 'wrong-password',
+            ]);
+
+        $response
+            ->assertSessionHasErrorsIn('accountDeactivation', 'password')
+            ->assertRedirect('/profile');
+
+        $this->assertTrue((bool) $user->fresh()->is_active);
+    }
 }

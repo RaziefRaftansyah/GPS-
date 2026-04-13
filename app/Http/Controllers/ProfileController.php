@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 
@@ -56,5 +57,29 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    public function deactivate(Request $request): RedirectResponse
+    {
+        $request->validateWithBag('accountDeactivation', [
+            'password' => ['required', 'current_password'],
+        ]);
+
+        $user = $request->user();
+
+        DB::table('sessions')
+            ->where('user_id', $user->id)
+            ->delete();
+
+        $user->forceFill([
+            'is_active' => false,
+        ])->save();
+
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return Redirect::to('/')->with('status', 'account-deactivated');
     }
 }

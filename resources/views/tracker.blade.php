@@ -713,37 +713,38 @@
 
         <section class="section" id="cerita">
             <article class="story-card">
-                <h3>Dibuat untuk kopi jalanan yang dinamis.</h3>
+                <h3>Kopi Tracker</h3>
                 <p>
-                    Konsepnya seperti coffee shop modern, tetapi lebih luwes karena barista
-                    bergerak langsung ke area pelanggan. Website ini jadi etalase digital
-                    sekaligus alat lacak gerobak.
+                    Website ini dibuat untuk membantu pelanggan mengetahui posisi gerobak kopi
+                    secara lebih mudah dan cepat. Dengan adanya pelacakan lokasi, pembeli tidak
+                    perlu menebak-nebak gerobak sedang ada di mana.
                 </p>
                 <ul class="bean-list">
-                    <li><strong>Single Origin Feel</strong><br>Warna hangat, tipografi klasik, dan nuansa artisan coffee.</li>
-                    <li><strong>Street Ready</strong><br>Pelanggan cukup buka website untuk melihat lokasi gerobak saat itu juga.</li>
-                    <li><strong>Built on Laravel</strong><br>Data lokasi disimpan rapi agar mudah dikembangkan lagi nanti.</li>
+                    <li><strong>Mudah ditemukan</strong><br>Pelanggan bisa langsung melihat lokasi gerobak tanpa harus bertanya lewat chat atau telepon.</li>
+                    <li><strong>Lebih efisien</strong><br>Penjual lebih mudah memberi informasi posisi terbaru kepada pelanggan secara realtime.</li>
+                    <li><strong>Siap dikembangkan</strong><br>Website ini bisa jadi dasar untuk fitur lanjutan seperti status jualan, menu, dan pemesanan.</li>
                 </ul>
             </article>
 
             <article class="menu-card" id="menu">
-                <h3>Menu yang cocok dijual dari gerobak.</h3>
+                <h3>Alasan website ini dibuat.</h3>
                 <p>
-                    Landing page coffee shop terasa lebih hidup kalau ada sentuhan menu.
-                    Bagian ini bikin pengunjung langsung paham vibe brand-mu sebelum melihat peta.
+                    Kopi Tracker bukan hanya tampilan peta, tetapi juga jadi media informasi
+                    sederhana agar pelanggan dan penjual sama-sama terbantu saat gerobak
+                    berpindah tempat.
                 </p>
                 <ul class="menu-list">
                     <li>
-                        <strong>Espresso Cart</strong>
-                        Shot pekat untuk pelanggan yang buru-buru tapi butuh tenaga.
+                        <strong>Untuk pelanggan</strong>
+                        Pelanggan bisa membuka website lalu langsung melihat posisi gerobak kopi yang terbaru.
                     </li>
                     <li>
-                        <strong>Brown Sugar Latte</strong>
-                        Manis, creamy, dan paling gampang jadi favorit pelanggan jalanan.
+                        <strong>Untuk penjual</strong>
+                        Penjual tidak perlu terus-menerus memberi update lokasi secara manual ke banyak orang.
                     </li>
                     <li>
-                        <strong>Cold Brew Mobile</strong>
-                        Segar untuk area kampus, taman kota, dan event luar ruangan.
+                        <strong>Untuk pengembangan</strong>
+                        Sistem ini bisa dikembangkan lagi menjadi dashboard usaha kopi keliling yang lebih lengkap.
                     </li>
                 </ul>
             </article>

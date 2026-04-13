@@ -11,6 +11,10 @@ Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
+Route::post('/dashboard/users/{user}/kick', [DashboardController::class, 'kickUser'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.users.kick');
+
 Route::get('/dashboard/traccar', [DashboardController::class, 'traccar'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.traccar');
@@ -18,6 +22,7 @@ Route::get('/dashboard/traccar', [DashboardController::class, 'traccar'])
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::patch('/profile/deactivate', [ProfileController::class, 'deactivate'])->name('profile.deactivate');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

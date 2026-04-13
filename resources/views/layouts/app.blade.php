@@ -36,6 +36,14 @@
         @endif
     </head>
     <body class="font-sans antialiased">
+        <a
+            href="{{ route('tracker.index') }}"
+            style="position: fixed; left: 20px; bottom: 20px; z-index: 60; display: inline-flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: 999px; background: rgba(255, 250, 242, 0.94); border: 1px solid rgba(106, 65, 45, 0.14); box-shadow: 0 16px 34px rgba(59, 36, 24, 0.12); color: #6a412d; text-decoration: none; font-weight: 800;"
+        >
+            <span style="font-size: 1.1rem; line-height: 1;">←</span>
+            <span>Kembali</span>
+        </a>
+
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 
