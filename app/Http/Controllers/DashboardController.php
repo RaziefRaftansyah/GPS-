@@ -128,16 +128,23 @@ class DashboardController extends Controller
             ->with('dashboard_status', $message);
     }
 
-    public function traccar(): View
+    public function traccar(): View|RedirectResponse
     {
         if (! $this->isOwner(request()->user())) {
-            abort(403);
+            return redirect()
+                ->route('profile.edit')
+                ->with('profile_notice', 'Halaman Monitoring Traccar hanya bisa diakses oleh owner.');
         }
 
-        $latestEntries = Location::query()
+        $latestTrackedLocation = Location::query()
             ->latest('recorded_at')
-            ->limit(25)
-            ->get();
+            ->latest('id')
+            ->first();
+
+        $managedLocations = Location::query()
+            ->latest('recorded_at')
+            ->latest('id')
+            ->paginate(12);
 
         $driversByDeviceId = User::query()
             ->where('role', 'driver')
@@ -197,11 +204,56 @@ class DashboardController extends Controller
 
         return view('traccar-dashboard', [
             'deviceSummaries' => $deviceSummaries,
-            'latestEntries' => $latestEntries,
+            'managedLocations' => $managedLocations,
             'unknownDeviceCount' => $unknownDeviceCount,
-            'latestTrackedLocation' => $latestEntries->first(),
+            'latestTrackedLocation' => $latestTrackedLocation,
             'requestLogs' => $requestLogs,
         ]);
+    }
+
+    public function storeTraccarLocation(Request $request): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            return redirect()
+                ->route('profile.edit')
+                ->with('profile_notice', 'Halaman Monitoring Traccar hanya bisa diakses oleh owner.');
+        }
+
+        Location::query()->create($this->validatedTraccarLocationData($request));
+
+        return redirect()
+            ->route('dashboard.traccar')
+            ->with('dashboard_status', 'Data monitoring Traccar berhasil ditambahkan.');
+    }
+
+    public function updateTraccarLocation(Request $request, Location $location): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            return redirect()
+                ->route('profile.edit')
+                ->with('profile_notice', 'Halaman Monitoring Traccar hanya bisa diakses oleh owner.');
+        }
+
+        $location->update($this->validatedTraccarLocationData($request));
+
+        return redirect()
+            ->route('dashboard.traccar')
+            ->with('dashboard_status', 'Data monitoring Traccar berhasil diperbarui.');
+    }
+
+    public function destroyTraccarLocation(Request $request, Location $location): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            return redirect()
+                ->route('profile.edit')
+                ->with('profile_notice', 'Halaman Monitoring Traccar hanya bisa diakses oleh owner.');
+        }
+
+        $location->delete();
+
+        return redirect()
+            ->route('dashboard.traccar')
+            ->with('dashboard_status', 'Data monitoring Traccar berhasil dihapus.');
     }
 
     public function storeDriver(Request $request): RedirectResponse
@@ -360,6 +412,41 @@ class DashboardController extends Controller
                 ->limit(5)
                 ->get(),
         ]);
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function validatedTraccarLocationData(Request $request): array
+    {
+        $validated = $request->validate([
+            'device_id' => ['nullable', 'string', 'max:120'],
+            'latitude' => ['required', 'numeric', 'between:-90,90'],
+            'longitude' => ['required', 'numeric', 'between:-180,180'],
+            'accuracy' => ['nullable', 'numeric', 'min:0'],
+            'speed' => ['nullable', 'numeric', 'min:0'],
+            'heading' => ['nullable', 'numeric', 'between:0,360'],
+            'altitude' => ['nullable', 'numeric'],
+            'battery_level' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'is_charging' => ['nullable', 'boolean'],
+            'is_moving' => ['nullable', 'boolean'],
+            'activity' => ['nullable', 'string', 'max:100'],
+            'event_type' => ['nullable', 'string', 'max:100'],
+            'recorded_at' => ['required', 'date'],
+        ]);
+
+        $validated['device_id'] = blank($validated['device_id'] ?? null)
+            ? null
+            : trim((string) $validated['device_id']);
+        $validated['activity'] = blank($validated['activity'] ?? null)
+            ? null
+            : trim((string) $validated['activity']);
+        $validated['event_type'] = blank($validated['event_type'] ?? null)
+            ? null
+            : trim((string) $validated['event_type']);
+        $validated['recorded_at'] = Carbon::parse((string) $validated['recorded_at']);
+
+        return $validated;
     }
 
     private function transformUnitForDashboard(Unit $unit): array
