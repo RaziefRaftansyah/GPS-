@@ -68,7 +68,7 @@
             width: calc(100% - 10px);
             max-width: none;
             margin: 0 auto;
-            padding: 6px 0 40px;
+            padding: 6px 0 24px;
         }
 
         .nav {
@@ -227,27 +227,26 @@
 
         .hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.58fr) minmax(400px, 0.82fr);
-            gap: 16px;
-            padding-top: 10px;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            padding-top: 8px;
             align-items: stretch;
-            min-height: calc(100vh - 82px);
+            min-height: auto;
         }
 
         .hero-copy,
-        .hero-card,
         .panel,
         .story-card,
         .menu-card {
             border: 1px solid var(--line);
-            border-radius: 28px;
-            background: rgba(255, 249, 241, 0.9);
+            border-radius: 24px;
+            background: rgba(255, 252, 247, 0.94);
             backdrop-filter: blur(12px);
             box-shadow: var(--shadow);
         }
 
         .hero-copy {
-            padding: 52px 46px 30px;
+            padding: 28px 30px 24px;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -255,37 +254,15 @@
             justify-content: space-between;
         }
 
-        .hero-copy::after {
-            content: "";
-            position: absolute;
-            width: 340px;
-            height: 340px;
-            right: -96px;
-            top: -120px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(181, 106, 59, 0.28), transparent 68%);
-        }
-
-        .hero-copy::before {
-            content: "";
-            position: absolute;
-            left: -120px;
-            bottom: -150px;
-            width: 360px;
-            height: 360px;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 255, 255, 0.36), transparent 66%);
-        }
-
         .eyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 999px;
-            background: rgba(181, 106, 59, 0.12);
-            color: var(--mocha);
-            font-size: 0.78rem;
+            background: rgba(59, 130, 246, 0.1);
+            color: #1d4ed8;
+            font-size: 0.74rem;
             font-weight: 700;
             letter-spacing: 0.09em;
             text-transform: uppercase;
@@ -298,24 +275,25 @@
         }
 
         h1 {
-            margin-top: 14px;
-            font-size: clamp(4.8rem, 8vw, 9rem);
-            max-width: 7ch;
+            margin-top: 12px;
+            font-size: clamp(2.8rem, 5vw, 4.4rem);
+            max-width: 11ch;
+            line-height: 1.02;
         }
 
         .lead {
-            margin: 20px 0 0;
-            max-width: 72ch;
-            font-size: 1.12rem;
-            line-height: 1.95;
-            color: rgba(59, 36, 24, 0.78);
+            margin: 14px 0 0;
+            max-width: 70ch;
+            font-size: 0.98rem;
+            line-height: 1.7;
+            color: rgba(59, 36, 24, 0.72);
         }
 
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
             gap: 14px;
-            margin-top: 32px;
+            margin-top: 22px;
         }
 
         .button {
@@ -335,27 +313,27 @@
 
         .button.primary {
             color: #fff;
-            background: linear-gradient(135deg, var(--mocha), var(--caramel));
-            box-shadow: 0 18px 32px rgba(106, 65, 45, 0.24);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            box-shadow: 0 18px 32px rgba(37, 99, 235, 0.2);
         }
 
         .button.secondary {
             border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.88);
         }
 
         .hero-stats {
             display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 14px;
-            margin-top: 38px;
+            margin-top: 24px;
         }
 
         .hero-stat {
-            padding: 20px 18px;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.56);
-            border: 1px solid rgba(106, 65, 45, 0.09);
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(76, 48, 33, 0.08);
         }
 
         .hero-stat span {
@@ -367,159 +345,77 @@
             letter-spacing: 0.08em;
         }
 
-        .hero-card {
-            min-height: 100%;
-            padding: 34px 30px;
-            display: grid;
-            gap: 16px;
-            align-content: space-between;
-            background:
-                linear-gradient(165deg, rgba(59, 36, 24, 0.94), rgba(106, 65, 45, 0.92)),
-                var(--foam);
-            color: #fff6ef;
-        }
-
-        .hero-card h2 {
-            font-size: clamp(2.6rem, 4vw, 4.1rem);
-        }
-
-        .hero-card p {
-            margin: 0;
-            line-height: 1.85;
-            color: rgba(255, 246, 239, 0.82);
-        }
-
-        .status {
-            padding: 16px 18px;
-            border-radius: 22px;
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            color: #fff2e8;
-        }
-
-        .status.error {
-            background: rgba(159, 47, 32, 0.18);
-            color: #ffe6df;
-        }
-
-        .status.success {
-            background: rgba(47, 107, 85, 0.22);
-            color: #ebfff4;
-        }
-
-        .section {
-            margin-top: 18px;
-            display: grid;
-            grid-template-columns: 0.72fr 1.28fr;
-            gap: 18px;
-        }
-
-        .story-card,
-        .menu-card,
         .panel {
-            padding: 28px;
+            padding: 22px;
         }
 
-        .story-card h3,
-        .menu-card h3,
         .panel h3 {
             font-size: clamp(2rem, 4vw, 2.8rem);
             margin-bottom: 14px;
         }
 
-        .story-card p,
-        .menu-card p,
         .panel p {
             color: rgba(59, 36, 24, 0.78);
             line-height: 1.8;
         }
 
-        .bean-list,
         .menu-list,
-        .feature-list,
         .history-list {
             list-style: none;
             margin: 0;
             padding: 0;
         }
 
-        .bean-list,
-        .feature-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .bean-list li,
-        .feature-list li {
-            padding: 16px 18px;
-            border-radius: 20px;
-            border: 1px solid var(--line);
-            background: rgba(255, 255, 255, 0.6);
-        }
-
-        .feature-list li {
-            background: rgba(255, 255, 255, 0.16);
-            border-color: rgba(255, 255, 255, 0.12);
-            color: rgba(255, 246, 239, 0.84);
-        }
-
-        .menu-card {
-            display: grid;
-            gap: 18px;
-        }
-
-        .menu-list {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 14px;
-        }
-
-        .menu-list li {
-            padding: 18px;
-            border-radius: 22px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.74), rgba(232, 217, 197, 0.72));
-            border: 1px solid var(--line);
-        }
-
-        .menu-list strong {
-            display: block;
-            margin-bottom: 8px;
-        }
-
         .tracking {
-            margin-top: 18px;
+            margin-top: 14px;
             display: grid;
             gap: 18px;
         }
 
         .map-panel {
             overflow: hidden;
-            padding: 28px;
+            padding: 22px;
             display: grid;
-            gap: 22px;
+            gap: 18px;
             background:
-                radial-gradient(circle at top right, rgba(181, 106, 59, 0.14), transparent 24%),
-                linear-gradient(180deg, rgba(255, 250, 242, 0.96), rgba(250, 244, 236, 0.94));
+                radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 24%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+        }
+
+        .map-shell {
+            display: grid;
+            grid-template-columns: minmax(260px, 0.34fr) minmax(0, 1fr);
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .map-overview {
+            display: grid;
+            align-content: start;
+            gap: 14px;
         }
 
         .map-header {
             display: flex;
             justify-content: space-between;
-            gap: 18px;
+            gap: 12px;
             align-items: flex-start;
+            flex-wrap: wrap;
         }
 
-        .map-header-copy {
-            max-width: 64ch;
+        .map-header-copy,
+        .map-overview .map-header-copy {
+            max-width: 100%;
         }
 
         .map-header h3 {
-            margin-top: 12px;
-            font-size: clamp(2.4rem, 4vw, 3.7rem);
+            margin-top: 10px;
+            font-size: clamp(2rem, 3vw, 2.8rem);
         }
 
         .map-header p {
-            margin: 12px 0 0;
+            margin: 10px 0 0;
+            line-height: 1.7;
         }
 
         .live-pill {
@@ -527,14 +423,14 @@
             border-radius: 999px;
             color: #fff;
             font-weight: 700;
-            background: linear-gradient(135deg, var(--leaf), #4b9a7b);
-            box-shadow: 0 14px 30px rgba(47, 107, 85, 0.22);
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.22);
             white-space: nowrap;
         }
 
         .map-stage {
             position: relative;
-            border-radius: 30px;
+            border-radius: 22px;
             overflow: hidden;
             border: 1px solid rgba(76, 48, 33, 0.1);
             background:
@@ -556,55 +452,17 @@
         }
 
         #map {
-            height: 460px;
+            height: 420px;
             width: 100%;
         }
 
         .tracking-details {
-            display: grid;
-            grid-template-columns: 1.08fr 0.92fr;
-            gap: 18px;
-            align-items: start;
+            display: block;
         }
 
-        .location-panel {
-            display: grid;
-            gap: 20px;
-        }
-
-        .location-panel h3,
         .history-panel h3,
         .endpoint-panel h3 {
             margin-top: 12px;
-        }
-
-        .meta-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-            gap: 14px;
-        }
-
-        .meta-item {
-            padding: 18px;
-            border-radius: 22px;
-            border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(247, 240, 227, 0.72));
-            box-shadow: 0 14px 24px rgba(59, 36, 24, 0.06);
-        }
-
-        .meta-item span {
-            display: block;
-            margin-bottom: 10px;
-            font-size: 0.76rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: rgba(59, 36, 24, 0.62);
-        }
-
-        .meta-item strong {
-            display: block;
-            font-size: 1.12rem;
-            line-height: 1.45;
         }
 
         .tracking-secondary {
@@ -623,9 +481,9 @@
 
         .history-list li {
             padding: 16px 18px;
-            border-radius: 20px;
+            border-radius: 18px;
             border: 1px solid var(--line);
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.76), rgba(247, 240, 227, 0.72));
+            background: rgba(255, 255, 255, 0.95);
         }
 
         .history-list strong {
@@ -647,8 +505,8 @@
         .endpoint-box {
             margin-top: 18px;
             padding: 16px 18px;
-            border-radius: 22px;
-            background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(232, 217, 197, 0.6));
+            border-radius: 18px;
+            background: rgba(255, 255, 255, 0.95);
             border: 1px solid rgba(76, 48, 33, 0.1);
             word-break: break-all;
             font-weight: 700;
@@ -676,7 +534,7 @@
             height: 42px !important;
             line-height: 42px !important;
             color: var(--espresso) !important;
-            background: rgba(255, 251, 246, 0.96) !important;
+            background: rgba(255, 255, 255, 0.98) !important;
             border-bottom: 1px solid rgba(76, 48, 33, 0.08) !important;
         }
 
@@ -687,26 +545,22 @@
         }
 
         footer {
-            margin-top: 20px;
-            padding: 22px 8px 0;
+            margin-top: 14px;
+            padding: 12px 8px 0;
             text-align: center;
             color: rgba(59, 36, 24, 0.62);
         }
 
         @media (max-width: 980px) {
             .hero,
-            .section,
-            .tracking-details {
+            .tracking-details,
+            .map-shell {
                 grid-template-columns: 1fr;
             }
 
             .hero {
                 min-height: auto;
                 gap: 14px;
-            }
-
-            .menu-list {
-                grid-template-columns: 1fr;
             }
 
             .map-header {
@@ -737,15 +591,14 @@
             .menu-card,
             .panel {
                 border-radius: 26px;
-                padding: 22px;
+                padding: 18px;
             }
 
             h1 {
                 font-size: clamp(3.2rem, 13vw, 4.8rem);
             }
 
-            .hero-stats,
-            .meta-grid {
+            .hero-stats {
                 grid-template-columns: 1fr;
             }
 
@@ -754,7 +607,7 @@
             }
 
             .map-panel {
-                padding: 22px;
+                padding: 18px;
             }
         }
     </style>
@@ -773,26 +626,14 @@
                 <div class="menu-dropdown" id="nav-menu">
                     <div class="menu-dropdown-header">
                         <strong>Menu Kopi Keliling</strong>
-                        <small>Jelajahi katalog, akun, dan lokasi gerobak.</small>
+                        <small>Akses login dan pelacakan gerobak aktif.</small>
                     </div>
                     <ul class="menu-items">
-                        <li>
-                            <a href="#menu">
-                                <strong>Katalog Menu Kopi</strong>
-                                <span>Lihat menu</span>
-                            </a>
-                        </li>
                         @guest
                             <li>
                                 <a href="{{ Route::has('login') ? route('login') : '#' }}">
                                     <strong>Login</strong>
                                     <span>Masuk akun</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{ Route::has('register') ? route('register') : '#' }}">
-                                    <strong>Register</strong>
-                                    <span>Buat akun</span>
                                 </a>
                             </li>
                         @else
@@ -816,12 +657,6 @@
                             </li>
                         @endguest
                         <li>
-                            <a href="#cerita">
-                                <strong>Tentang</strong>
-                                <span>Cerita brand</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="#lacak">
                                 <strong>Lokasi Gerobak Terdekat</strong>
                                 <span>Lacak sekarang</span>
@@ -834,185 +669,60 @@
 
         <section class="hero" id="beranda">
             <div class="hero-copy">
-                <span class="eyebrow">Coffee Cart Live Tracker</span>
+                <span class="eyebrow">Live Coffee Cart Tracker</span>
                 <h1>Kopi hangat yang bisa kamu kejar di peta.</h1>
                 <p class="lead">
-                    Landing page ini dibuat seperti website coffee shop, tetapi intinya tetap
-                    praktis: pelanggan bisa melihat gerobak kopi sedang berada di mana melalui
-                    Leaflet map yang terus diperbarui dari data Traccar Android yang dikirim ke Laravel.
+                    Halaman ini fokus untuk menunjukkan posisi gerobak aktif secara cepat.
+                    Data lokasi dikirim dari aplikasi Traccar di HP driver lalu langsung
+                    ditampilkan ke peta publik.
                 </p>
                 <div class="hero-actions">
                     <a href="#lacak" class="button primary">Lacak Gerobak Sekarang</a>
-                    <a href="#menu" class="button secondary">Lihat Menu Andalan</a>
                 </div>
                 <div class="hero-stats">
                     <div class="hero-stat">
-                        <span>Titik Tersimpan</span>
-                        <strong id="points-count">{{ count($locations) }}</strong>
-                    </div>
-                    <div class="hero-stat">
                         <span>Status</span>
-                        <strong>Gerobak Aktif</strong>
+                        <strong><span id="active-unit-count-hero">{{ count($activeUnits) }}</span> Gerobak Aktif</strong>
                     </div>
                     <div class="hero-stat">
-                        <span>Rasa</span>
-                        <strong>Espresso to Street</strong>
+                        <span>Update</span>
+                        <strong>Realtime GPS</strong>
                     </div>
                 </div>
             </div>
-
-            <aside class="hero-card">
-                <span class="eyebrow" style="background: rgba(255,255,255,0.12); color: #fff;">Realtime Update</span>
-                <h2>Temukan aroma kopi terdekat.</h2>
-                <p>
-                    Aplikasi Traccar Android mengirim posisi gerobak ke endpoint Laravel ini.
-                    Peta publik akan membaca data tersebut secara berkala, sehingga marker selalu
-                    menampilkan titik terbaru yang dikirim dari HP penjual.
-                </p>
-                <div id="status" class="status">Menunggu data lokasi terbaru dari Traccar.</div>
-                <ul class="feature-list">
-                    <li>Leaflet map untuk melihat posisi gerobak secara visual.</li>
-                    <li>Kompatibel dengan format JSON Traccar Client 9+ dan query/form OsmAnd.</li>
-                    <li>Riwayat titik lokasi untuk melihat jejak rute gerobak.</li>
-                </ul>
-            </aside>
-        </section>
-
-        <section class="section" id="cerita">
-            <article class="story-card">
-                <h3>Kopi Tracker</h3>
-                <p>
-                    Website ini dibuat untuk membantu pelanggan mengetahui posisi gerobak kopi
-                    secara lebih mudah dan cepat. Dengan adanya pelacakan lokasi, pembeli tidak
-                    perlu menebak-nebak gerobak sedang ada di mana.
-                </p>
-                <ul class="bean-list">
-                    <li><strong>Mudah ditemukan</strong><br>Pelanggan bisa langsung melihat lokasi gerobak tanpa harus bertanya lewat chat atau telepon.</li>
-                    <li><strong>Lebih efisien</strong><br>Penjual lebih mudah memberi informasi posisi terbaru kepada pelanggan secara realtime.</li>
-                    <li><strong>Siap dikembangkan</strong><br>Website ini bisa jadi dasar untuk fitur lanjutan seperti status jualan, menu, dan pemesanan.</li>
-                </ul>
-            </article>
-
-            <article class="menu-card" id="menu">
-                <h3>Alasan website ini dibuat.</h3>
-                <p>
-                    Kopi Tracker bukan hanya tampilan peta, tetapi juga jadi media informasi
-                    sederhana agar pelanggan dan penjual sama-sama terbantu saat gerobak
-                    berpindah tempat.
-                </p>
-                <ul class="menu-list">
-                    <li>
-                        <strong>Untuk pelanggan</strong>
-                        Pelanggan bisa membuka website lalu langsung melihat posisi gerobak kopi yang terbaru.
-                    </li>
-                    <li>
-                        <strong>Untuk penjual</strong>
-                        Penjual tidak perlu terus-menerus memberi update lokasi secara manual ke banyak orang.
-                    </li>
-                    <li>
-                        <strong>Untuk pengembangan</strong>
-                        Sistem ini bisa dikembangkan lagi menjadi dashboard usaha kopi keliling yang lebih lengkap.
-                    </li>
-                </ul>
-            </article>
         </section>
 
         <section class="tracking" id="lacak">
             <div class="panel map-panel">
-                <div class="map-header">
-                    <div class="map-header-copy">
-                        <span class="eyebrow">Leaflet Tracking Map</span>
-                        <h3>Lacak keberadaan gerobak kopi.</h3>
-                        <p>
-                            Setiap marker mewakili posisi terbaru dari satu gerobak aktif.
-                            Kamu bisa melihat berapa gerobak yang sedang online langsung dari peta ini.
-                        </p>
+                <div class="map-shell">
+                    <div class="map-overview">
+                        <div class="map-header">
+                            <div class="map-header-copy">
+                                <span class="eyebrow">Leaflet Tracking Map</span>
+                                <h3>Lacak keberadaan gerobak kopi.</h3>
+                                <p>
+                                    Setiap marker mewakili posisi terbaru dari satu gerobak aktif.
+                                    Kamu bisa melihat berapa gerobak yang sedang online langsung dari peta ini.
+                                </p>
+                            </div>
+                            <div class="live-pill"><span id="active-unit-count">{{ count($activeUnits) }}</span> Gerobak Aktif</div>
+                        </div>
                     </div>
-                    <div class="live-pill"><span id="active-unit-count">{{ count($activeUnits) }}</span> Gerobak Aktif</div>
-                </div>
-                <div class="map-stage">
-                    <div id="map"></div>
+                    <div class="map-stage">
+                        <div id="map"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="tracking-details">
-                <aside class="panel location-panel">
-                    <span class="eyebrow">Lokasi Terbaru</span>
-                    <h3>Sekarang gerobak ada di sini.</h3>
-                    <div class="meta-grid">
-                        <div class="meta-item">
-                            <span>Nama Gerobak</span>
-                            <strong id="current-unit">{{ $latestLocation['unit_name'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Driver Aktif</span>
-                            <strong id="current-driver">{{ $latestLocation['driver_name'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Device ID</span>
-                            <strong id="current-device">{{ $latestLocation['device_id'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Kode Unit</span>
-                            <strong id="current-code">{{ $latestLocation['unit_code'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Latitude</span>
-                            <strong id="current-lat">{{ $latestLocation['latitude'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Longitude</span>
-                            <strong id="current-lng">{{ $latestLocation['longitude'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Update Terakhir</span>
-                            <strong id="recorded-at">{{ $latestLocation['recorded_at'] ?? '-' }}</strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Baterai</span>
-                            <strong id="current-battery">
-                                {{ isset($latestLocation['battery_level']) ? $latestLocation['battery_level'].'%' : '-' }}
-                            </strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Akurasi</span>
-                            <strong id="current-accuracy">
-                                {{ isset($latestLocation['accuracy']) ? $latestLocation['accuracy'].' m' : '-' }}
-                            </strong>
-                        </div>
-                        <div class="meta-item">
-                            <span>Status Gerak</span>
-                            <strong id="current-moving">
-                                @if (array_key_exists('is_moving', $latestLocation ?? []))
-                                    {{ $latestLocation['is_moving'] ? 'Sedang bergerak' : 'Sedang diam' }}
-                                @else
-                                    -
-                                @endif
-                            </strong>
-                        </div>
-                    </div>
-                </aside>
-
                 <div class="tracking-secondary">
                     <aside class="panel history-panel">
-                        <span class="eyebrow">Riwayat Gerak</span>
-                        <h3>Jejak titik lokasi gerobak.</h3>
-                        <p>Daftar ini hanya menampilkan data lokasi yang berhasil dikirim dari Traccar.</p>
+                        <span class="eyebrow">Lokasi Tetap</span>
+                        <h3>Lokasi jualan terbaru tiap gerobak.</h3>
+                        <p>Panel ini hanya menampilkan posisi realtime paling baru dari setiap gerobak aktif.</p>
                         <ul id="history-list" class="history-list"></ul>
                     </aside>
 
-                    <aside class="panel endpoint-panel">
-                        <span class="eyebrow">URL Traccar</span>
-                        <h3>Alamat server untuk aplikasi Traccar.</h3>
-                        <p>Masukkan URL penuh ini ke field <strong>Server URL</strong> di aplikasi Traccar Android.</p>
-                        <div class="endpoint-box">
-                            {{ $traccarEndpoint }}
-                        </div>
-                        <p class="endpoint-note">
-                            Isi <strong>Device Identifier</strong> di Traccar dengan ID unik, misalnya
-                            <code>gerobak-kopi-01</code>.
-                        </p>
-                    </aside>
                 </div>
             </div>
         </section>
@@ -1032,7 +742,6 @@
             locations: @json($locations),
             activeUnits: @json($activeUnits),
             markers: [],
-            polyline: null,
             map: null,
         };
 
@@ -1105,49 +814,30 @@
             });
         });
 
-        function setStatus(message, type = 'info') {
-            const el = document.getElementById('status');
-            el.className = `status ${type}`;
-            el.textContent = message;
-        }
-
-        function updateSummary(location) {
-            document.getElementById('current-unit').textContent = location?.unit_name || '-';
-            document.getElementById('current-driver').textContent = location?.driver_name || '-';
-            document.getElementById('current-device').textContent = location?.device_id || '-';
-            document.getElementById('current-code').textContent = location?.unit_code || '-';
-            document.getElementById('current-lat').textContent = location ? location.latitude : '-';
-            document.getElementById('current-lng').textContent = location ? location.longitude : '-';
-            document.getElementById('recorded-at').textContent = location ? (location.recorded_at || 'Belum tersimpan') : '-';
-            document.getElementById('current-battery').textContent = location && location.battery_level !== null
-                ? `${location.battery_level}%`
-                : '-';
-            document.getElementById('current-accuracy').textContent = location && location.accuracy !== null
-                ? `${location.accuracy} m`
-                : '-';
-            document.getElementById('current-moving').textContent = location && location.is_moving !== null
-                ? (location.is_moving ? 'Sedang bergerak' : 'Sedang diam')
-                : '-';
-            document.getElementById('points-count').textContent = state.locations.length;
+        function updateSummary() {
             document.getElementById('active-unit-count').textContent = state.activeUnits.length;
+            document.getElementById('active-unit-count-hero').textContent = state.activeUnits.length;
         }
 
         function renderHistory() {
             const list = document.getElementById('history-list');
             list.innerHTML = '';
 
-            if (!state.locations.length) {
+            if (!state.activeUnits.length) {
                 const item = document.createElement('li');
-                item.textContent = 'Belum ada data lokasi tersimpan.';
+                item.textContent = 'Belum ada lokasi realtime yang masuk.';
                 list.appendChild(item);
                 return;
             }
 
-            [...state.locations].reverse().forEach((location) => {
+            [...state.activeUnits]
+                .sort((a, b) => (b.recorded_at || '').localeCompare(a.recorded_at || ''))
+                .forEach((location) => {
                 const item = document.createElement('li');
                 item.innerHTML = `
                     <strong>${location.unit_name || location.device_id || 'Traccar Device'}</strong>
                     <div class="history-coords">${location.driver_name ? `Driver: ${location.driver_name}` : 'Driver belum di-assign'}</div>
+                    <div class="history-coords">${location.unit_code ? `Kode: ${location.unit_code}` : 'Kode unit belum tersedia'}</div>
                     <div class="history-coords">${location.latitude}, ${location.longitude}</div>
                     <small>${location.recorded_at ?? 'Belum tersimpan ke database'}</small>
                 `;
@@ -1155,27 +845,58 @@
             });
         }
 
+        function buildDisplayPositions(locations) {
+            const groups = new Map();
+
+            locations.forEach((location) => {
+                const key = `${location.latitude},${location.longitude}`;
+
+                if (!groups.has(key)) {
+                    groups.set(key, []);
+                }
+
+                groups.get(key).push(location);
+            });
+
+            return locations.map((location) => {
+                const key = `${location.latitude},${location.longitude}`;
+                const group = groups.get(key) || [location];
+                const index = group.indexOf(location);
+
+                if (group.length === 1 || index === -1) {
+                    return {
+                        ...location,
+                        displayLatitude: location.latitude,
+                        displayLongitude: location.longitude,
+                    };
+                }
+
+                const angle = (Math.PI * 2 * index) / group.length;
+                const distance = 0.000045;
+
+                return {
+                    ...location,
+                    displayLatitude: location.latitude + Math.sin(angle) * distance,
+                    displayLongitude: location.longitude + Math.cos(angle) * distance,
+                };
+            });
+        }
+
         function renderMap() {
-            const latLngs = state.activeUnits.map((location) => [location.latitude, location.longitude]);
+            const displayLocations = buildDisplayPositions(state.activeUnits);
+            const latLngs = displayLocations.map((location) => [location.displayLatitude, location.displayLongitude]);
 
             state.markers.forEach((marker) => marker.remove());
             state.markers = [];
 
-            if (state.polyline) {
-                state.polyline.remove();
-                state.polyline = null;
-            }
-
             if (!latLngs.length) {
                 renderHistory();
-                updateSummary(null);
+                updateSummary();
                 return;
             }
 
-            const latest = state.activeUnits[state.activeUnits.length - 1] || state.locations[state.locations.length - 1] || null;
-
-            state.activeUnits.forEach((unitLocation) => {
-                const marker = L.marker([unitLocation.latitude, unitLocation.longitude], {
+            displayLocations.forEach((unitLocation) => {
+                const marker = L.marker([unitLocation.displayLatitude, unitLocation.displayLongitude], {
                     icon: coffeeIcon,
                 }).addTo(map).bindPopup(`
                     <strong>${unitLocation.unit_name || 'Gerobak Kopi'}</strong><br>
@@ -1190,14 +911,6 @@
                 state.markers.push(marker);
             });
 
-            if (latLngs.length) {
-                state.polyline = L.polyline(latLngs, {
-                    color: '#6a412d',
-                    weight: 4,
-                    opacity: 0.88,
-                }).addTo(map);
-            }
-
             if (latLngs.length === 1) {
                 map.setView(latLngs[0], 17);
             } else if (latLngs.length > 1) {
@@ -1209,7 +922,7 @@
             });
 
             renderHistory();
-            updateSummary(latest);
+            updateSummary();
         }
 
         async function refreshLocations() {
@@ -1228,18 +941,12 @@
             state.locations = payload.locations || [];
             state.activeUnits = payload.active_units || [];
             renderMap();
-
-            if (payload.latest) {
-                setStatus('Peta berhasil diperbarui dari data Traccar terbaru.', 'success');
-            } else {
-                setStatus('Belum ada data masuk dari Traccar. Pastikan aplikasi sudah mengirim lokasi.', 'info');
-            }
         }
 
         renderMap();
-        refreshLocations().catch((error) => setStatus(error.message, 'error'));
+        refreshLocations().catch(() => null);
         setInterval(() => {
-            refreshLocations().catch((error) => setStatus(error.message, 'error'));
+            refreshLocations().catch(() => null);
         }, 8000);
     </script>
 </body>

@@ -37,6 +37,12 @@
             padding: 24px;
         }
 
+        .action-card {
+            display: grid;
+            gap: 18px;
+            align-content: start;
+        }
+
         .eyebrow {
             display: block;
             margin-bottom: 10px;
@@ -118,6 +124,57 @@
         .form-stack {
             display: grid;
             gap: 12px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(15, 23, 42, 0.38);
+            backdrop-filter: blur(6px);
+            z-index: 60;
+        }
+
+        .modal-overlay.is-open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: min(560px, 100%);
+            max-height: min(88vh, 820px);
+            overflow: auto;
+            padding: 24px;
+            border-radius: 22px;
+            background: #fff;
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 30px 70px rgba(15, 23, 42, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.7rem;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            background: #fff;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 1.2rem;
         }
 
         .dashboard-input,
@@ -281,59 +338,39 @@
         </section>
 
         <section class="owner-grid-3">
-            <article class="panel-card section-card form-card">
+            <article class="panel-card section-card action-card">
                 <span class="eyebrow">Data Unit</span>
                 <h3>Tambah gerobak</h3>
                 <p class="section-subtext">Buat master gerobak baru. GPS akan dibaca dari HP driver yang sedang ditugaskan.</p>
-                <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
-                    @csrf
-                    <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ old('name') }}">
-                    <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}">
-                    <select class="dashboard-select" name="status">
-                        <option value="ready">Siap Operasi</option>
-                        <option value="maintenance">Maintenance</option>
-                        <option value="inactive">Nonaktif</option>
-                    </select>
-                    <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ old('notes') }}</textarea>
-                    <button type="submit" class="primary-button">Simpan Gerobak</button>
-                </form>
+                <button
+                    type="button"
+                    class="primary-button"
+                    data-open-modal="unit-form-modal"
+                    aria-expanded="{{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'true' : 'false' }}"
+                >
+                    Tambah Gerobak
+                </button>
             </article>
 
-            <article class="panel-card section-card form-card">
+            <article class="panel-card section-card action-card">
                 <span class="eyebrow">Data Driver</span>
                 <h3>Buat akun driver</h3>
                 <p class="section-subtext">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai `device_id` miliknya.</p>
-                <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
-                    @csrf
-                    <input class="dashboard-input" type="text" name="name" placeholder="Nama driver">
-                    <input class="dashboard-input" type="email" name="email" placeholder="Email driver">
-                    <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID HP driver">
-                    <input class="dashboard-input" type="password" name="password" placeholder="Password minimal 8 karakter">
-                    <button type="submit" class="primary-button">Buat Akun Driver</button>
-                </form>
+                <button
+                    type="button"
+                    class="primary-button"
+                    data-open-modal="driver-form-modal"
+                    aria-expanded="{{ $errors->hasAny(['email', 'device_id', 'password']) ? 'true' : 'false' }}"
+                >
+                    Buat Akun Driver
+                </button>
             </article>
 
-            <article class="panel-card section-card form-card">
+            <article class="panel-card section-card action-card">
                 <span class="eyebrow">Assignment</span>
                 <h3>Assign driver ke gerobak</h3>
                 <p class="section-subtext">Satu driver aktif untuk satu gerobak aktif. Assignment lama akan ditutup otomatis.</p>
-                <form method="POST" action="{{ route('dashboard.assignments.store') }}" class="form-stack">
-                    @csrf
-                    <select class="dashboard-select" name="driver_id">
-                        <option value="">Pilih driver</option>
-                        @foreach ($drivers as $driver)
-                            <option value="{{ $driver->id }}">{{ $driver->name }} - {{ $driver->email }}</option>
-                        @endforeach
-                    </select>
-                    <select class="dashboard-select" name="unit_id">
-                        <option value="">Pilih gerobak</option>
-                        @foreach ($units as $unit)
-                            <option value="{{ $unit['id'] }}">{{ $unit['name'] }} ({{ $unit['code'] }})</option>
-                        @endforeach
-                    </select>
-                    <textarea class="dashboard-textarea" name="notes" placeholder="Catatan assignment"></textarea>
-                    <button type="submit" class="success-button">Assign Sekarang</button>
-                </form>
+                <a href="{{ route('dashboard.assignments.index') }}" class="success-button">Buka Halaman Assignment</a>
             </article>
         </section>
 
@@ -377,6 +414,7 @@
                                 <form method="POST" action="{{ route('dashboard.assignments.finish', $unit['active_assignment']) }}" style="margin-top: 14px;">
                                     @csrf
                                     @method('PATCH')
+                                    <input type="hidden" name="redirect_to" value="dashboard">
                                     <button type="submit" class="danger-button">Selesaikan Assignment</button>
                                 </form>
                             @endif
@@ -388,6 +426,20 @@
             </article>
 
             <div style="display: grid; gap: 20px;">
+                <article class="panel-card mini-card">
+                    <span class="eyebrow">URL Traccar</span>
+                    <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Alamat server aplikasi Traccar</h3>
+                    <p class="list-meta" style="margin: 0 0 14px;">
+                        Masukkan URL ini ke field <strong>Server URL</strong> di aplikasi Traccar Android driver.
+                    </p>
+                    <div style="padding: 16px 18px; border-radius: 16px; border: 1px solid var(--panel-border); background: #f8fafc; font-weight: 700; word-break: break-all;">
+                        {{ $traccarEndpoint }}
+                    </div>
+                    <p class="list-meta" style="margin: 14px 0 0;">
+                        Isi <strong>Device Identifier</strong> di Traccar dengan <strong>device_id</strong> milik driver.
+                    </p>
+                </article>
+
                 <article class="panel-card mini-card">
                     <span class="eyebrow">Assignment Aktif</span>
                     <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Siapa bawa gerobak mana</h3>
@@ -431,4 +483,99 @@
             </div>
         </section>
     </div>
+
+    <div id="unit-form-modal" class="modal-overlay {{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'is-open' : '' }}" aria-hidden="{{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'false' : 'true' }}">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <span class="eyebrow">Data Unit</span>
+                    <h3>Tambah gerobak</h3>
+                    <p class="section-subtext" style="margin: 10px 0 0;">Buat master gerobak baru tanpa mengganggu layout dashboard.</p>
+                </div>
+                <button type="button" class="modal-close" data-close-modal="unit-form-modal" aria-label="Tutup">×</button>
+            </div>
+            <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
+                @csrf
+                <input type="hidden" name="redirect_to" value="dashboard">
+                <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ old('name') }}">
+                <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}">
+                <select class="dashboard-select" name="status">
+                    <option value="ready">Siap Operasi</option>
+                    <option value="maintenance">Maintenance</option>
+                    <option value="inactive">Nonaktif</option>
+                </select>
+                <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ old('notes') }}</textarea>
+                <button type="submit" class="primary-button">Simpan Gerobak</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="driver-form-modal" class="modal-overlay {{ $errors->hasAny(['email', 'device_id', 'password']) ? 'is-open' : '' }}" aria-hidden="{{ $errors->hasAny(['email', 'device_id', 'password']) ? 'false' : 'true' }}">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div>
+                    <span class="eyebrow">Data Driver</span>
+                    <h3>Buat akun driver</h3>
+                    <p class="section-subtext" style="margin: 10px 0 0;">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai `device_id` miliknya.</p>
+                </div>
+                <button type="button" class="modal-close" data-close-modal="driver-form-modal" aria-label="Tutup">×</button>
+            </div>
+            <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
+                @csrf
+                <input type="hidden" name="redirect_to" value="dashboard">
+                <input class="dashboard-input" type="text" name="name" placeholder="Nama driver" value="{{ old('name') }}">
+                <input class="dashboard-input" type="email" name="email" placeholder="Email driver" value="{{ old('email') }}">
+                <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID HP driver" value="{{ old('device_id') }}">
+                <input class="dashboard-input" type="password" name="password" placeholder="Password minimal 8 karakter">
+                <button type="submit" class="primary-button">Simpan Driver</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modalOverlays = document.querySelectorAll('.modal-overlay');
+
+        function setModalState(modal, isOpen) {
+            if (!modal) {
+                return;
+            }
+
+            modal.classList.toggle('is-open', isOpen);
+            modal.setAttribute('aria-hidden', String(!isOpen));
+            document.body.style.overflow = document.querySelector('.modal-overlay.is-open') ? 'hidden' : '';
+        }
+
+        document.querySelectorAll('[data-open-modal]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const modal = document.getElementById(button.dataset.openModal);
+                setModalState(modal, true);
+                button.setAttribute('aria-expanded', 'true');
+            });
+        });
+
+        document.querySelectorAll('[data-close-modal]').forEach((button) => {
+            button.addEventListener('click', () => {
+                const modal = document.getElementById(button.dataset.closeModal);
+                setModalState(modal, false);
+            });
+        });
+
+        modalOverlays.forEach((modal) => {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    setModalState(modal, false);
+                }
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                modalOverlays.forEach((modal) => setModalState(modal, false));
+            }
+        });
+
+        if (document.querySelector('.modal-overlay.is-open')) {
+            document.body.style.overflow = 'hidden';
+        }
+    </script>
 </x-app-layout>

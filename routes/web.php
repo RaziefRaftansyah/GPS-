@@ -27,6 +27,10 @@ Route::post('/dashboard/assignments', [DashboardController::class, 'assignDriver
     ->middleware(['auth', 'verified'])
     ->name('dashboard.assignments.store');
 
+Route::get('/dashboard/assignments', [DashboardController::class, 'assignments'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.assignments.index');
+
 Route::patch('/dashboard/assignments/{assignment}/finish', [DashboardController::class, 'finishAssignment'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.assignments.finish');

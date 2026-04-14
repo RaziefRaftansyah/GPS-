@@ -206,7 +206,9 @@ class LocationController extends Controller
             'is_moving' => $location->is_moving,
             'activity' => $location->activity,
             'event_type' => $location->event_type,
-            'recorded_at' => optional($location->recorded_at)->format('Y-m-d H:i:s'),
+            'recorded_at' => optional($location->recorded_at)
+                ?->timezone(config('app.timezone'))
+                ->format('Y-m-d H:i:s'),
         ];
     }
 
@@ -330,12 +332,13 @@ class LocationController extends Controller
         if (is_numeric($timestamp)) {
             $value = (int) $timestamp;
 
-            return strlen((string) abs($value)) > 10
+            return (strlen((string) abs($value)) > 10
                 ? Carbon::createFromTimestampMs($value)
-                : Carbon::createFromTimestamp($value);
+                : Carbon::createFromTimestamp($value))
+                ->timezone(config('app.timezone'));
         }
 
-        return Carbon::parse((string) $timestamp);
+        return Carbon::parse((string) $timestamp)->timezone(config('app.timezone'));
     }
 
     protected function normalizeBatteryLevel(mixed $level): ?float

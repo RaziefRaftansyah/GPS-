@@ -395,11 +395,7 @@
                     </div>
 
                     <div class="coffee-actions">
-                        <div class="coffee-actions-links">
-                            @if (Route::has('register'))
-                                <a class="coffee-link" href="{{ route('register') }}">Sign Up</a>
-                            @endif
-                        </div>
+                        <div class="coffee-actions-links"></div>
 
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                             <a class="coffee-back-home" href="{{ route('tracker.index') }}">Kembali ke Beranda</a>

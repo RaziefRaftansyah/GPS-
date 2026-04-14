@@ -93,6 +93,7 @@ class DashboardController extends Controller
             'activeSessionCount' => $activeSessions->count(),
             'latestLoginAt' => $activeUsers->first()['last_seen'] ?? null,
             'adminEmail' => $this->adminEmail(),
+            'traccarEndpoint' => url('/api/location'),
             'units' => $units,
             'unitCount' => $units->count(),
             'assignedUnitCount' => $units->where('active_assignment', '!=', null)->count(),
@@ -204,6 +205,37 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function assignments(Request $request): View
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $drivers = User::query()
+            ->where('role', 'driver')
+            ->orderBy('name')
+            ->with('activeDriverAssignment')
+            ->get();
+
+        $units = Unit::query()
+            ->orderBy('name')
+            ->get()
+            ->map(fn (Unit $unit): array => $this->transformUnitForDashboard($unit));
+
+        $activeAssignments = DriverUnitAssignment::query()
+            ->with(['driver', 'unit', 'assignedBy'])
+            ->where('status', 'active')
+            ->whereNull('ended_at')
+            ->latest('assigned_at')
+            ->get();
+
+        return view('dashboard-assignments', [
+            'drivers' => $drivers,
+            'units' => $units,
+            'activeAssignments' => $activeAssignments,
+        ]);
+    }
+
     public function storeDriver(Request $request): RedirectResponse
     {
         $owner = $request->user();
@@ -229,9 +261,7 @@ class DashboardController extends Controller
             'is_active' => true,
         ]);
 
-        return redirect()
-            ->route('dashboard')
-            ->with('dashboard_status', 'Akun driver baru berhasil dibuat.');
+        return $this->redirectWithDashboardStatus($request, 'Akun driver baru berhasil dibuat.');
     }
 
     public function storeUnit(Request $request): RedirectResponse
@@ -249,9 +279,7 @@ class DashboardController extends Controller
 
         Unit::query()->create($validated);
 
-        return redirect()
-            ->route('dashboard')
-            ->with('dashboard_status', 'Gerobak baru berhasil ditambahkan.');
+        return $this->redirectWithDashboardStatus($request, 'Gerobak baru berhasil ditambahkan.');
     }
 
     public function assignDriver(Request $request): RedirectResponse
@@ -272,9 +300,7 @@ class DashboardController extends Controller
         $unit = Unit::query()->findOrFail($validated['unit_id']);
 
         if (! $driver->isDriver()) {
-            return redirect()
-                ->route('dashboard')
-                ->with('dashboard_status', 'User yang dipilih bukan akun driver.');
+            return $this->redirectWithDashboardStatus($request, 'User yang dipilih bukan akun driver.');
         }
 
         $now = now();
@@ -300,9 +326,10 @@ class DashboardController extends Controller
             'notes' => $validated['notes'] ?? null,
         ]);
 
-        return redirect()
-            ->route('dashboard')
-            ->with('dashboard_status', "{$driver->name} sekarang ditugaskan ke {$unit->name}.");
+        return $this->redirectWithDashboardStatus(
+            $request,
+            "{$driver->name} sekarang ditugaskan ke {$unit->name}."
+        );
     }
 
     public function finishAssignment(Request $request, DriverUnitAssignment $assignment): RedirectResponse
@@ -318,9 +345,7 @@ class DashboardController extends Controller
             ]);
         }
 
-        return redirect()
-            ->route('dashboard')
-            ->with('dashboard_status', 'Assignment driver berhasil diselesaikan.');
+        return $this->redirectWithDashboardStatus($request, 'Assignment driver berhasil diselesaikan.');
     }
 
     private function adminEmail(): string
@@ -386,5 +411,20 @@ class DashboardController extends Controller
             'active_assignment' => $activeAssignment,
             'latest_location' => $latestLocation,
         ];
+    }
+
+    private function redirectWithDashboardStatus(Request $request, string $message): RedirectResponse
+    {
+        $target = $request->input('redirect_to');
+
+        if (in_array($target, ['dashboard', 'dashboard.assignments.index'], true)) {
+            return redirect()
+                ->route($target)
+                ->with('dashboard_status', $message);
+        }
+
+        return redirect()
+            ->route('dashboard')
+            ->with('dashboard_status', $message);
     }
 }

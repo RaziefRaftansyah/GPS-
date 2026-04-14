@@ -33,6 +33,14 @@
 
         @if (! Auth::user()->isDriver())
             <a
+                href="{{ route('dashboard.assignments.index') }}"
+                style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 14px; text-decoration: none; {{ request()->routeIs('dashboard.assignments.*') ? 'background: rgba(37, 99, 235, 0.18); color: #fff;' : 'background: transparent; color: rgba(255,255,255,0.82);' }}"
+            >
+                <span>Assignment</span>
+                <span>›</span>
+            </a>
+
+            <a
                 href="{{ route('dashboard.traccar') }}"
                 style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 14px; text-decoration: none; {{ request()->routeIs('dashboard.traccar') ? 'background: rgba(37, 99, 235, 0.18); color: #fff;' : 'background: transparent; color: rgba(255,255,255,0.82);' }}"
             >
