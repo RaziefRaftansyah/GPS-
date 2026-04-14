@@ -35,18 +35,6 @@ Route::get('/dashboard/traccar', [DashboardController::class, 'traccar'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.traccar');
 
-Route::post('/dashboard/traccar/locations', [DashboardController::class, 'storeTraccarLocation'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.traccar.locations.store');
-
-Route::patch('/dashboard/traccar/locations/{location}', [DashboardController::class, 'updateTraccarLocation'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.traccar.locations.update');
-
-Route::delete('/dashboard/traccar/locations/{location}', [DashboardController::class, 'destroyTraccarLocation'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.traccar.locations.destroy');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

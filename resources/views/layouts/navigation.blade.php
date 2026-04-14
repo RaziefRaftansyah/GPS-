@@ -31,7 +31,7 @@
             <span>›</span>
         </a>
 
-        @if (Auth::user()->isOwner() || Auth::user()->email === (string) env('ADMIN_EMAIL', 'admin@kopikeliling.com'))
+        @if (! Auth::user()->isDriver())
             <a
                 href="{{ route('dashboard.traccar') }}"
                 style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 14px; text-decoration: none; {{ request()->routeIs('dashboard.traccar') ? 'background: rgba(37, 99, 235, 0.18); color: #fff;' : 'background: transparent; color: rgba(255,255,255,0.82);' }}"

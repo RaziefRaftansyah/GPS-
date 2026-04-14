@@ -354,12 +354,6 @@
 
     <div style="padding: 32px 0 48px; background: linear-gradient(180deg, #f8f2e8 0%, #f3f4f6 100%); min-height: 100vh;">
         <div style="max-width: 1120px; margin: 0 auto; padding: 0 16px;">
-            @if (session('profile_notice'))
-                <div style="margin-bottom: 18px; padding: 16px 18px; border-radius: 18px; background: rgba(159, 47, 32, 0.08); color: #9f2f20; border: 1px solid rgba(159, 47, 32, 0.14); font-weight: 700;">
-                    {{ session('profile_notice') }}
-                </div>
-            @endif
-
             <section class="profile-focus-layout">
                 <article class="profile-focus-card">
                     <p style="margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a6b4d;">
