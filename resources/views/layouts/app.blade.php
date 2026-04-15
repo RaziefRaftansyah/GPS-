@@ -18,20 +18,33 @@
         <style>
             :root {
                 color-scheme: light;
-                --app-bg: #f3f6fb;
-                --sidebar-bg: #111827;
-                --sidebar-soft: #1f2937;
-                --sidebar-border: rgba(255, 255, 255, 0.08);
-                --text-main: #0f172a;
-                --text-soft: #64748b;
-                --panel: #ffffff;
-                --panel-border: #e2e8f0;
-                --accent: #2563eb;
-                --accent-soft: rgba(37, 99, 235, 0.12);
-                --success: #16a34a;
-                --danger: #dc2626;
-                --shadow-lg: 0 20px 45px rgba(15, 23, 42, 0.08);
-                --shadow-sm: 0 10px 25px rgba(15, 23, 42, 0.05);
+                --cream: #f7f0e3;
+                --latte: #e8d9c5;
+                --espresso: #3b2418;
+                --mocha: #6a412d;
+                --caramel: #b56a3b;
+                --foam: rgba(255, 249, 241, 0.84);
+                --leaf: #2f6b55;
+                --line: rgba(76, 48, 33, 0.14);
+                --app-bg:
+                    radial-gradient(circle at top left, rgba(181, 106, 59, 0.24), transparent 24%),
+                    radial-gradient(circle at bottom right, rgba(47, 107, 85, 0.12), transparent 22%),
+                    linear-gradient(145deg, #f2e6d5 0%, #f7f0e3 45%, #efe6d7 100%);
+                --sidebar-bg: linear-gradient(180deg, #6a412d 0%, #8a5536 52%, #b56a3b 100%);
+                --sidebar-soft: rgba(255, 249, 241, 0.12);
+                --sidebar-border: rgba(255, 249, 241, 0.18);
+                --text-main: var(--espresso);
+                --text-soft: rgba(59, 36, 24, 0.66);
+                --panel: rgba(255, 252, 247, 0.94);
+                --panel-alt: rgba(255, 249, 241, 0.82);
+                --panel-border: var(--line);
+                --accent: #2d63e2;
+                --accent-soft: rgba(45, 99, 226, 0.12);
+                --success: var(--leaf);
+                --danger: #9f2f20;
+                --shadow-lg: 0 24px 80px rgba(59, 36, 24, 0.14);
+                --shadow-sm: 0 16px 32px rgba(59, 36, 24, 0.1);
+                --shell-radius: 38px;
             }
 
             * {
@@ -43,48 +56,77 @@
                 font-family: Figtree, sans-serif;
                 background: var(--app-bg);
                 color: var(--text-main);
+                min-height: 100vh;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                background:
+                    radial-gradient(circle at 20% 18%, rgba(255, 255, 255, 0.42), transparent 18%),
+                    radial-gradient(circle at 82% 10%, rgba(181, 106, 59, 0.12), transparent 16%),
+                    radial-gradient(circle at 76% 78%, rgba(47, 107, 85, 0.07), transparent 18%);
+                pointer-events: none;
             }
 
             .dashboard-shell {
-                min-height: 100vh;
+                width: min(1520px, calc(100vw - 48px));
+                margin: 32px auto;
                 display: grid;
-                grid-template-columns: 280px minmax(0, 1fr);
+                grid-template-columns: 286px minmax(0, 1fr);
+                background: rgba(255, 250, 242, 0.78);
+                border-radius: var(--shell-radius);
+                overflow: hidden;
+                box-shadow: var(--shadow-lg);
+                min-height: calc(100vh - 64px);
+                border: 1px solid var(--panel-border);
+                position: relative;
+                z-index: 1;
             }
 
             .dashboard-main {
                 min-width: 0;
                 display: flex;
                 flex-direction: column;
+                background: rgba(255, 252, 247, 0.92);
             }
 
             .dashboard-topbar {
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                gap: 16px;
-                padding: 28px 32px 0;
+                gap: 18px;
+                padding: 26px 34px 0;
+            }
+
+            .dashboard-topbar-left,
+            .dashboard-topbar-right {
+                display: flex;
+                align-items: center;
+                gap: 14px;
             }
 
             .dashboard-header-card {
                 width: 100%;
-                padding: 24px 28px;
+                padding: 18px 34px 24px;
                 border-bottom: 1px solid var(--panel-border);
-                background: rgba(255, 255, 255, 0.8);
-                backdrop-filter: blur(14px);
+                background: rgba(255, 250, 242, 0.76);
+                backdrop-filter: blur(18px);
             }
 
             .dashboard-content {
                 flex: 1;
-                padding: 24px 32px 32px;
+                padding: 22px 34px 34px;
             }
 
             .dashboard-back {
                 display: inline-flex;
                 align-items: center;
                 gap: 10px;
-                padding: 10px 16px;
-                border-radius: 12px;
-                background: #fff;
+                padding: 12px 18px;
+                border-radius: 999px;
+                background: var(--panel);
                 border: 1px solid var(--panel-border);
                 color: var(--text-main);
                 text-decoration: none;
@@ -92,9 +134,88 @@
                 box-shadow: var(--shadow-sm);
             }
 
+            .dashboard-user-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 12px 10px 18px;
+                border-radius: 999px;
+                border: 1px solid var(--panel-border);
+                background: var(--panel);
+                box-shadow: var(--shadow-sm);
+            }
+
+            .dashboard-user-avatar {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                background: linear-gradient(135deg, var(--mocha) 0%, var(--caramel) 100%);
+                color: #fff;
+                font-weight: 700;
+            }
+
+            .dashboard-user-meta strong,
+            .dashboard-user-meta span {
+                display: block;
+            }
+
+            .dashboard-user-meta span {
+                margin-top: 4px;
+                color: var(--text-soft);
+                font-size: 0.84rem;
+            }
+
+            .dashboard-menu-toggle {
+                display: none;
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                border: 1px solid var(--panel-border);
+                background: var(--panel);
+                color: var(--text-main);
+                box-shadow: var(--shadow-sm);
+                cursor: pointer;
+                padding: 0;
+            }
+
+            .dashboard-menu-toggle span,
+            .dashboard-menu-toggle span::before,
+            .dashboard-menu-toggle span::after {
+                display: block;
+                width: 18px;
+                height: 2px;
+                border-radius: 999px;
+                background: currentColor;
+                margin: 0 auto;
+                content: "";
+                transition: transform 0.2s ease, opacity 0.2s ease;
+            }
+
+            .dashboard-menu-toggle span {
+                position: relative;
+            }
+
+            .dashboard-menu-toggle span::before {
+                position: absolute;
+                top: -6px;
+                left: 0;
+            }
+
+            .dashboard-menu-toggle span::after {
+                position: absolute;
+                top: 6px;
+                left: 0;
+            }
+
             @media (max-width: 1024px) {
                 .dashboard-shell {
                     grid-template-columns: 1fr;
+                    width: min(100vw - 24px, 100%);
+                    margin: 12px auto;
+                    min-height: calc(100vh - 24px);
+                    border-radius: 28px;
                 }
 
                 .dashboard-topbar,
@@ -107,6 +228,39 @@
                     padding-left: 18px;
                     padding-right: 18px;
                 }
+
+                .dashboard-topbar {
+                    padding-top: 18px;
+                }
+
+                .dashboard-topbar-left,
+                .dashboard-topbar-right {
+                    min-width: 0;
+                }
+
+                .dashboard-back {
+                    min-width: 0;
+                }
+
+                .dashboard-back span:last-child {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                }
+
+                .dashboard-menu-toggle {
+                    display: inline-grid;
+                    place-items: center;
+                    flex-shrink: 0;
+                }
+
+                .dashboard-user-chip {
+                    padding-left: 12px;
+                }
+
+                .dashboard-user-meta {
+                    display: none;
+                }
             }
         </style>
     </head>
@@ -116,10 +270,28 @@
 
             <div class="dashboard-main">
                 <div class="dashboard-topbar">
-                    <a href="{{ route('tracker.index') }}" class="dashboard-back">
-                        <span>←</span>
-                        <span>Kembali ke Peta</span>
-                    </a>
+                    <div class="dashboard-topbar-left">
+                        <button type="button" class="dashboard-menu-toggle" data-sidebar-toggle aria-label="Buka navigasi" aria-expanded="false">
+                            <span></span>
+                        </button>
+
+                        <a href="{{ route('tracker.index') }}" class="dashboard-back">
+                            <span>←</span>
+                            <span>Kembali ke Peta</span>
+                        </a>
+                    </div>
+
+                    <div class="dashboard-topbar-right">
+                        <div class="dashboard-user-chip">
+                            <div class="dashboard-user-meta">
+                                <strong>{{ Auth::user()->name }}</strong>
+                                <span>{{ Auth::user()->isDriver() ? 'Driver aktif' : 'Owner aktif' }}</span>
+                            </div>
+                            <div class="dashboard-user-avatar">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 @isset($header)
@@ -133,5 +305,45 @@
                 </main>
             </div>
         </div>
+
+        <script>
+            const sidebarElement = document.querySelector('[data-mobile-sidebar]');
+            const sidebarOverlay = document.querySelector('[data-sidebar-overlay]');
+            const sidebarToggleButtons = document.querySelectorAll('[data-sidebar-toggle]');
+            const sidebarCloseButtons = document.querySelectorAll('[data-sidebar-close]');
+
+            function setSidebarState(isOpen) {
+                if (!sidebarElement || !sidebarOverlay) {
+                    return;
+                }
+
+                sidebarElement.classList.toggle('is-open', isOpen);
+                sidebarOverlay.classList.toggle('is-open', isOpen);
+                document.body.style.overflow = isOpen ? 'hidden' : '';
+
+                sidebarToggleButtons.forEach((button) => {
+                    button.setAttribute('aria-expanded', String(isOpen));
+                });
+            }
+
+            sidebarToggleButtons.forEach((button) => {
+                button.addEventListener('click', () => {
+                    const shouldOpen = !sidebarElement?.classList.contains('is-open');
+                    setSidebarState(shouldOpen);
+                });
+            });
+
+            sidebarCloseButtons.forEach((button) => {
+                button.addEventListener('click', () => setSidebarState(false));
+            });
+
+            sidebarOverlay?.addEventListener('click', () => setSidebarState(false));
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    setSidebarState(false);
+                }
+            });
+        </script>
     </body>
 </html>

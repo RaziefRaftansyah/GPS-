@@ -2,14 +2,14 @@
     <style>
         .owner-dashboard {
             display: grid;
-            gap: 24px;
+            gap: 22px;
         }
 
         .owner-grid-4,
         .owner-grid-3,
         .owner-grid-main {
             display: grid;
-            gap: 20px;
+            gap: 18px;
         }
 
         .owner-grid-4 {
@@ -21,13 +21,14 @@
         }
 
         .owner-grid-main {
-            grid-template-columns: minmax(0, 1.45fr) minmax(320px, 0.85fr);
+            grid-template-columns: minmax(0, 1.38fr) minmax(320px, 0.86fr);
+            align-items: start;
         }
 
         .panel-card {
             background: var(--panel);
             border: 1px solid var(--panel-border);
-            border-radius: 20px;
+            border-radius: 26px;
             box-shadow: var(--shadow-sm);
         }
 
@@ -37,26 +38,16 @@
             padding: 24px;
         }
 
-        .action-card {
-            display: grid;
-            gap: 18px;
-            align-content: start;
-        }
-
-        .eyebrow {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--text-soft);
-            font-size: 0.76rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 700;
+        .metric-card {
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
         }
 
         .metric-card strong {
             display: block;
             font-size: 2.2rem;
             line-height: 1;
+            margin-top: 10px;
+            color: var(--espresso);
         }
 
         .metric-card p,
@@ -64,7 +55,26 @@
         .unit-meta,
         .list-meta {
             color: var(--text-soft);
-            line-height: 1.6;
+            line-height: 1.65;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(106, 65, 45, 0.7);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            font-weight: 700;
+        }
+
+        .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--caramel);
         }
 
         .section-heading {
@@ -78,8 +88,9 @@
 
         .section-heading h3,
         .form-card h3 {
-            margin: 0;
-            font-size: 1.6rem;
+            margin: 8px 0 0;
+            font-size: 1.55rem;
+            color: var(--espresso);
         }
 
         .section-button,
@@ -92,33 +103,52 @@
             justify-content: center;
             gap: 10px;
             border: 0;
-            border-radius: 12px;
-            padding: 12px 16px;
+            border-radius: 999px;
+            padding: 12px 18px;
             font-weight: 700;
             cursor: pointer;
             text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .section-button:hover,
+        .primary-button:hover,
+        .success-button:hover,
+        .ghost-button:hover,
+        .danger-button:hover {
+            transform: translateY(-1px);
         }
 
         .section-button,
         .ghost-button {
-            background: #fff;
-            color: var(--text-main);
-            border: 1px solid var(--panel-border);
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--accent);
+            border: 1px solid rgba(45, 99, 226, 0.18);
+            box-shadow: 0 12px 28px rgba(59, 36, 24, 0.08);
         }
 
         .primary-button {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--mocha) 0%, var(--caramel) 100%);
             color: #fff;
+            box-shadow: 0 16px 28px rgba(106, 65, 45, 0.24);
         }
 
         .success-button {
-            background: var(--success);
+            background: linear-gradient(135deg, #2f6b55 0%, #4d8b73 100%);
             color: #fff;
+            box-shadow: 0 16px 28px rgba(47, 107, 85, 0.24);
         }
 
         .danger-button {
-            background: rgba(220, 38, 38, 0.12);
+            background: rgba(239, 91, 122, 0.12);
             color: var(--danger);
+        }
+
+        .action-card {
+            display: grid;
+            gap: 16px;
+            align-content: start;
+            background: linear-gradient(180deg, #ffffff 0%, #fafcff 100%);
         }
 
         .form-stack {
@@ -126,67 +156,16 @@
             gap: 12px;
         }
 
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            padding: 24px;
-            background: rgba(15, 23, 42, 0.38);
-            backdrop-filter: blur(6px);
-            z-index: 60;
-        }
-
-        .modal-overlay.is-open {
-            display: flex;
-        }
-
-        .modal-card {
-            width: min(560px, 100%);
-            max-height: min(88vh, 820px);
-            overflow: auto;
-            padding: 24px;
-            border-radius: 22px;
-            background: #fff;
-            border: 1px solid var(--panel-border);
-            box-shadow: 0 30px 70px rgba(15, 23, 42, 0.2);
-        }
-
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            gap: 16px;
-            margin-bottom: 18px;
-        }
-
-        .modal-header h3 {
-            margin: 0;
-            font-size: 1.7rem;
-        }
-
-        .modal-close {
-            width: 40px;
-            height: 40px;
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            background: #fff;
-            color: var(--text-main);
-            cursor: pointer;
-            font-size: 1.2rem;
-        }
-
         .dashboard-input,
         .dashboard-select,
         .dashboard-textarea {
             width: 100%;
             border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 13px 14px;
+            border-radius: 16px;
+            padding: 14px 16px;
             font: inherit;
             color: var(--text-main);
-            background: #fff;
+            background: var(--panel-alt);
         }
 
         .dashboard-textarea {
@@ -203,16 +182,16 @@
         .unit-item,
         .mini-item {
             border: 1px solid var(--panel-border);
-            border-radius: 18px;
-            background: #fff;
+            border-radius: 22px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
         }
 
         .unit-item {
-            padding: 18px;
+            padding: 20px;
         }
 
         .mini-item {
-            padding: 16px 18px;
+            padding: 18px 18px;
         }
 
         .unit-head {
@@ -227,7 +206,7 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 12px;
+            padding: 8px 14px;
             border-radius: 999px;
             background: var(--accent-soft);
             color: var(--accent);
@@ -239,50 +218,199 @@
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 12px;
-            margin-top: 14px;
+            margin-top: 16px;
         }
 
         .unit-stat {
-            border-radius: 14px;
-            padding: 14px;
-            background: #f8fafc;
+            border-radius: 18px;
+            padding: 15px;
+            background: rgba(255, 249, 241, 0.84);
             border: 1px solid var(--panel-border);
         }
 
         .unit-stat span {
             display: block;
-            color: var(--text-soft);
-            font-size: 0.74rem;
+            color: rgba(106, 65, 45, 0.64);
+            font-size: 0.72rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
         }
 
         .unit-stat strong {
             display: block;
             margin-top: 8px;
+            font-size: 1rem;
+            line-height: 1.45;
+        }
+
+        .highlight-panel {
+            padding: 26px;
+            background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
+        }
+
+        .highlight-grid {
+            display: grid;
+            grid-template-columns: minmax(280px, 0.88fr) minmax(0, 1fr);
+            gap: 18px;
+        }
+
+        .profile-card {
+            display: grid;
+            align-content: start;
+            justify-items: center;
+            padding: 26px 18px;
+            border-radius: 24px;
+            background: var(--panel-alt);
+            border: 1px solid var(--panel-border);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 132px;
+            height: 132px;
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            background: linear-gradient(135deg, rgba(106, 65, 45, 0.16) 0%, rgba(181, 106, 59, 0.18) 100%);
+            color: var(--mocha);
+            font-size: 2.6rem;
+            font-weight: 700;
+            box-shadow: inset 0 0 0 10px #fff;
+        }
+
+        .profile-card strong {
+            display: block;
+            margin-top: 18px;
+            font-size: 1.55rem;
+            line-height: 1.2;
+            color: var(--espresso);
+        }
+
+        .profile-card span {
+            display: block;
+            margin-top: 6px;
+        }
+
+        .info-panel {
+            display: grid;
+            gap: 16px;
+        }
+
+        .info-card {
+            padding: 20px;
+            border-radius: 24px;
+            background: #fff;
+            border: 1px solid var(--panel-border);
+        }
+
+        .info-card h4 {
+            margin: 0 0 16px;
+            font-size: 1.34rem;
+            color: var(--espresso);
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .info-row {
+            display: grid;
+            grid-template-columns: minmax(120px, 0.8fr) minmax(0, 1fr);
+            gap: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .info-row:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+        }
+
+        .info-row span {
+            color: #98a3c1;
+            font-size: 0.92rem;
+        }
+
+        .info-row strong {
+            font-size: 0.98rem;
+            line-height: 1.5;
+            color: #2b315d;
         }
 
         .status-banner {
             padding: 16px 18px;
-            border-radius: 18px;
-            background: rgba(22, 163, 74, 0.12);
-            border: 1px solid rgba(22, 163, 74, 0.16);
-            color: #166534;
+            border-radius: 20px;
+            background: rgba(75, 201, 166, 0.14);
+            border: 1px solid rgba(75, 201, 166, 0.2);
+            color: #146c58;
         }
 
         .empty-state {
             padding: 18px;
-            border-radius: 16px;
+            border-radius: 18px;
             border: 1px dashed var(--panel-border);
             color: var(--text-soft);
-            background: #f8fafc;
+            background: rgba(255, 249, 241, 0.84);
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background: rgba(117, 127, 157, 0.32);
+            backdrop-filter: blur(7px);
+            z-index: 60;
+        }
+
+        .modal-overlay.is-open {
+            display: flex;
+        }
+
+        .modal-card {
+            width: min(560px, 100%);
+            max-height: min(88vh, 820px);
+            overflow: auto;
+            padding: 24px;
+            border-radius: 28px;
+            background: #fff;
+            border: 1px solid var(--panel-border);
+            box-shadow: 0 30px 70px rgba(97, 115, 160, 0.22);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+
+        .modal-header h3 {
+            margin: 8px 0 0;
+            font-size: 1.7rem;
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border: 1px solid var(--panel-border);
+            border-radius: 14px;
+            background: #fff;
+            color: var(--text-main);
+            cursor: pointer;
+            font-size: 1.2rem;
         }
 
         @media (max-width: 1180px) {
             .owner-grid-4,
             .owner-grid-3,
             .owner-grid-main,
-            .unit-stats {
+            .unit-stats,
+            .highlight-grid {
                 grid-template-columns: 1fr !important;
             }
         }
@@ -291,14 +419,14 @@
     <x-slot name="header">
         <div style="display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap;">
             <div>
-                <p style="margin: 0; color: var(--text-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">
+                <p style="margin: 0; color: #96a1bf; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700;">
                     Dashboard Admin
                 </p>
-                <h2 style="margin: 8px 0 0; font-size: 2rem; color: var(--text-main);">
-                    Pantau user yang sedang login
+                <h2 style="margin: 8px 0 0; font-size: 2.5rem; line-height: 1.08; color: #1c2350;">
+                    Patient profile style untuk dashboard operasional
                 </h2>
-                <p style="margin: 8px 0 0; color: var(--text-soft);">
-                    Kelola driver, gerobak, assignment, dan aktivitas operasional dari satu dashboard.
+                <p style="margin: 10px 0 0; color: var(--text-soft); max-width: 760px;">
+                    Tampilan disesuaikan mengikuti referensi klinik: sidebar lembut, kartu putih bersih, dan panel informasi yang lebih rapi tanpa mengubah fitur, isi, atau aksi dashboard.
                 </p>
             </div>
             <a href="{{ route('dashboard.traccar') }}" class="section-button">
@@ -318,7 +446,7 @@
             <article class="panel-card metric-card">
                 <span class="eyebrow">User Aktif</span>
                 <strong>{{ $activeUserCount }}</strong>
-                <p>{{ $activeUserCount }} user online</p>
+                <p>{{ $activeUserCount }} user online sekarang.</p>
             </article>
             <article class="panel-card metric-card">
                 <span class="eyebrow">Gerobak</span>
@@ -328,49 +456,14 @@
             <article class="panel-card metric-card">
                 <span class="eyebrow">Driver</span>
                 <strong>{{ $driverCount }}</strong>
-                <p>{{ $availableDrivers->count() }} driver tersedia untuk di-assign.</p>
+                <p>{{ $availableDrivers->count() }} driver masih tersedia untuk assignment baru.</p>
             </article>
             <article class="panel-card metric-card">
                 <span class="eyebrow">Owner Utama</span>
-                <strong style="font-size: 1.25rem; line-height: 1.35;">{{ $latestLoginAt?->translatedFormat('d M Y H:i') ?? 'Belum ada data' }}</strong>
+                <strong style="font-size: 1.18rem; line-height: 1.4;">
+                    {{ $latestLoginAt?->translatedFormat('d M Y H:i') ?? 'Belum ada data' }}
+                </strong>
                 <p>{{ $adminEmail }}</p>
-            </article>
-        </section>
-
-        <section class="owner-grid-3">
-            <article class="panel-card section-card action-card">
-                <span class="eyebrow">Data Unit</span>
-                <h3>Tambah gerobak</h3>
-                <p class="section-subtext">Buat master gerobak baru. GPS akan dibaca dari HP driver yang sedang ditugaskan.</p>
-                <button
-                    type="button"
-                    class="primary-button"
-                    data-open-modal="unit-form-modal"
-                    aria-expanded="{{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'true' : 'false' }}"
-                >
-                    Tambah Gerobak
-                </button>
-            </article>
-
-            <article class="panel-card section-card action-card">
-                <span class="eyebrow">Data Driver</span>
-                <h3>Buat akun driver</h3>
-                <p class="section-subtext">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai `device_id` miliknya.</p>
-                <button
-                    type="button"
-                    class="primary-button"
-                    data-open-modal="driver-form-modal"
-                    aria-expanded="{{ $errors->hasAny(['email', 'device_id', 'password']) ? 'true' : 'false' }}"
-                >
-                    Buat Akun Driver
-                </button>
-            </article>
-
-            <article class="panel-card section-card action-card">
-                <span class="eyebrow">Assignment</span>
-                <h3>Assign driver ke gerobak</h3>
-                <p class="section-subtext">Satu driver aktif untuk satu gerobak aktif. Assignment lama akan ditutup otomatis.</p>
-                <a href="{{ route('dashboard.assignments.index') }}" class="success-button">Buka Halaman Assignment</a>
             </article>
         </section>
 
@@ -380,7 +473,7 @@
                     <div>
                         <span class="eyebrow">Operasional</span>
                         <h3>Status gerobak dan driver aktif</h3>
-                        <p class="section-subtext">Pantau gerobak mana yang sudah berjalan, siapa drivernya, dan update lokasi terakhir.</p>
+                        <p class="section-subtext">Pantau gerobak mana yang berjalan, siapa drivernya, update lokasi terakhir, dan status baterai.</p>
                     </div>
                 </div>
 
@@ -389,8 +482,10 @@
                         <article class="unit-item">
                             <div class="unit-head">
                                 <div>
-                                    <strong style="display: block; font-size: 1.08rem;">{{ $unit['name'] }}</strong>
-                                    <span class="unit-meta" style="display: block; margin-top: 6px;">{{ $unit['code'] }} • {{ $unit['device_id'] ? 'HP '.$unit['device_id'] : 'Belum ada HP driver aktif' }}</span>
+                                    <strong style="display: block; font-size: 1.08rem; color: var(--espresso);">{{ $unit['name'] }}</strong>
+                                    <span class="unit-meta" style="display: block; margin-top: 6px;">
+                                        {{ $unit['code'] }} • {{ $unit['device_id'] ? 'HP '.$unit['device_id'] : 'Belum ada HP driver aktif' }}
+                                    </span>
                                 </div>
                                 <span class="status-pill">{{ ucfirst($unit['status']) }}</span>
                             </div>
@@ -411,7 +506,7 @@
                             </div>
 
                             @if ($unit['active_assignment'])
-                                <form method="POST" action="{{ route('dashboard.assignments.finish', $unit['active_assignment']) }}" style="margin-top: 14px;">
+                                <form method="POST" action="{{ route('dashboard.assignments.finish', $unit['active_assignment']) }}" style="margin-top: 16px;">
                                     @csrf
                                     @method('PATCH')
                                     <input type="hidden" name="redirect_to" value="dashboard">
@@ -425,29 +520,17 @@
                 </div>
             </article>
 
-            <div style="display: grid; gap: 20px;">
-                <article class="panel-card mini-card">
-                    <span class="eyebrow">URL Traccar</span>
-                    <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Alamat server aplikasi Traccar</h3>
-                    <p class="list-meta" style="margin: 0 0 14px;">
-                        Masukkan URL ini ke field <strong>Server URL</strong> di aplikasi Traccar Android driver.
-                    </p>
-                    <div style="padding: 16px 18px; border-radius: 16px; border: 1px solid var(--panel-border); background: #f8fafc; font-weight: 700; word-break: break-all;">
-                        {{ $traccarEndpoint }}
-                    </div>
-                    <p class="list-meta" style="margin: 14px 0 0;">
-                        Isi <strong>Device Identifier</strong> di Traccar dengan <strong>device_id</strong> milik driver.
-                    </p>
-                </article>
-
+            <div style="display: grid; gap: 18px;">
                 <article class="panel-card mini-card">
                     <span class="eyebrow">Assignment Aktif</span>
-                    <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Siapa bawa gerobak mana</h3>
+                    <h3 style="margin: 10px 0 16px; font-size: 1.5rem; color: var(--espresso);">Siapa bawa gerobak</h3>
                     <div class="mini-list">
                         @forelse ($activeAssignments as $assignment)
                             <article class="mini-item">
-                                <strong style="display: block;">{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
-                                <span class="list-meta" style="display: block; margin-top: 6px;">Mulai {{ $assignment->assigned_at?->translatedFormat('d M Y H:i') }}</span>
+                                <strong style="display: block; color: var(--espresso);">{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
+                                <span class="list-meta" style="display: block; margin-top: 6px;">
+                                    Mulai {{ $assignment->assigned_at?->translatedFormat('d M Y H:i') }}
+                                </span>
                             </article>
                         @empty
                             <div class="empty-state">Belum ada assignment aktif.</div>
@@ -457,13 +540,13 @@
 
                 <article class="panel-card mini-card">
                     <span class="eyebrow">User Login</span>
-                    <h3 style="margin: 0 0 16px; font-size: 1.5rem;">Daftar user yang sedang aktif</h3>
+                    <h3 style="margin: 10px 0 16px; font-size: 1.5rem; color: var(--espresso);">Daftar user yang sedang aktif</h3>
                     <div class="mini-list">
                         @forelse ($activeUsers as $activeUser)
                             <article class="mini-item">
                                 <div style="display: flex; justify-content: space-between; gap: 12px; align-items: start; flex-wrap: wrap;">
                                     <div>
-                                        <strong style="display: block;">{{ $activeUser['name'] }}</strong>
+                                        <strong style="display: block; color: var(--espresso);">{{ $activeUser['name'] }}</strong>
                                         <span class="list-meta" style="display: block; margin-top: 6px;">{{ $activeUser['email'] }}</span>
                                         <span class="list-meta" style="display: block; margin-top: 6px;">{{ $activeUser['last_seen']->diffForHumans() }}</span>
                                     </div>
@@ -482,6 +565,48 @@
                 </article>
             </div>
         </section>
+
+        <section class="panel-card highlight-panel">
+            <div class="section-heading">
+                <div>
+                    <span class="eyebrow">Ringkasan Utama</span>
+                    <h3>Snapshot operasional hari ini</h3>
+                </div>
+            </div>
+
+            <div class="highlight-grid">
+                <article class="profile-card">
+                    <div class="profile-avatar">
+                        {{ strtoupper(substr($adminEmail ?? 'A', 0, 1)) }}
+                    </div>
+                    <strong>Admin Dashboard</strong>
+                    <span style="color: var(--accent); font-weight: 700;">{{ $adminEmail }}</span>
+                    <span style="color: var(--text-soft); max-width: 220px;">
+                        Kelola driver, gerobak, sesi login, dan tracking GPS dari satu panel utama.
+                    </span>
+                </article>
+
+                <div class="info-panel">
+                    <article class="info-card">
+                        <h4>General information</h4>
+                        <div class="info-grid">
+                            <div class="info-row">
+                                <span>Endpoint Traccar</span>
+                                <strong style="word-break: break-all;">{{ $traccarEndpoint }}</strong>
+                            </div>
+                            <div class="info-row">
+                                <span>Assignment aktif</span>
+                                <strong>{{ $activeAssignments->count() }} assignment sedang berjalan</strong>
+                            </div>
+                            <div class="info-row">
+                                <span>Driver tersedia</span>
+                                <strong>{{ $availableDrivers->count() }} driver siap ditugaskan</strong>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
     </div>
 
     <div id="unit-form-modal" class="modal-overlay {{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'is-open' : '' }}" aria-hidden="{{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'false' : 'true' }}">
@@ -490,7 +615,7 @@
                 <div>
                     <span class="eyebrow">Data Unit</span>
                     <h3>Tambah gerobak</h3>
-                    <p class="section-subtext" style="margin: 10px 0 0;">Buat master gerobak baru tanpa mengganggu layout dashboard.</p>
+                    <p class="section-subtext" style="margin: 10px 0 0;">Buat master gerobak baru tanpa mengganggu fitur dashboard.</p>
                 </div>
                 <button type="button" class="modal-close" data-close-modal="unit-form-modal" aria-label="Tutup">×</button>
             </div>
@@ -516,7 +641,7 @@
                 <div>
                     <span class="eyebrow">Data Driver</span>
                     <h3>Buat akun driver</h3>
-                    <p class="section-subtext" style="margin: 10px 0 0;">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai `device_id` miliknya.</p>
+                    <p class="section-subtext" style="margin: 10px 0 0;">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai <code>device_id</code> miliknya.</p>
                 </div>
                 <button type="button" class="modal-close" data-close-modal="driver-form-modal" aria-label="Tutup">×</button>
             </div>
