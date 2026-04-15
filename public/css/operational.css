@@ -1,0 +1,129 @@
+/* Operational Grid Styles */
+
+.op-grid {
+    display: grid;
+    grid-template-columns: minmax(380px, 420px) 1fr;
+    height: calc(100vh - 100px);
+    /* Adjust based on header height */
+    overflow: hidden;
+    gap: 0;
+    border: 1px solid var(--panel-border);
+    border-radius: 12px;
+    background: var(--panel);
+}
+
+.op-sidebar {
+    border-right: 1px solid var(--panel-border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.op-sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--panel-border);
+    background: #fdfdfd;
+}
+
+.op-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0;
+}
+
+.op-item {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--panel-border);
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.op-item:hover {
+    background: #f8fafc;
+}
+
+.op-item.is-active {
+    background: var(--accent-soft);
+    border-left: 4px solid var(--accent);
+}
+
+.op-map-container {
+    position: relative;
+    background: #eee;
+}
+
+#op-map {
+    height: 100%;
+    width: 100%;
+}
+
+/* Pulsing Dot */
+.pulsing-dot {
+    width: 10px;
+    height: 10px;
+    background: var(--success);
+    border-radius: 50%;
+    position: relative;
+}
+
+.pulsing-dot::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--success);
+    border-radius: 50%;
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: scale(3);
+        opacity: 0;
+    }
+}
+
+.status-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+}
+
+.status-badge.ready {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.status-badge.maintenance {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-badge.inactive {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+/* Density Utils */
+.text-op-xs {
+    font-size: 0.72rem;
+}
+
+.text-op-sm {
+    font-size: 0.8rem;
+}
+
+.font-mono-op {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}

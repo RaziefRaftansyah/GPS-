@@ -107,13 +107,18 @@
                 <p style="margin: 0; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #9a6b4d;">
                     Data Masuk Terbaru
                 </p>
-                <h3 style="margin: 8px 0 18px; font-size: 2rem; color: #3b2418;">Log 25 request lokasi terakhir</h3>
+                <h3 style="margin: 8px 0 10px; font-size: 2rem; color: #3b2418;">5 log request terbaru dengan driver berbeda</h3>
+                <p style="margin: 0 0 18px; color: #8a634b;">
+                    Format tabel tetap sama, tetapi hanya menampilkan 5 request terbaru dari 5 driver yang berbeda.
+                </p>
 
                 <div style="overflow-x: auto;">
-                    <table style="width: 100%; min-width: 980px; border-collapse: collapse;">
+                    <table style="width: 100%; min-width: 1080px; border-collapse: collapse;">
                         <thead>
                             <tr style="text-align: left; color: #8a634b;">
                                 <th style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.12);">ID</th>
+                                <th style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.12);">ID Driver</th>
+                                <th style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.12);">Nama Driver</th>
                                 <th style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.12);">Device ID</th>
                                 <th style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.12);">Latitude</th>
                                 <th style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.12);">Longitude</th>
@@ -124,22 +129,22 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($latestEntries as $entry)
+                            @forelse ($latestDistinctDriverEntries as $row)
                                 <tr>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->id }}</td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08); font-weight: 700;">
-                                        {{ $entry->device_id ?: 'Tanpa device_id' }}
-                                    </td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->latitude }}</td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->longitude }}</td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->accuracy ?? '-' }}</td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->battery_level !== null ? $entry->battery_level.'%' : '-' }}</td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->event_type ?? '-' }}</td>
-                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $entry->recorded_at?->translatedFormat('d M Y H:i:s') }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->id }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08); font-weight: 700;">{{ $row['driver_id'] }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['driver_name'] }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08); font-weight: 700;">{{ $row['device_id'] }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->latitude }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->longitude }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->accuracy ?? '-' }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->battery_level !== null ? $row['entry']->battery_level.'%' : '-' }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->event_type ?? '-' }}</td>
+                                    <td style="padding: 14px 12px; border-bottom: 1px solid rgba(106,65,45,0.08);">{{ $row['entry']->recorded_at?->translatedFormat('d M Y H:i:s') }}</td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" style="padding: 18px 12px; color: #6c5244;">Belum ada data lokasi yang masuk.</td>
+                                    <td colspan="10" style="padding: 18px 12px; color: #6c5244;">Belum ada data lokasi dari driver yang berbeda.</td>
                                 </tr>
                             @endforelse
                         </tbody>
