@@ -1,0 +1,301 @@
+<mxfile host="app.diagrams.net" modified="2026-04-16T00:00:00.000Z" agent="Codex" version="26.0.11" compressed="false">
+  <diagram id="usecase-page" name="Use Case Diagram">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1000" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+        <mxCell id="2" value="Sistem GPS Tracker Gerobak Kopi" style="swimlane;fontStyle=1;horizontal=1;startSize=34;rounded=1;fillColor=#fffaf2;strokeColor=#8a634b;fontColor=#3b2418;" vertex="1" parent="1">
+          <mxGeometry x="290" y="40" width="1020" height="820" as="geometry"/>
+        </mxCell>
+        <mxCell id="3" value="Owner / Admin" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontColor=#3b2418;" vertex="1" parent="1">
+          <mxGeometry x="70" y="150" width="70" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="4" value="Driver" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontColor=#3b2418;" vertex="1" parent="1">
+          <mxGeometry x="70" y="430" width="70" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="5" value="Pengunjung Publik" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontColor=#3b2418;" vertex="1" parent="1">
+          <mxGeometry x="70" y="700" width="90" height="140" as="geometry"/>
+        </mxCell>
+        <mxCell id="6" value="Aplikasi Traccar" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fontColor=#3b2418;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="330" width="90" height="140" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="10" value="Login" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="90" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="11" value="Lihat dashboard owner" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="180" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="12" value="Kelola akun driver" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="270" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="13" value="Kelola data gerobak" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="360" width="180" height="60" as="geometry"/></mxCell>
+        <mxCell id="14" value="Assign driver ke gerobak" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="450" width="210" height="60" as="geometry"/></mxCell>
+        <mxCell id="15" value="Selesaikan assignment" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="540" width="190" height="60" as="geometry"/></mxCell>
+        <mxCell id="16" value="Monitoring data Traccar" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="630" width="200" height="60" as="geometry"/></mxCell>
+        <mxCell id="17" value="Kick user aktif" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="90" y="720" width="170" height="60" as="geometry"/></mxCell>
+        <mxCell id="18" value="Kelola profil" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="390" y="90" width="170" height="60" as="geometry"/></mxCell>
+        <mxCell id="19" value="Lihat dashboard driver" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="390" y="210" width="190" height="60" as="geometry"/></mxCell>
+        <mxCell id="20" value="Lihat peta publik" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="390" y="330" width="170" height="60" as="geometry"/></mxCell>
+        <mxCell id="21" value="Ambil data lokasi terbaru" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="390" y="450" width="210" height="60" as="geometry"/></mxCell>
+        <mxCell id="22" value="Kirim lokasi GPS" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b56a3b;fontColor=#3b2418;" vertex="1" parent="2"><mxGeometry x="720" y="300" width="170" height="60" as="geometry"/></mxCell>
+
+        <mxCell id="30" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="31" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="32" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="12"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="33" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="13"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="34" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="14"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="35" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="15"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="36" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="16"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="37" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="17"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="38" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="3" target="18"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="39" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="4" target="10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="40" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="4" target="18"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="41" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="4" target="19"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="42" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="5" target="20"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="43" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="5" target="21"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="44" style="endArrow=none;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="6" target="22"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-public-map" name="Flow - Lihat Peta Publik">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="a1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="500" y="40" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="a2" value="Pengunjung buka halaman utama" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="410" y="140" width="320" height="70" as="geometry"/></mxCell>
+        <mxCell id="a3" value="LocationController@index mengambil recent locations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="380" y="250" width="380" height="70" as="geometry"/></mxCell>
+        <mxCell id="a4" value="Sistem mengambil active unit locations" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="400" y="360" width="340" height="70" as="geometry"/></mxCell>
+        <mxCell id="a5" value="View tracker ditampilkan ke publik" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="410" y="470" width="320" height="70" as="geometry"/></mxCell>
+        <mxCell id="a6" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="500" y="590" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ae1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="a1" target="a2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="a2" target="a3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae3" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="a3" target="a4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="a4" target="a5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ae5" style="edgeStyle=orthogonalEdgeStyle;rounded=0;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="a5" target="a6"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-login" name="Flow - Login dan Dashboard">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="b1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="620" y="30" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="b2" value="User login" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="560" y="120" width="260" height="70" as="geometry"/></mxCell>
+        <mxCell id="b3" value="Apakah role user = driver?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="570" y="230" width="240" height="120" as="geometry"/></mxCell>
+        <mxCell id="b4" value="Tampilkan driver dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="180" y="390" width="280" height="70" as="geometry"/></mxCell>
+        <mxCell id="b5" value="Apakah owner / admin?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="840" y="230" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="b6" value="Ambil KPI, unit, assignment, user aktif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="780" y="390" width="340" height="70" as="geometry"/></mxCell>
+        <mxCell id="b7" value="Tampilkan owner dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="810" y="500" width="280" height="70" as="geometry"/></mxCell>
+        <mxCell id="b8" value="Redirect ke halaman profil" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="1080" y="500" width="240" height="70" as="geometry"/></mxCell>
+        <mxCell id="b9" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="620" y="640" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="be1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b1" target="b2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b2" target="b3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be3" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b3" target="b4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be4" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b3" target="b5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be5" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b5" target="b6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be6" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b6" target="b7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be7" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b5" target="b8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b4" target="b9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b7" target="b9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="be10" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="b8" target="b9"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-driver-account" name="Flow - Kelola Akun Driver">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="c1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="510" y="40" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="c2" value="Owner isi form akun driver" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="410" y="140" width="340" height="70" as="geometry"/></mxCell>
+        <mxCell id="c3" value="POST /dashboard/drivers" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="440" y="250" width="280" height="70" as="geometry"/></mxCell>
+        <mxCell id="c4" value="Validasi name, email, device_id, password" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="390" y="360" width="380" height="70" as="geometry"/></mxCell>
+        <mxCell id="c5" value="Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="470" y="470" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="c6" value="Kembali dengan pesan error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="120" y="620" width="280" height="70" as="geometry"/></mxCell>
+        <mxCell id="c7" value="Buat user baru role = driver" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="620" y="620" width="290" height="70" as="geometry"/></mxCell>
+        <mxCell id="c8" value="Redirect sukses ke dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="620" y="730" width="290" height="70" as="geometry"/></mxCell>
+        <mxCell id="c9" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="510" y="830" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ce1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c1" target="c2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c2" target="c3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c3" target="c4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c4" target="c5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce5" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c5" target="c6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce6" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c5" target="c7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c7" target="c8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c8" target="c9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ce9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="c6" target="c9"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-unit" name="Flow - Kelola Gerobak">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="d1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="510" y="40" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="d2" value="Owner isi form data gerobak" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="400" y="140" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="d3" value="POST /dashboard/units" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="430" y="250" width="300" height="70" as="geometry"/></mxCell>
+        <mxCell id="d4" value="Validasi name, code, status, notes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="400" y="360" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="d5" value="Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="470" y="470" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="d6" value="Kembali dengan error" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="160" y="620" width="250" height="70" as="geometry"/></mxCell>
+        <mxCell id="d7" value="Simpan unit gerobak" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="650" y="620" width="230" height="70" as="geometry"/></mxCell>
+        <mxCell id="d8" value="Redirect sukses ke dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="620" y="730" width="290" height="70" as="geometry"/></mxCell>
+        <mxCell id="d9" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="510" y="830" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="de1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d1" target="d2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d2" target="d3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d3" target="d4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d4" target="d5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de5" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d5" target="d6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de6" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d5" target="d7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d7" target="d8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d8" target="d9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="de9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="d6" target="d9"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-assign" name="Flow - Assign Driver">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1000" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="e1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="600" y="30" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="e2" value="Owner pilih driver dan gerobak" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="470" y="120" width="400" height="70" as="geometry"/></mxCell>
+        <mxCell id="e3" value="Validasi driver_id, unit_id, notes" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="480" y="230" width="380" height="70" as="geometry"/></mxCell>
+        <mxCell id="e4" value="Ambil data driver dan unit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="500" y="340" width="340" height="70" as="geometry"/></mxCell>
+        <mxCell id="e5" value="Apakah user adalah driver?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="550" y="450" width="240" height="120" as="geometry"/></mxCell>
+        <mxCell id="e6" value="Redirect gagal" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="220" y="610" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="e7" value="Tutup assignment aktif lama pada driver atau unit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="680" y="610" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="e8" value="Buat assignment baru status active" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="700" y="720" width="320" height="70" as="geometry"/></mxCell>
+        <mxCell id="e9" value="Redirect sukses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="740" y="830" width="240" height="70" as="geometry"/></mxCell>
+        <mxCell id="e10" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="600" y="930" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ee1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e1" target="e2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e2" target="e3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e3" target="e4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e4" target="e5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee5" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e5" target="e6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee6" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e5" target="e7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e7" target="e8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e8" target="e9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e9" target="e10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ee10" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="e6" target="e10"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-finish" name="Flow - Selesaikan Assignment">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="f1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="500" y="40" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="f2" value="Owner klik Selesaikan Assignment" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="390" y="140" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="f3" value="PATCH /dashboard/assignments/{id}/finish" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="350" y="250" width="440" height="70" as="geometry"/></mxCell>
+        <mxCell id="f4" value="Apakah assignment masih aktif?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="450" y="370" width="240" height="120" as="geometry"/></mxCell>
+        <mxCell id="f5" value="Update status = completed dan ended_at = now" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="650" y="540" width="320" height="70" as="geometry"/></mxCell>
+        <mxCell id="f6" value="Lewati update" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="190" y="540" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="f7" value="Redirect sukses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="430" y="670" width="280" height="70" as="geometry"/></mxCell>
+        <mxCell id="f8" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="500" y="790" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="fe1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f1" target="f2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f2" target="f3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f3" target="f4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe4" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f4" target="f5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe5" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f4" target="f6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe6" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f5" target="f7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f6" target="f7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="fe8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="f7" target="f8"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-monitoring" name="Flow - Monitoring Traccar">
+    <mxGraphModel dx="1300" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1300" pageHeight="1000" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="g1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="560" y="30" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="g2" value="Owner buka halaman monitoring Traccar" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="400" y="120" width="460" height="70" as="geometry"/></mxCell>
+        <mxCell id="g3" value="Ambil location terbaru dan 5 log distinct driver" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="380" y="230" width="500" height="70" as="geometry"/></mxCell>
+        <mxCell id="g4" value="Cocokkan device_id dengan driver dan assignment aktif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="360" y="340" width="540" height="70" as="geometry"/></mxCell>
+        <mxCell id="g5" value="Bangun ringkasan device dan statistik monitoring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="390" y="450" width="480" height="70" as="geometry"/></mxCell>
+        <mxCell id="g6" value="Ambil request log Traccar mentah" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="420" y="560" width="420" height="70" as="geometry"/></mxCell>
+        <mxCell id="g7" value="Tampilkan dashboard monitoring" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="450" y="670" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="g8" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="560" y="790" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ge1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g1" target="g2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ge2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g2" target="g3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ge3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g3" target="g4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ge4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g4" target="g5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ge5" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g5" target="g6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ge6" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g6" target="g7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ge7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="g7" target="g8"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-send-location" name="Flow - Kirim Lokasi GPS">
+    <mxGraphModel dx="1500" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1500" pageHeight="1100" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="h1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="670" y="30" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="h2" value="Traccar / client kirim request ke /api/location" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="500" y="120" width="480" height="70" as="geometry"/></mxCell>
+        <mxCell id="h3" value="Normalize payload" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="590" y="230" width="300" height="70" as="geometry"/></mxCell>
+        <mxCell id="h4" value="Buat TraccarRequestLog" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="590" y="340" width="300" height="70" as="geometry"/></mxCell>
+        <mxCell id="h5" value="Validasi payload lokasi" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="590" y="450" width="300" height="70" as="geometry"/></mxCell>
+        <mxCell id="h6" value="Valid?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="620" y="560" width="240" height="120" as="geometry"/></mxCell>
+        <mxCell id="h7" value="Update log gagal + return 422" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="180" y="730" width="300" height="70" as="geometry"/></mxCell>
+        <mxCell id="h8" value="Simpan lokasi ke tabel Location" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="760" y="730" width="320" height="70" as="geometry"/></mxCell>
+        <mxCell id="h9" value="Update request log processed + location_id" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="730" y="840" width="380" height="70" as="geometry"/></mxCell>
+        <mxCell id="h10" value="Cocokkan device_id ke driver dan assignment aktif" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="710" y="950" width="420" height="70" as="geometry"/></mxCell>
+        <mxCell id="h11" value="Return JSON sukses" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="790" y="1060" width="260" height="70" as="geometry"/></mxCell>
+        <mxCell id="h12" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="670" y="1170" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="he1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h1" target="h2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h2" target="h3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h3" target="h4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he4" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h4" target="h5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he5" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h5" target="h6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he6" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h6" target="h7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he7" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h6" target="h8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h8" target="h9"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h9" target="h10"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he10" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h10" target="h11"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he11" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h11" target="h12"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="he12" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="h7" target="h12"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-driver-dashboard" name="Flow - Dashboard Driver">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="i1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="500" y="40" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="i2" value="Driver buka dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="430" y="140" width="280" height="70" as="geometry"/></mxCell>
+        <mxCell id="i3" value="Load activeDriverAssignment dan unit" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="400" y="250" width="340" height="70" as="geometry"/></mxCell>
+        <mxCell id="i4" value="Ada assignment aktif?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="460" y="370" width="220" height="120" as="geometry"/></mxCell>
+        <mxCell id="i5" value="Ambil latest location berdasarkan device_id driver" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="650" y="540" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="i6" value="latest location kosong" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="170" y="540" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="i7" value="Ambil 5 assignment terakhir" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="390" y="670" width="360" height="70" as="geometry"/></mxCell>
+        <mxCell id="i8" value="Tampilkan driver dashboard" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="410" y="790" width="320" height="70" as="geometry"/></mxCell>
+        <mxCell id="i9" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="500" y="900" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="ie1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i1" target="i2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i2" target="i3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i3" target="i4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie4" value="Ya" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i4" target="i5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie5" value="Tidak" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i4" target="i6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie6" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i5" target="i7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i6" target="i7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i7" target="i8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="ie9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="i8" target="i9"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="flow-profile" name="Flow - Kelola Profil">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1200" pageHeight="900" math="0" shadow="0">
+      <root><mxCell id="0"/><mxCell id="1" parent="0"/>
+        <mxCell id="j1" value="Mulai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5eadf;strokeColor=#2f6b55;" vertex="1" parent="1"><mxGeometry x="500" y="40" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="j2" value="User buka halaman profil" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="420" y="140" width="300" height="70" as="geometry"/></mxCell>
+        <mxCell id="j3" value="Tampilkan form profil" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="440" y="250" width="260" height="70" as="geometry"/></mxCell>
+        <mxCell id="j4" value="Aksi yang dipilih?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff4e6;strokeColor=#b56a3b;" vertex="1" parent="1"><mxGeometry x="450" y="370" width="240" height="120" as="geometry"/></mxCell>
+        <mxCell id="j5" value="PATCH /profile (update profil)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="120" y="560" width="270" height="70" as="geometry"/></mxCell>
+        <mxCell id="j6" value="PATCH /profile/deactivate" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="440" y="560" width="260" height="70" as="geometry"/></mxCell>
+        <mxCell id="j7" value="DELETE /profile" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fffaf2;strokeColor=#8a634b;" vertex="1" parent="1"><mxGeometry x="780" y="560" width="220" height="70" as="geometry"/></mxCell>
+        <mxCell id="j8" value="Selesai" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8d9d5;strokeColor=#9f2f20;" vertex="1" parent="1"><mxGeometry x="500" y="700" width="140" height="60" as="geometry"/></mxCell>
+        <mxCell id="je1" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j1" target="j2"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je2" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j2" target="j3"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je3" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j3" target="j4"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je4" value="Update" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j4" target="j5"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je5" value="Deactivate" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j4" target="j6"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je6" value="Delete" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j4" target="j7"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je7" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j5" target="j8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je8" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j6" target="j8"><mxGeometry relative="1" as="geometry"/></mxCell>
+        <mxCell id="je9" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#6a412d;" edge="1" parent="1" source="j7" target="j8"><mxGeometry relative="1" as="geometry"/></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

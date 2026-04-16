@@ -2,18 +2,13 @@
     <style>
         .owner-dashboard {
             display: grid;
-            gap: 22px;
+            gap: 28px;
         }
 
-        .owner-grid-4,
         .owner-grid-3,
         .owner-grid-main {
             display: grid;
             gap: 18px;
-        }
-
-        .owner-grid-4 {
-            grid-template-columns: repeat(4, minmax(0, 1fr));
         }
 
         .owner-grid-3 {
@@ -21,7 +16,7 @@
         }
 
         .owner-grid-main {
-            grid-template-columns: minmax(0, 1.38fr) minmax(320px, 0.86fr);
+            grid-template-columns: minmax(0, 1.5fr) minmax(300px, 0.72fr);
             align-items: start;
         }
 
@@ -35,7 +30,7 @@
         .metric-card,
         .section-card,
         .mini-card {
-            padding: 24px;
+            padding: 20px;
         }
 
         .metric-card {
@@ -44,9 +39,9 @@
 
         .metric-card strong {
             display: block;
-            font-size: 2.2rem;
+            font-size: 2rem;
             line-height: 1;
-            margin-top: 10px;
+            margin-top: 8px;
             color: var(--espresso);
         }
 
@@ -82,7 +77,7 @@
             justify-content: space-between;
             align-items: center;
             gap: 14px;
-            margin-bottom: 18px;
+            margin-bottom: 22px;
             flex-wrap: wrap;
         }
 
@@ -144,13 +139,6 @@
             color: var(--danger);
         }
 
-        .action-card {
-            display: grid;
-            gap: 16px;
-            align-content: start;
-            background: linear-gradient(180deg, #ffffff 0%, #fafcff 100%);
-        }
-
         .form-stack {
             display: grid;
             gap: 12px;
@@ -176,7 +164,7 @@
         .unit-list,
         .mini-list {
             display: grid;
-            gap: 14px;
+            gap: 16px;
         }
 
         .unit-item,
@@ -187,11 +175,11 @@
         }
 
         .unit-item {
-            padding: 20px;
+            padding: 18px 20px;
         }
 
         .mini-item {
-            padding: 18px 18px;
+            padding: 14px 16px;
         }
 
         .unit-head {
@@ -202,11 +190,23 @@
             flex-wrap: wrap;
         }
 
+        .unit-title strong {
+            display: block;
+            font-size: 1.12rem;
+            color: var(--espresso);
+        }
+
+        .unit-title span {
+            display: block;
+            margin-top: 6px;
+            color: var(--text-soft);
+        }
+
         .status-pill {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 999px;
             background: var(--accent-soft);
             color: var(--accent);
@@ -214,43 +214,51 @@
             font-size: 0.82rem;
         }
 
-        .unit-stats {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
+        .unit-inline-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 18px;
+            margin-top: 14px;
+            padding-top: 14px;
+            border-top: 1px solid var(--panel-border);
+        }
+
+        .unit-inline-item {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 8px;
+            min-width: 0;
+        }
+
+        .unit-inline-item span {
+            color: rgba(106, 65, 45, 0.64);
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        .unit-inline-item strong {
+            font-size: 0.98rem;
+            line-height: 1.5;
+            color: var(--espresso);
+            word-break: break-word;
+        }
+
+        .unit-actions {
+            display: flex;
+            justify-content: flex-end;
             margin-top: 16px;
         }
 
-        .unit-stat {
-            border-radius: 18px;
-            padding: 15px;
-            background: rgba(255, 249, 241, 0.84);
-            border: 1px solid var(--panel-border);
-        }
-
-        .unit-stat span {
-            display: block;
-            color: rgba(106, 65, 45, 0.64);
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .unit-stat strong {
-            display: block;
-            margin-top: 8px;
-            font-size: 1rem;
-            line-height: 1.45;
-        }
-
         .highlight-panel {
-            padding: 26px;
+            padding: 22px 24px;
             background: linear-gradient(180deg, #ffffff 0%, #fbfcff 100%);
         }
 
         .highlight-grid {
             display: grid;
-            grid-template-columns: minmax(280px, 0.88fr) minmax(0, 1fr);
+            grid-template-columns: minmax(220px, 0.7fr) minmax(0, 1fr);
             gap: 18px;
         }
 
@@ -258,7 +266,7 @@
             display: grid;
             align-content: start;
             justify-items: center;
-            padding: 26px 18px;
+            padding: 18px;
             border-radius: 24px;
             background: var(--panel-alt);
             border: 1px solid var(--panel-border);
@@ -280,8 +288,8 @@
 
         .profile-card strong {
             display: block;
-            margin-top: 18px;
-            font-size: 1.55rem;
+            margin-top: 14px;
+            font-size: 1.3rem;
             line-height: 1.2;
             color: var(--espresso);
         }
@@ -293,11 +301,11 @@
 
         .info-panel {
             display: grid;
-            gap: 16px;
+            gap: 12px;
         }
 
         .info-card {
-            padding: 20px;
+            padding: 18px;
             border-radius: 24px;
             background: #fff;
             border: 1px solid var(--panel-border);
@@ -328,14 +336,33 @@
         }
 
         .info-row span {
-            color: #98a3c1;
+            color: rgba(106, 65, 45, 0.64);
             font-size: 0.92rem;
         }
 
         .info-row strong {
             font-size: 0.98rem;
             line-height: 1.5;
-            color: #2b315d;
+            color: var(--espresso);
+        }
+
+        .mini-section-title {
+            margin: 8px 0 14px;
+            font-size: 1.25rem;
+            color: var(--espresso);
+        }
+
+        .mini-item strong {
+            color: var(--espresso);
+        }
+
+        .mini-item .list-meta {
+            margin-top: 4px;
+        }
+
+        .widget-stack {
+            display: grid;
+            gap: 16px;
         }
 
         .status-banner {
@@ -406,12 +433,40 @@
         }
 
         @media (max-width: 1180px) {
-            .owner-grid-4,
             .owner-grid-3,
             .owner-grid-main,
-            .unit-stats,
             .highlight-grid {
                 grid-template-columns: 1fr !important;
+            }
+        }
+
+        @media (max-width: 760px) {
+            .owner-dashboard {
+                gap: 22px;
+            }
+
+            .metric-card,
+            .section-card,
+            .mini-card,
+            .highlight-panel {
+                padding: 18px;
+            }
+
+            .section-heading {
+                margin-bottom: 18px;
+            }
+
+            .unit-inline-meta {
+                display: grid;
+                gap: 10px;
+            }
+
+            .unit-actions {
+                justify-content: stretch;
+            }
+
+            .unit-actions .danger-button {
+                width: 100%;
             }
         }
     </style>
@@ -422,16 +477,23 @@
                 <p style="margin: 0; color: #96a1bf; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700;">
                     Dashboard Admin
                 </p>
-                <h2 style="margin: 8px 0 0; font-size: 2.5rem; line-height: 1.08; color: #1c2350;">
-                    Patient profile style untuk dashboard operasional
+                <h2 style="margin: 8px 0 0; font-size: 2.35rem; line-height: 1.08; color: var(--espresso);">
+                    Dashboard operasional kopi keliling
                 </h2>
                 <p style="margin: 10px 0 0; color: var(--text-soft); max-width: 760px;">
-                    Tampilan disesuaikan mengikuti referensi klinik: sidebar lembut, kartu putih bersih, dan panel informasi yang lebih rapi tanpa mengubah fitur, isi, atau aksi dashboard.
+                    Pantau gerobak aktif, driver yang bertugas, dan siapa saja yang sedang login dari satu panel yang lebih ringkas.
                 </p>
             </div>
-            <a href="{{ route('dashboard.traccar') }}" class="section-button">
-                Monitoring Traccar
-            </a>
+            <div style="display: grid; gap: 10px; justify-items: end;">
+                <a href="{{ route('dashboard.traccar') }}" class="section-button">
+                    Monitoring Traccar
+                </a>
+                <div style="padding: 10px 14px; border-radius: 18px; border: 1px solid var(--panel-border); background: rgba(255,255,255,0.75); text-align: right;">
+                    <strong style="display: block; color: var(--espresso);">Owner utama</strong>
+                    <span style="display: block; margin-top: 4px; color: var(--text-soft); font-size: 0.9rem;">{{ $adminEmail }}</span>
+                    <span style="display: block; margin-top: 4px; color: var(--text-soft); font-size: 0.88rem;">{{ $latestLoginAt?->translatedFormat('d M Y H:i') ?? 'Belum ada data' }}</span>
+                </div>
+            </div>
         </div>
     </x-slot>
 
@@ -442,7 +504,7 @@
             </section>
         @endif
 
-        <section class="owner-grid-4">
+        <section class="owner-grid-3">
             <article class="panel-card metric-card">
                 <span class="eyebrow">User Aktif</span>
                 <strong>{{ $activeUserCount }}</strong>
@@ -457,13 +519,6 @@
                 <span class="eyebrow">Driver</span>
                 <strong>{{ $driverCount }}</strong>
                 <p>{{ $availableDrivers->count() }} driver masih tersedia untuk assignment baru.</p>
-            </article>
-            <article class="panel-card metric-card">
-                <span class="eyebrow">Owner Utama</span>
-                <strong style="font-size: 1.18rem; line-height: 1.4;">
-                    {{ $latestLoginAt?->translatedFormat('d M Y H:i') ?? 'Belum ada data' }}
-                </strong>
-                <p>{{ $adminEmail }}</p>
             </article>
         </section>
 
@@ -481,37 +536,39 @@
                     @forelse ($units as $unit)
                         <article class="unit-item">
                             <div class="unit-head">
-                                <div>
-                                    <strong style="display: block; font-size: 1.08rem; color: var(--espresso);">{{ $unit['name'] }}</strong>
-                                    <span class="unit-meta" style="display: block; margin-top: 6px;">
+                                <div class="unit-title">
+                                    <strong>{{ $unit['name'] }}</strong>
+                                    <span class="unit-meta">
                                         {{ $unit['code'] }} • {{ $unit['device_id'] ? 'HP '.$unit['device_id'] : 'Belum ada HP driver aktif' }}
                                     </span>
                                 </div>
                                 <span class="status-pill">{{ ucfirst($unit['status']) }}</span>
                             </div>
 
-                            <div class="unit-stats">
-                                <div class="unit-stat">
+                            <div class="unit-inline-meta">
+                                <div class="unit-inline-item">
                                     <span>Driver Aktif</span>
                                     <strong>{{ $unit['active_assignment']?->driver?->name ?? 'Belum ada driver' }}</strong>
                                 </div>
-                                <div class="unit-stat">
+                                <div class="unit-inline-item">
                                     <span>Update Lokasi</span>
                                     <strong>{{ $unit['latest_location']?->recorded_at?->diffForHumans() ?? 'Belum ada data' }}</strong>
                                 </div>
-                                <div class="unit-stat">
+                                <div class="unit-inline-item">
                                     <span>Baterai</span>
                                     <strong>{{ $unit['latest_location']?->battery_level !== null ? $unit['latest_location']->battery_level.'%' : '-' }}</strong>
                                 </div>
                             </div>
 
                             @if ($unit['active_assignment'])
-                                <form method="POST" action="{{ route('dashboard.assignments.finish', $unit['active_assignment']) }}" style="margin-top: 16px;">
-                                    @csrf
-                                    @method('PATCH')
-                                    <input type="hidden" name="redirect_to" value="dashboard">
-                                    <button type="submit" class="danger-button">Selesaikan Assignment</button>
-                                </form>
+                                <div class="unit-actions">
+                                    <form method="POST" action="{{ route('dashboard.assignments.finish', $unit['active_assignment']) }}" style="margin: 0;">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="hidden" name="redirect_to" value="dashboard">
+                                        <button type="submit" class="danger-button">Selesaikan Assignment</button>
+                                    </form>
+                                </div>
                             @endif
                         </article>
                     @empty
@@ -520,15 +577,15 @@
                 </div>
             </article>
 
-            <div style="display: grid; gap: 18px;">
+            <div class="widget-stack">
                 <article class="panel-card mini-card">
                     <span class="eyebrow">Assignment Aktif</span>
-                    <h3 style="margin: 10px 0 16px; font-size: 1.5rem; color: var(--espresso);">Siapa bawa gerobak</h3>
+                    <h3 class="mini-section-title">Siapa bawa gerobak</h3>
                     <div class="mini-list">
                         @forelse ($activeAssignments as $assignment)
                             <article class="mini-item">
-                                <strong style="display: block; color: var(--espresso);">{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
-                                <span class="list-meta" style="display: block; margin-top: 6px;">
+                                <strong>{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
+                                <span class="list-meta" style="display: block;">
                                     Mulai {{ $assignment->assigned_at?->translatedFormat('d M Y H:i') }}
                                 </span>
                             </article>
@@ -540,15 +597,15 @@
 
                 <article class="panel-card mini-card">
                     <span class="eyebrow">User Login</span>
-                    <h3 style="margin: 10px 0 16px; font-size: 1.5rem; color: var(--espresso);">Daftar user yang sedang aktif</h3>
+                    <h3 class="mini-section-title">Daftar user yang sedang aktif</h3>
                     <div class="mini-list">
                         @forelse ($activeUsers as $activeUser)
                             <article class="mini-item">
                                 <div style="display: flex; justify-content: space-between; gap: 12px; align-items: start; flex-wrap: wrap;">
                                     <div>
-                                        <strong style="display: block; color: var(--espresso);">{{ $activeUser['name'] }}</strong>
-                                        <span class="list-meta" style="display: block; margin-top: 6px;">{{ $activeUser['email'] }}</span>
-                                        <span class="list-meta" style="display: block; margin-top: 6px;">{{ $activeUser['last_seen']->diffForHumans() }}</span>
+                                        <strong>{{ $activeUser['name'] }}</strong>
+                                        <span class="list-meta" style="display: block;">{{ $activeUser['email'] }}</span>
+                                        <span class="list-meta" style="display: block;">{{ $activeUser['last_seen']->diffForHumans() }}</span>
                                     </div>
                                     @if (! $activeUser['is_current_admin'])
                                         <form method="POST" action="{{ route('dashboard.users.kick', $activeUser['user_id']) }}" style="margin: 0;">
