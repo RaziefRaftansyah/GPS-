@@ -405,6 +405,16 @@
             font-size: 1.2rem;
         }
 
+        .validation-list {
+            margin: 0;
+            padding: 14px 16px 14px 34px;
+            border: 1px solid rgba(239, 91, 122, 0.18);
+            border-radius: 16px;
+            background: rgba(239, 91, 122, 0.08);
+            color: var(--danger);
+            line-height: 1.6;
+        }
+
         @media (max-width: 1180px) {
             .owner-grid-4,
             .owner-grid-3,
@@ -429,11 +439,36 @@
                     Tampilan disesuaikan mengikuti referensi klinik: sidebar lembut, kartu putih bersih, dan panel informasi yang lebih rapi tanpa mengubah fitur, isi, atau aksi dashboard.
                 </p>
             </div>
-            <a href="{{ route('dashboard.traccar') }}" class="section-button">
-                Monitoring Traccar
-            </a>
+            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                <button
+                    type="button"
+                    class="primary-button"
+                    data-open-modal="unit-form-modal"
+                    aria-expanded="false"
+                    aria-controls="unit-form-modal"
+                >
+                    Tambah Gerobak
+                </button>
+                <button
+                    type="button"
+                    class="success-button"
+                    data-open-modal="driver-form-modal"
+                    aria-expanded="false"
+                    aria-controls="driver-form-modal"
+                >
+                    Tambah Driver
+                </button>
+                <a href="{{ route('dashboard.traccar') }}" class="section-button">
+                    Monitoring Traccar
+                </a>
+            </div>
         </div>
     </x-slot>
+
+    @php
+        $unitFormOpen = $errors->unitForm->any();
+        $driverFormOpen = $errors->driverForm->any();
+    @endphp
 
     <div class="owner-dashboard">
         @if (session('dashboard_status'))
@@ -609,7 +644,7 @@
         </section>
     </div>
 
-    <div id="unit-form-modal" class="modal-overlay {{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'is-open' : '' }}" aria-hidden="{{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'false' : 'true' }}">
+    <div id="unit-form-modal" class="modal-overlay {{ $unitFormOpen ? 'is-open' : '' }}" aria-hidden="{{ $unitFormOpen ? 'false' : 'true' }}">
         <div class="modal-card">
             <div class="modal-header">
                 <div>
@@ -622,12 +657,21 @@
             <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
                 @csrf
                 <input type="hidden" name="redirect_to" value="dashboard">
+
+                @if ($unitFormOpen)
+                    <ul class="validation-list">
+                        @foreach ($errors->unitForm->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
                 <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ old('name') }}">
                 <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}">
                 <select class="dashboard-select" name="status">
-                    <option value="ready">Siap Operasi</option>
-                    <option value="maintenance">Maintenance</option>
-                    <option value="inactive">Nonaktif</option>
+                    <option value="ready" @selected(old('status', 'ready') === 'ready')>Siap Operasi</option>
+                    <option value="maintenance" @selected(old('status') === 'maintenance')>Maintenance</option>
+                    <option value="inactive" @selected(old('status') === 'inactive')>Nonaktif</option>
                 </select>
                 <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ old('notes') }}</textarea>
                 <button type="submit" class="primary-button">Simpan Gerobak</button>
@@ -635,7 +679,7 @@
         </div>
     </div>
 
-    <div id="driver-form-modal" class="modal-overlay {{ $errors->hasAny(['email', 'device_id', 'password']) ? 'is-open' : '' }}" aria-hidden="{{ $errors->hasAny(['email', 'device_id', 'password']) ? 'false' : 'true' }}">
+    <div id="driver-form-modal" class="modal-overlay {{ $driverFormOpen ? 'is-open' : '' }}" aria-hidden="{{ $driverFormOpen ? 'false' : 'true' }}">
         <div class="modal-card">
             <div class="modal-header">
                 <div>
@@ -648,6 +692,15 @@
             <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
                 @csrf
                 <input type="hidden" name="redirect_to" value="dashboard">
+
+                @if ($driverFormOpen)
+                    <ul class="validation-list">
+                        @foreach ($errors->driverForm->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                @endif
+
                 <input class="dashboard-input" type="text" name="name" placeholder="Nama driver" value="{{ old('name') }}">
                 <input class="dashboard-input" type="email" name="email" placeholder="Email driver" value="{{ old('email') }}">
                 <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID HP driver" value="{{ old('device_id') }}">

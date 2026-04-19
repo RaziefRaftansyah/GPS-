@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -291,12 +292,12 @@ class DashboardController extends Controller
             abort(403);
         }
 
-        $validated = $request->validate([
+        $validated = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'device_id' => ['required', 'string', 'max:120', 'unique:users,device_id'],
             'password' => ['required', 'string', 'min:8'],
-        ]);
+        ])->validateWithBag('driverForm');
 
         User::query()->create([
             'name' => $validated['name'],
@@ -317,12 +318,12 @@ class DashboardController extends Controller
             abort(403);
         }
 
-        $validated = $request->validate([
+        $validated = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'code' => ['required', 'string', 'max:80', 'unique:units,code'],
             'status' => ['required', 'string', 'max:30'],
             'notes' => ['nullable', 'string', 'max:1000'],
-        ]);
+        ])->validateWithBag('unitForm');
 
         Unit::query()->create($validated);
 

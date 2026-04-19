@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Kopi Keliling Tracker</title>
+    <link rel="icon" type="image/png" href="{{ asset('images/ada-coffee-logo.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600;700;800&display=swap" rel="stylesheet" />
     <link
@@ -39,6 +40,7 @@
             --shadow-lg: 0 24px 80px rgba(59, 36, 24, 0.14);
             --shadow-sm: 0 16px 32px rgba(59, 36, 24, 0.1);
             --shell-radius: 38px;
+            --page-pad: clamp(18px, 3.6vw, 68px);
         }
 
         * {
@@ -81,26 +83,32 @@
         }
 
         .tracker-shell {
-            width: min(1520px, calc(100vw - 48px));
-            margin: 32px auto;
-            border-radius: var(--shell-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--panel-border);
-            background: rgba(255, 250, 242, 0.78);
-            backdrop-filter: blur(18px);
+            width: 100%;
+            min-height: 100vh;
+            margin: 0;
+            border-radius: 0;
+            overflow: visible;
+            box-shadow: none;
+            border: 0;
+            background: rgba(255, 250, 242, 0.88);
+            backdrop-filter: none;
             position: relative;
             z-index: 1;
         }
 
         .tracker-topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 20px;
-            padding: 26px 34px 22px;
+            padding: 14px var(--page-pad) 12px;
             border-bottom: 1px solid var(--panel-border);
-            background: rgba(255, 250, 242, 0.76);
+            background: rgba(255, 250, 242, 0.88);
+            box-shadow: 0 16px 36px rgba(59, 36, 24, 0.08);
+            backdrop-filter: blur(18px);
         }
 
         .tracker-brand {
@@ -111,16 +119,13 @@
         }
 
         .tracker-brand-mark {
-            width: 56px;
-            height: 56px;
-            border-radius: 18px;
-            display: grid;
-            place-items: center;
-            color: #fff;
-            font-size: 1.35rem;
-            font-weight: 800;
-            background: var(--sidebar-bg);
-            box-shadow: var(--shadow-sm);
+            width: 76px;
+            height: 76px;
+            border-radius: 0;
+            display: block;
+            object-fit: contain;
+            background: transparent;
+            box-shadow: none;
             flex-shrink: 0;
         }
 
@@ -147,6 +152,62 @@
             gap: 12px;
             flex-wrap: wrap;
             justify-content: flex-end;
+        }
+
+        .mobile-nav-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            background: rgba(255, 252, 247, 0.92);
+            box-shadow: var(--shadow-sm);
+            color: var(--espresso);
+            cursor: pointer;
+            place-items: center;
+        }
+
+        .mobile-nav-toggle span {
+            width: 20px;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+            position: relative;
+            transition: background 160ms ease;
+        }
+
+        .mobile-nav-toggle span::before,
+        .mobile-nav-toggle span::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: 20px;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+            transition: transform 180ms ease, top 180ms ease;
+        }
+
+        .mobile-nav-toggle span::before {
+            top: -7px;
+        }
+
+        .mobile-nav-toggle span::after {
+            top: 7px;
+        }
+
+        .mobile-nav-toggle.is-open span {
+            background: transparent;
+        }
+
+        .mobile-nav-toggle.is-open span::before {
+            top: 0;
+            transform: rotate(45deg);
+        }
+
+        .mobile-nav-toggle.is-open span::after {
+            top: 0;
+            transform: rotate(-45deg);
         }
 
         .tracker-chip,
@@ -192,7 +253,7 @@
         }
 
         .tracker-content {
-            padding: 24px 34px 34px;
+            padding: 24px var(--page-pad) 42px;
             display: grid;
             gap: 22px;
             background: rgba(255, 252, 247, 0.92);
@@ -200,8 +261,9 @@
 
         .hero-grid {
             display: grid;
-            grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.8fr);
+            grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.72fr);
             gap: 22px;
+            align-items: stretch;
         }
 
         .panel,
@@ -214,12 +276,15 @@
         }
 
         .hero-card {
-            padding: 34px;
+            padding: 0;
             position: relative;
             overflow: hidden;
+            display: grid;
+            align-content: start;
         }
 
-        .hero-card::after {
+        .hero-card::after,
+        .hero-map-card::after {
             content: "";
             position: absolute;
             inset: auto -40px -40px auto;
@@ -228,6 +293,803 @@
             border-radius: 50%;
             background: radial-gradient(circle, rgba(181, 106, 59, 0.16), transparent 70%);
             pointer-events: none;
+        }
+
+        .hero-banner {
+            min-height: 174px;
+            background:
+                linear-gradient(90deg, rgba(25, 18, 16, 0.18), rgba(25, 18, 16, 0.02)),
+                url("{{ asset('images/coffee-hero-banner.jpg') }}") center / cover no-repeat;
+            border-bottom: 1px solid var(--panel-border);
+        }
+
+        .hero-copy {
+            padding: 28px 30px 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-map-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 100%;
+            padding: 24px;
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: 18px;
+            background:
+                radial-gradient(circle at top left, rgba(181, 106, 59, 0.14), transparent 28%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 243, 236, 0.96));
+        }
+
+        .hero-map-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-map-heading h2 {
+            margin-top: 12px;
+            font-size: clamp(1.8rem, 3vw, 2.8rem);
+            line-height: 1.02;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-map-heading p {
+            margin-top: 10px;
+            max-width: 60ch;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .hero-map-frame {
+            position: relative;
+            min-height: 530px;
+            border: 10px solid rgba(255, 255, 255, 0.84);
+            border-radius: 30px;
+            overflow: hidden;
+            background: #f5efe6;
+            box-shadow:
+                inset 0 0 0 1px rgba(76, 48, 33, 0.08),
+                0 22px 44px rgba(59, 36, 24, 0.14);
+            z-index: 1;
+        }
+
+        .hero-showcase {
+            margin: -24px calc(var(--page-pad) * -1) 0;
+            position: relative;
+        }
+
+        .hero-banner-slide {
+            min-height: 540px;
+            padding: 86px min(9vw, 130px) 170px;
+            position: relative;
+            overflow: hidden;
+            display: grid;
+            align-items: center;
+            color: #fff;
+            background:
+                linear-gradient(90deg, rgba(14, 12, 10, 0.82) 0%, rgba(14, 12, 10, 0.62) 42%, rgba(14, 12, 10, 0.28) 100%),
+                linear-gradient(180deg, rgba(14, 12, 10, 0.18), rgba(14, 12, 10, 0.66)),
+                url("{{ asset('images/coffee-hero-banner.jpg') }}") center / cover no-repeat;
+        }
+
+        .hero-banner-slide::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 34%, rgba(255, 255, 255, 0.16), transparent 16%),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.22), transparent 62%);
+            pointer-events: none;
+        }
+
+        .hero-banner-content {
+            position: relative;
+            z-index: 1;
+            max-width: 760px;
+        }
+
+        .hero-banner-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: #ffc64a;
+            font-weight: 800;
+            letter-spacing: 0.02em;
+            font-size: clamp(1rem, 1.4vw, 1.25rem);
+        }
+
+        .hero-banner-kicker::before {
+            content: "";
+            width: 34px;
+            height: 2px;
+            border-radius: 999px;
+            background: currentColor;
+        }
+
+        .hero-banner-content h1 {
+            margin-top: 22px;
+            font-size: clamp(2.8rem, 5.4vw, 5.9rem);
+            line-height: 1.03;
+            letter-spacing: -0.055em;
+            text-wrap: balance;
+        }
+
+        .hero-banner-content p {
+            max-width: 610px;
+            margin-top: 24px;
+            color: rgba(255, 255, 255, 0.84);
+            line-height: 1.8;
+            font-size: clamp(1rem, 1.4vw, 1.18rem);
+        }
+
+        .hero-slider-dots {
+            position: absolute;
+            left: 50%;
+            bottom: 52px;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hero-slider-dots span {
+            width: 9px;
+            height: 9px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.34);
+        }
+
+        .hero-slider-dots span.is-active {
+            width: 42px;
+            background: #fff;
+        }
+
+        .hero-floating-row {
+            width: min(1240px, calc(100% - 56px));
+            margin: -118px auto 0;
+            position: relative;
+            z-index: 5;
+            display: grid;
+            grid-template-columns: minmax(220px, 0.88fr) minmax(420px, 1.32fr) minmax(220px, 0.88fr);
+            gap: 20px;
+            align-items: end;
+        }
+
+        .hero-floating-card {
+            padding: 26px;
+            min-height: 190px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.72);
+            background: rgba(255, 252, 247, 0.94);
+            box-shadow: 0 28px 70px rgba(33, 24, 18, 0.22);
+            backdrop-filter: blur(18px);
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .hero-floating-card:hover,
+        .hero-floating-map:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 34px 86px rgba(33, 24, 18, 0.27);
+        }
+
+        .hero-floating-card small,
+        .hero-floating-card strong,
+        .hero-floating-card span {
+            display: block;
+        }
+
+        .hero-floating-card small {
+            color: var(--text-soft);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .hero-floating-card strong {
+            margin-top: 14px;
+            font-size: clamp(2rem, 3.4vw, 3.2rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-floating-card span {
+            margin-top: 12px;
+            color: var(--text-soft);
+            line-height: 1.7;
+        }
+
+        .hero-floating-card.is-highlight {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.2);
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, 0.16), transparent 34%),
+                linear-gradient(180deg, #6a412d 0%, #8a5536 58%, #b56a3b 100%);
+        }
+
+        .hero-floating-card.is-highlight small,
+        .hero-floating-card.is-highlight span {
+            color: rgba(255, 249, 241, 0.82);
+        }
+
+        .hero-floating-map {
+            padding: 18px;
+            border-radius: 34px;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            background: rgba(255, 252, 247, 0.94);
+            box-shadow: 0 30px 80px rgba(33, 24, 18, 0.24);
+            backdrop-filter: blur(18px);
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+
+        .hero-floating-map-header {
+            padding: 8px 10px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+        }
+
+        .hero-floating-map-header h2 {
+            margin-top: 8px;
+            font-size: clamp(1.35rem, 2.2vw, 2rem);
+            line-height: 1.06;
+            letter-spacing: -0.035em;
+        }
+
+        .hero-floating-map-header p {
+            margin-top: 8px;
+            max-width: 52ch;
+            color: var(--text-soft);
+            line-height: 1.6;
+            font-size: 0.94rem;
+        }
+
+        .hero-floating-map .hero-map-frame {
+            min-height: 370px;
+            border-width: 8px;
+            border-radius: 26px;
+            box-shadow: inset 0 0 0 1px rgba(76, 48, 33, 0.08);
+        }
+
+        .hero-floating-map #map {
+            min-height: 370px;
+        }
+
+        .hero-showcase {
+            margin: -24px calc(var(--page-pad) * -1) 0;
+            padding: clamp(34px, 5vw, 72px) 0 clamp(38px, 5vw, 72px);
+            position: relative;
+            overflow: hidden;
+            background:
+                linear-gradient(90deg, rgba(8, 12, 12, 0.7) 0%, rgba(8, 12, 12, 0.42) 46%, rgba(8, 12, 12, 0.68) 100%),
+                linear-gradient(180deg, rgba(8, 12, 12, 0.18), rgba(8, 12, 12, 0.62)),
+                url("{{ asset('images/coffee-hero-banner-new.png') }}") center / cover no-repeat;
+        }
+
+        .hero-showcase::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.12), transparent 18%),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.34), transparent 58%);
+            pointer-events: none;
+        }
+
+        .hero-landing-grid {
+            width: min(1440px, calc(100% - 64px));
+            min-height: 620px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(320px, 390px) minmax(0, 1fr);
+            gap: clamp(22px, 4vw, 46px);
+            align-items: stretch;
+        }
+
+        .hero-gps-panel {
+            padding: 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.62);
+            background: rgba(255, 252, 247, 0.94);
+            box-shadow: 0 32px 90px rgba(0, 0, 0, 0.34);
+            backdrop-filter: blur(18px);
+            display: grid;
+            grid-template-rows: auto 1fr;
+            justify-self: start;
+            align-self: stretch;
+            width: min(100%, 390px);
+        }
+
+        .hero-gps-panel .hero-map-frame {
+            height: 100%;
+            min-height: 0;
+            border-width: 5px;
+            border-radius: 14px;
+            box-shadow:
+                inset 0 0 0 1px rgba(76, 48, 33, 0.08),
+                0 12px 28px rgba(59, 36, 24, 0.1);
+        }
+
+        .hero-gps-panel #map {
+            height: 100%;
+            min-height: 0;
+        }
+
+        .hero-gps-caption {
+            display: grid;
+            gap: 12px;
+            padding: 8px 10px 14px;
+        }
+
+        .hero-gps-caption h2 {
+            margin-top: 8px;
+            font-size: clamp(1.35rem, 2vw, 2rem);
+            line-height: 1.06;
+            letter-spacing: -0.035em;
+        }
+
+        .hero-gps-caption p {
+            margin-top: 8px;
+            max-width: 30ch;
+            color: var(--text-soft);
+            line-height: 1.6;
+            font-size: 0.88rem;
+        }
+
+        .hero-description-panel {
+            padding: clamp(22px, 3vw, 34px);
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            border-radius: 26px;
+            background:
+                linear-gradient(180deg, rgba(12, 13, 12, 0.28), rgba(12, 13, 12, 0.18)),
+                rgba(255, 255, 255, 0.08);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(10px);
+            color: #fff;
+            text-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+            justify-self: stretch;
+            align-self: stretch;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-description-panel .eyebrow {
+            background: rgba(255, 198, 74, 0.16);
+            color: #ffc64a;
+            border: 1px solid rgba(255, 198, 74, 0.2);
+        }
+
+        .hero-description-panel h1 {
+            margin-top: 18px;
+            max-width: 18ch;
+            font-size: clamp(2.4rem, 4vw, 4.8rem);
+            line-height: 1.02;
+            letter-spacing: -0.06em;
+            text-wrap: balance;
+        }
+
+        .hero-description-panel p {
+            max-width: 86ch;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.86);
+            line-height: 1.72;
+            font-size: clamp(1rem, 1.18vw, 1.12rem);
+        }
+
+        .hero-info-cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 22px;
+        }
+
+        .hero-info-card {
+            min-height: 112px;
+            padding: 16px 18px;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.54);
+            background: rgba(255, 252, 247, 0.92);
+            box-shadow: 0 24px 54px rgba(0, 0, 0, 0.18);
+            color: var(--text-main);
+            text-shadow: none;
+            backdrop-filter: blur(14px);
+        }
+
+        .hero-info-card small,
+        .hero-info-card strong,
+        .hero-info-card span {
+            display: block;
+        }
+
+        .hero-info-card small {
+            color: var(--text-soft);
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        .hero-info-card strong {
+            margin-top: 10px;
+            font-size: clamp(1.55rem, 2.1vw, 2.12rem);
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .hero-info-card span {
+            margin-top: 10px;
+            color: var(--text-soft);
+            line-height: 1.45;
+            font-size: 0.86rem;
+        }
+
+        .hero-info-card.is-highlight {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.22);
+            background:
+                radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 34%),
+                linear-gradient(180deg, #6a412d 0%, #8a5536 58%, #b56a3b 100%);
+        }
+
+        .hero-info-card.is-highlight small,
+        .hero-info-card.is-highlight span {
+            color: rgba(255, 249, 241, 0.82);
+        }
+
+        .about-section {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(280px, 390px);
+            gap: clamp(32px, 3vw, 52px);
+            align-items: center;
+            justify-content: center;
+            padding: clamp(30px, 4vw, 52px);
+            overflow: hidden;
+        }
+
+        .about-copy {
+            justify-self: end;
+            width: 100%;
+            max-width: 760px;
+            padding-right: 0;
+        }
+
+        .slide-in-up {
+            opacity: 0;
+            transform: translateY(48px);
+            transition:
+                opacity 700ms ease,
+                transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .slide-in-up.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .about-copy h2 {
+            margin-top: 16px;
+            margin-left: auto;
+            max-width: 14ch;
+            font-size: clamp(2.4rem, 4vw, 4.6rem);
+            line-height: 1.02;
+            letter-spacing: -0.055em;
+            text-align: right;
+        }
+
+        .about-copy p {
+            max-width: 72ch;
+            margin-left: auto;
+            margin-top: 18px;
+            color: var(--text-soft);
+            line-height: 1.82;
+            font-size: clamp(1rem, 1.2vw, 1.08rem);
+            text-align: right;
+        }
+
+        .about-copy .eyebrow {
+            margin-left: auto;
+            display: flex;
+            width: fit-content;
+        }
+
+        .about-points {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .about-point {
+            padding: 16px;
+            border-radius: 18px;
+            border: 1px solid var(--panel-border);
+            background: rgba(255, 249, 241, 0.76);
+            text-align: right;
+        }
+
+        .about-point strong,
+        .about-point span {
+            display: block;
+        }
+
+        .about-point strong {
+            color: var(--espresso);
+        }
+
+        .about-point span {
+            margin-top: 8px;
+            color: var(--text-soft);
+            line-height: 1.55;
+            font-size: 0.9rem;
+        }
+
+        .about-photo-wrap {
+            position: relative;
+            justify-self: end;
+            width: min(100%, 390px);
+        }
+
+        .about-photo-wrap::before {
+            content: "";
+            position: absolute;
+            inset: 24px -16px -18px 26px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(106, 65, 45, 0.18), rgba(181, 106, 59, 0.28));
+            transform: rotate(3deg);
+        }
+
+        .about-photo {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 4 / 5;
+            object-fit: cover;
+            border-radius: 28px;
+            border: 10px solid rgba(255, 252, 247, 0.94);
+            box-shadow: 0 28px 70px rgba(59, 36, 24, 0.22);
+            background: var(--latte);
+        }
+
+        .menu-section {
+            position: relative;
+            overflow: hidden;
+            padding: clamp(30px, 4vw, 54px);
+            scroll-margin-top: 120px;
+            background:
+                radial-gradient(circle at top left, rgba(181, 106, 59, 0.2), transparent 26%),
+                linear-gradient(135deg, rgba(255, 252, 247, 0.98), rgba(248, 239, 226, 0.94));
+        }
+
+        .menu-section::before {
+            content: "";
+            position: absolute;
+            inset: auto -80px -150px auto;
+            width: 340px;
+            height: 340px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(47, 107, 85, 0.14), transparent 68%);
+            pointer-events: none;
+        }
+
+        .menu-section-header {
+            position: relative;
+            z-index: 1;
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(250px, 0.42fr);
+            gap: 24px;
+            align-items: end;
+        }
+
+        .menu-section-header h2 {
+            margin-top: 16px;
+            max-width: 12ch;
+            font-size: clamp(2.35rem, 4vw, 4.6rem);
+            line-height: 1;
+            letter-spacing: -0.055em;
+        }
+
+        .menu-section-header p {
+            max-width: 68ch;
+            margin-top: 16px;
+            color: var(--text-soft);
+            line-height: 1.82;
+            font-size: clamp(1rem, 1.15vw, 1.08rem);
+        }
+
+        .menu-note {
+            justify-self: end;
+            padding: 18px;
+            border-radius: 24px;
+            border: 1px solid rgba(76, 48, 33, 0.12);
+            background: rgba(255, 249, 241, 0.72);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .menu-note strong,
+        .menu-note span {
+            display: block;
+        }
+
+        .menu-note strong {
+            font-size: 1.4rem;
+            letter-spacing: -0.04em;
+        }
+
+        .menu-note span {
+            margin-top: 8px;
+            color: var(--text-soft);
+            line-height: 1.6;
+            font-size: 0.94rem;
+        }
+
+        .menu-showcase {
+            position: relative;
+            z-index: 1;
+            margin-top: 30px;
+        }
+
+        .menu-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+
+        .menu-card {
+            position: relative;
+            display: grid;
+            grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1fr);
+            overflow: hidden;
+            min-height: 260px;
+            border-radius: 32px;
+            border: 1px solid rgba(76, 48, 33, 0.12);
+            background:
+                radial-gradient(circle at top left, rgba(181, 106, 59, 0.08), transparent 32%),
+                rgba(255, 252, 247, 0.94);
+            box-shadow: 0 18px 42px rgba(59, 36, 24, 0.09);
+            transition:
+                transform 180ms ease,
+                border-color 180ms ease,
+                box-shadow 180ms ease;
+        }
+
+        .menu-card:nth-child(even) {
+            grid-template-columns: minmax(0, 1fr) minmax(240px, 0.42fr);
+        }
+
+        .menu-card:nth-child(even) .menu-card-image-wrap {
+            grid-column: 2;
+            grid-row: 1;
+        }
+
+        .menu-card:nth-child(even) .menu-card-body {
+            grid-column: 1;
+            grid-row: 1;
+            text-align: right;
+        }
+
+        .menu-card:nth-child(even) .menu-card-title-row {
+            flex-direction: row-reverse;
+        }
+
+        .menu-card:nth-child(even) .menu-tags {
+            justify-content: flex-end;
+        }
+
+        .menu-card:nth-child(even) .menu-badge {
+            right: 14px;
+            left: auto;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(181, 106, 59, 0.36);
+            box-shadow: 0 24px 56px rgba(59, 36, 24, 0.14);
+        }
+
+        .menu-card-image-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            min-height: 260px;
+            background:
+                radial-gradient(circle at 50% 44%, rgba(181, 106, 59, 0.16), transparent 46%),
+                #fff;
+        }
+
+        .menu-card-image {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            padding: 10px;
+            transition: transform 220ms ease;
+        }
+
+        .menu-card:hover .menu-card-image {
+            transform: scale(1.05);
+        }
+
+        .menu-badge {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            padding: 8px 10px;
+            border-radius: 999px;
+            background: rgba(255, 252, 247, 0.88);
+            color: var(--mocha);
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            box-shadow: 0 12px 26px rgba(59, 36, 24, 0.12);
+        }
+
+        .menu-card-body {
+            align-self: center;
+            padding: clamp(22px, 3vw, 34px);
+        }
+
+        .menu-card-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .menu-card h3 {
+            margin: 0;
+            font-size: clamp(1.55rem, 2.5vw, 2.2rem);
+            line-height: 1.06;
+            letter-spacing: -0.035em;
+        }
+
+        .menu-price {
+            flex-shrink: 0;
+            padding: 8px 11px;
+            border-radius: 999px;
+            background: rgba(181, 106, 59, 0.12);
+            color: var(--caramel);
+            font-weight: 900;
+        }
+
+        .menu-card p {
+            max-width: 58ch;
+            margin-top: 12px;
+            color: var(--text-soft);
+            line-height: 1.78;
+            font-size: 1rem;
+        }
+
+        .menu-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 14px;
+        }
+
+        .menu-tags span {
+            padding: 7px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(76, 48, 33, 0.1);
+            background: rgba(255, 249, 241, 0.72);
+            color: rgba(59, 36, 24, 0.74);
+            font-size: 0.82rem;
+            font-weight: 700;
         }
 
         .eyebrow {
@@ -253,8 +1115,8 @@
 
         .hero-card h1 {
             margin-top: 18px;
-            max-width: 12ch;
-            font-size: clamp(2.8rem, 5vw, 4.6rem);
+            max-width: 10ch;
+            font-size: clamp(2.4rem, 4.2vw, 4rem);
             line-height: 1;
             letter-spacing: -0.04em;
         }
@@ -303,6 +1165,13 @@
         .hero-side {
             display: grid;
             gap: 16px;
+        }
+
+        .hero-status-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-top: 24px;
         }
 
         .stat-card {
@@ -453,7 +1322,19 @@
 
         #map {
             width: 100%;
-            height: 560px;
+            height: 100%;
+            min-height: 510px;
+        }
+
+        .user-location-marker {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #2d63e2;
+            border: 4px solid #fff;
+            box-shadow:
+                0 0 0 8px rgba(45, 99, 226, 0.18),
+                0 10px 20px rgba(45, 99, 226, 0.28);
         }
 
         .history-list {
@@ -527,45 +1408,247 @@
 
         @media (max-width: 1100px) {
             .hero-grid,
-            .map-layout {
+            .map-layout,
+            .hero-floating-row,
+            .hero-landing-grid,
+            .menu-section-header,
+            .menu-showcase {
                 grid-template-columns: 1fr;
             }
 
-            #map {
-                height: 440px;
+            .hero-showcase {
+                margin-left: calc(var(--page-pad) * -1);
+                margin-right: calc(var(--page-pad) * -1);
             }
+
+            .hero-landing-grid {
+                width: min(760px, calc(100% - 36px));
+                min-height: auto;
+            }
+
+            .hero-floating-row {
+                width: min(720px, calc(100% - 36px));
+                margin-top: -96px;
+            }
+
+            .hero-floating-map {
+                order: -1;
+            }
+
+            .hero-gps-panel {
+                order: 2;
+                justify-self: center;
+                width: min(100%, 390px);
+            }
+
+            .hero-description-panel {
+                order: 1;
+            }
+
+            .hero-gps-panel .hero-map-frame,
+            .hero-gps-panel #map {
+                min-height: 480px;
+            }
+
+            #map,
+            .hero-map-frame {
+                height: 360px;
+                min-height: 360px;
+            }
+
+            .menu-note {
+                justify-self: stretch;
+            }
+
         }
 
         @media (max-width: 760px) {
             .tracker-shell {
-                width: min(100vw - 24px, 100%);
-                margin: 12px auto;
-                border-radius: 28px;
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
             }
 
             .tracker-topbar,
             .tracker-content {
-                padding-left: 18px;
-                padding-right: 18px;
+                padding-left: var(--page-pad);
+                padding-right: var(--page-pad);
             }
 
             .tracker-topbar {
-                padding-top: 18px;
-                padding-bottom: 18px;
-                align-items: flex-start;
-                flex-direction: column;
+                padding-top: 12px;
+                padding-bottom: 12px;
+                align-items: center;
+                flex-direction: row;
+            }
+
+            .tracker-brand-copy span {
+                display: none;
+            }
+
+            .mobile-nav-toggle {
+                display: inline-grid;
+                margin-left: auto;
             }
 
             .hero-card,
+            .hero-map-card,
+            .hero-floating-card,
+            .hero-floating-map,
+            .hero-gps-panel,
             .panel,
             .stat-card {
                 padding: 20px;
                 border-radius: 24px;
             }
 
-            .tracker-topbar-actions {
-                width: 100%;
+            .hero-gps-panel {
+                padding: 12px;
+                border-radius: 18px;
+            }
+
+            .hero-description-panel {
+                border-radius: 20px;
+            }
+
+            .hero-card {
+                padding: 0;
+            }
+
+            .hero-copy {
+                padding: 22px;
+            }
+
+            .hero-banner {
+                min-height: 130px;
+            }
+
+            .hero-showcase {
+                margin: -18px calc(var(--page-pad) * -1) 0;
+                padding: 38px 0;
+                background-position: 32% center;
+            }
+
+            .hero-banner-slide {
+                min-height: 520px;
+                padding: 58px 22px 142px;
+            }
+
+            .hero-slider-dots {
+                bottom: 36px;
+            }
+
+            .hero-floating-row {
+                width: min(100% - 24px, 620px);
+                margin-top: -86px;
+                gap: 14px;
+            }
+
+            .hero-floating-map-header {
+                flex-direction: column;
+            }
+
+            .hero-landing-grid {
+                width: min(100% - 24px, 620px);
+                gap: 18px;
+            }
+
+            .hero-description-panel h1 {
+                max-width: 14ch;
+                font-size: clamp(2.6rem, 14vw, 4.4rem);
+            }
+
+            .hero-info-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-gps-caption {
+                flex-direction: column;
+            }
+
+            .about-section,
+            .about-points {
+                grid-template-columns: 1fr;
+            }
+
+            .about-section {
+                gap: 22px;
+            }
+
+            .about-photo-wrap {
+                justify-self: stretch;
+                width: min(100%, 360px);
+                margin: 0 auto;
+            }
+
+            .menu-section {
+                padding: 22px;
+            }
+
+            .menu-section-header h2 {
+                max-width: 10ch;
+                font-size: clamp(2.2rem, 13vw, 3.8rem);
+            }
+
+            .menu-list {
+                gap: 14px;
+            }
+
+            .menu-card,
+            .menu-card:nth-child(even) {
+                grid-template-columns: 1fr;
+                grid-template-rows: 190px auto;
+                min-height: auto;
+            }
+
+            .menu-card:nth-child(even) .menu-card-image-wrap,
+            .menu-card:nth-child(even) .menu-card-body {
+                grid-column: 1;
+                grid-row: auto;
+            }
+
+            .menu-card-image-wrap {
+                min-height: 190px;
+            }
+
+            .menu-card:nth-child(even) .menu-card-body {
+                text-align: left;
+            }
+
+            .menu-card:nth-child(even) .menu-card-title-row {
+                flex-direction: row;
+            }
+
+            .menu-card:nth-child(even) .menu-tags {
                 justify-content: flex-start;
+            }
+
+            .menu-card:nth-child(even) .menu-badge {
+                right: auto;
+                left: 14px;
+            }
+
+            .tracker-topbar-actions {
+                display: none;
+                position: absolute;
+                top: calc(100% + 10px);
+                left: var(--page-pad);
+                right: var(--page-pad);
+                width: auto;
+                padding: 14px;
+                border: 1px solid var(--panel-border);
+                border-radius: 22px;
+                background: rgba(255, 250, 242, 0.97);
+                box-shadow: 0 24px 60px rgba(59, 36, 24, 0.18);
+                backdrop-filter: blur(18px);
+                justify-content: flex-start;
+                align-items: stretch;
+                flex-direction: column;
+                z-index: 1001;
+            }
+
+            .tracker-topbar-actions.is-open {
+                display: flex;
             }
 
             .tracker-chip,
@@ -580,8 +1663,23 @@
                 flex-direction: column;
             }
 
-            #map {
-                height: 340px;
+            #map,
+            .hero-map-frame {
+                height: 420px;
+                min-height: 420px;
+            }
+
+            .hero-floating-map .hero-map-frame {
+                min-height: 320px;
+            }
+
+            .hero-floating-map #map {
+                min-height: 320px;
+            }
+
+            .hero-gps-panel .hero-map-frame,
+            .hero-gps-panel #map {
+                min-height: 420px;
             }
         }
     </style>
@@ -590,20 +1688,37 @@
     <div class="tracker-shell">
         <header class="tracker-topbar">
             <div class="tracker-brand">
-                <div class="tracker-brand-mark">K</div>
+                <img
+                    class="tracker-brand-mark"
+                    src="{{ asset('images/ada-coffee-logo.png') }}"
+                    alt="AD.A Coffee"
+                >
                 <div class="tracker-brand-copy">
-                    <strong>Kopi Keliling</strong>
+                    <strong>AD.A Coffee</strong>
                     <span>Peta publik dengan bahasa visual yang selaras dengan dashboard internal.</span>
                 </div>
             </div>
 
-            <div class="tracker-topbar-actions">
+            <button
+                class="mobile-nav-toggle"
+                id="mobile-nav-toggle"
+                type="button"
+                aria-label="Buka menu navigasi"
+                aria-expanded="false"
+                aria-controls="tracker-nav-actions"
+            >
+                <span></span>
+            </button>
+
+            <div class="tracker-topbar-actions" id="tracker-nav-actions">
                 <div class="tracker-chip">
                     <div>
                         <small>Status</small>
                         <strong><span id="active-unit-count">{{ count($activeUnits) }}</span> gerobak aktif</strong>
                     </div>
                 </div>
+
+                <a href="#menu" class="tracker-link">Menu</a>
 
                 @auth
                     <a href="{{ route('dashboard') }}" class="tracker-link">Buka Dashboard</a>
@@ -621,82 +1736,255 @@
         </header>
 
         <main class="tracker-content">
-            <section class="hero-grid" id="beranda">
-                <article class="hero-card">
-                    <span class="eyebrow">Live Tracker</span>
-                    <h1>Peta publik yang sekarang terasa satu keluarga dengan dashboard.</h1>
-                    <p>
-                        Pantau posisi gerobak kopi aktif dari halaman depan dengan tampilan yang memakai bahasa visual
-                        yang sama seperti area dashboard: hangat, lembut, dan fokus pada data realtime yang penting.
-                    </p>
+            <section class="hero-showcase" id="beranda">
+                <div class="hero-landing-grid" id="lacak">
+                    <section class="hero-gps-panel">
+                        <div class="hero-gps-caption">
+                            <div>
+                                <span class="eyebrow">GPS Live Map</span>
+                                <h2>Peta Kopling terdekat.</h2>
+                                <p>
+                                    Map berada di sisi kiri sebagai panel utama. Izinkan lokasi browser agar pin biru
+                                    menunjukkan posisi kamu dan marker Kopling aktif langsung terhitung jaraknya.
+                                </p>
+                            </div>
 
-                    <div class="hero-actions">
-                        <a href="#lacak" class="button-link primary">Lihat Peta Sekarang</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="button-link secondary">Masuk ke Dashboard</a>
-                        @elseif (Route::has('login'))
-                            <a href="{{ route('login') }}" class="button-link secondary">Masuk sebagai Admin</a>
-                        @endif
-                    </div>
-                </article>
+                            <div class="live-pill">GPS aktif otomatis</div>
+                        </div>
 
-                <div class="hero-side">
-                    <article class="stat-card is-highlight">
-                        <small>Gerobak Aktif</small>
-                        <strong><span id="active-unit-count-hero">{{ count($activeUnits) }}</span></strong>
-                        <span>Unit yang sedang mengirim lokasi terbaru ke peta publik saat ini.</span>
-                    </article>
+                        <div class="hero-map-frame">
+                            <div id="map"></div>
+                        </div>
+                    </section>
 
-                    <article class="stat-card">
-                        <small>Pembaruan Lokasi</small>
-                        <strong>Realtime</strong>
-                        <span>Data GPS akan diambil ulang secara berkala tanpa perlu refresh halaman.</span>
-                    </article>
+                    <section class="hero-description-panel">
+                        <span class="eyebrow">Kopi Keliling Tracker</span>
+                        <h1>Kopling terdekat langsung terlihat.</h1>
+                        <p>
+                            Temukan gerobak Kopi Keliling dari halaman depan. Panel GPS di sebelah kiri menampilkan
+                            posisimu, Kopling aktif, dan jarak terdekat secara realtime dari browser.
+                        </p>
+
+                        <div class="hero-actions">
+                            @auth
+                                <a href="{{ route('dashboard') }}" class="button-link secondary">Masuk ke Dashboard</a>
+                            @elseif (Route::has('login'))
+                                <a href="{{ route('login') }}" class="button-link secondary">Masuk sebagai Admin</a>
+                            @endif
+                        </div>
+
+                        <div class="hero-info-cards">
+                            <article class="hero-info-card is-highlight">
+                                <small>Kopling tersedia</small>
+                                <strong><span id="active-unit-count-hero">{{ count($activeUnits) }}</span></strong>
+                                <span>Unit Kopi Keliling yang sedang online dan mengirim lokasi terbaru.</span>
+                            </article>
+
+                            <article class="hero-info-card">
+                                <small>Kopling terdekat</small>
+                                <strong id="nearest-distance">Mencari...</strong>
+                                <span id="nearest-copy">Aktifkan izin lokasi browser untuk melihat jarak gerobak paling dekat.</span>
+                            </article>
+                        </div>
+                    </section>
                 </div>
             </section>
 
-            <section class="map-layout" id="lacak">
-                <aside class="panel">
-                    <span class="eyebrow">Ringkasan Tracking</span>
-                    <h2>Lacak posisi jualan terbaru dari tiap gerobak.</h2>
+            <section class="panel about-section slide-in-up" id="tentang">
+                <div class="about-copy">
+                    <span class="eyebrow">About Us</span>
+                    <h2>Kopling lahir dari gerobak kopi yang dekat dengan pelanggan.</h2>
                     <p>
-                        Halaman ini menampilkan lokasi paling baru dari setiap unit aktif. Cocok untuk pelanggan yang
-                        ingin cepat tahu gerobak mana yang sedang online dan di mana posisinya sekarang.
+                        Kopi Keliling bukan hanya soal menjual minuman, tetapi tentang membuat kopi lebih mudah
+                        ditemukan di titik ramai kota. Melalui tracker GPS ini, pelanggan bisa melihat gerobak
+                        yang aktif, mendekat ke lokasi terdekat, dan menikmati kopi tanpa harus menebak posisi penjual.
+                    </p>
+                    <p>
+                        Kami menggabungkan gerobak sederhana, menu yang familiar, dan teknologi realtime agar usaha
+                        kecil terasa lebih modern, transparan, dan siap menjangkau lebih banyak pelanggan.
                     </p>
 
-                    <div class="overview-points">
-                        <div class="overview-point">
-                            <strong>Status unit aktif</strong>
-                            <span>Jumlah gerobak online akan menyesuaikan otomatis dari data terbaru.</span>
+                    <div class="about-points">
+                        <div class="about-point">
+                            <strong>Dekat</strong>
+                            <span>Gerobak hadir di sekitar aktivitas harian pelanggan.</span>
                         </div>
-
-                        <div class="overview-point">
-                            <strong>Sinkron dengan dashboard</strong>
-                            <span>Nuansa warna, panel, dan permukaan sekarang mengikuti tema dashboard internal.</span>
+                        <div class="about-point">
+                            <strong>Realtime</strong>
+                            <span>Lokasi Kopling aktif diperbarui langsung lewat sistem GPS.</span>
                         </div>
-
-                        <div class="overview-point">
-                            <strong>Riwayat posisi terbaru</strong>
-                            <span>Daftar di bawah memudahkan melihat nama unit, driver, dan waktu update terakhir.</span>
+                        <div class="about-point">
+                            <strong>Sederhana</strong>
+                            <span>Konsep gerobak tetap ringan, tapi pengalamannya dibuat digital.</span>
                         </div>
                     </div>
-                </aside>
+                </div>
 
-                <section class="panel map-panel">
-                    <div class="map-panel-header">
-                        <div>
-                            <span class="eyebrow">Leaflet Tracking Map</span>
-                            <h3>Peta realtime gerobak kopi.</h3>
-                            <p>Setiap marker mewakili posisi terbaru dari satu gerobak aktif yang sedang online.</p>
-                        </div>
+                <div class="about-photo-wrap">
+                    <img
+                        class="about-photo"
+                        src="{{ asset('images/about-cart.jpg') }}"
+                        alt="Gerobak kopi keliling"
+                    >
+                </div>
+            </section>
 
-                        <div class="live-pill">GPS aktif dan diperbarui otomatis</div>
+            <section class="panel menu-section slide-in-up" id="menu">
+                <div class="menu-section-header">
+                    <div>
+                        <span class="eyebrow">Katalog Menu</span>
+                        <h2>Menu gerobak yang siap menemani hari.</h2>
+                        <p>
+                            Pilih menu favorit AD.A Coffee langsung dari katalog ini. Dari kopi hitam yang ringan,
+                            signature gula aren, sampai non coffee yang manis dan creamy.
+                        </p>
                     </div>
 
-                    <div class="map-stage">
-                        <div id="map"></div>
+                    <div class="menu-note">
+                        <strong>Mulai Rp6K</strong>
+                        <span>Harga ramah untuk pelanggan harian, dengan pilihan coffee dan non coffee.</span>
                     </div>
-                </section>
+                </div>
+
+                <div class="menu-showcase">
+                    <div class="menu-list">
+                        <article class="menu-card">
+                            <div class="menu-card-image-wrap">
+                                <img
+                                    class="menu-card-image"
+                                    src="{{ asset('images/menu-americano.jpg') }}"
+                                    alt="Americano"
+                                >
+                                <span class="menu-badge">Coffee</span>
+                            </div>
+                            <div class="menu-card-body">
+                                <div class="menu-card-title-row">
+                                    <h3>Americano</h3>
+                                    <span class="menu-price">Rp6K</span>
+                                </div>
+                                <p>
+                                    Kopi hitam dingin yang ringan, bersih, dan pas untuk kamu yang ingin rasa kopi
+                                    tanpa tambahan susu.
+                                </p>
+                                <div class="menu-tags">
+                                    <span>Bold</span>
+                                    <span>Less sweet</span>
+                                    <span>Ice coffee</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="menu-card">
+                            <div class="menu-card-image-wrap">
+                                <img
+                                    class="menu-card-image"
+                                    src="{{ asset('images/menu-gula-aren.jpg') }}"
+                                    alt="Kopi susu gula aren"
+                                >
+                                <span class="menu-badge">Signature</span>
+                            </div>
+                            <div class="menu-card-body">
+                                <div class="menu-card-title-row">
+                                    <h3>Kopi Gula Aren</h3>
+                                    <span class="menu-price">Rp13K</span>
+                                </div>
+                                <p>Perpaduan kopi, susu, dan gula aren yang creamy dengan manis karamel alami.</p>
+                                <div class="menu-tags">
+                                    <span>Creamy</span>
+                                    <span>Sweet</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="menu-card">
+                            <div class="menu-card-image-wrap">
+                                <img
+                                    class="menu-card-image"
+                                    src="{{ asset('images/menu-matcha.jpg') }}"
+                                    alt="Matcha"
+                                >
+                                <span class="menu-badge">Non Coffee</span>
+                            </div>
+                            <div class="menu-card-body">
+                                <div class="menu-card-title-row">
+                                    <h3>Matcha</h3>
+                                    <span class="menu-price">Rp12K</span>
+                                </div>
+                                <p>Rasa teh hijau yang lembut dengan susu dingin, segar untuk pilihan tanpa kopi.</p>
+                                <div class="menu-tags">
+                                    <span>Fresh</span>
+                                    <span>Milky</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="menu-card">
+                            <div class="menu-card-image-wrap">
+                                <img
+                                    class="menu-card-image"
+                                    src="{{ asset('images/menu-taro.jpg') }}"
+                                    alt="Taro"
+                                >
+                                <span class="menu-badge">Non Coffee</span>
+                            </div>
+                            <div class="menu-card-body">
+                                <div class="menu-card-title-row">
+                                    <h3>Taro</h3>
+                                    <span class="menu-price">Rp12K</span>
+                                </div>
+                                <p>Minuman ungu creamy dengan rasa taro yang manis, lembut, dan mudah disukai.</p>
+                                <div class="menu-tags">
+                                    <span>Creamy</span>
+                                    <span>Sweet</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="menu-card">
+                            <div class="menu-card-image-wrap">
+                                <img
+                                    class="menu-card-image"
+                                    src="{{ asset('images/menu-red-velvet.jpg') }}"
+                                    alt="Red velvet"
+                                >
+                                <span class="menu-badge">Non Coffee</span>
+                            </div>
+                            <div class="menu-card-body">
+                                <div class="menu-card-title-row">
+                                    <h3>Red Velvet</h3>
+                                    <span class="menu-price">Rp12K</span>
+                                </div>
+                                <p>Manis lembut dengan karakter cake-like, cocok untuk pelanggan yang ingin rasa dessert.</p>
+                                <div class="menu-tags">
+                                    <span>Dessert</span>
+                                    <span>Milky</span>
+                                </div>
+                            </div>
+                        </article>
+
+                        <article class="menu-card">
+                            <div class="menu-card-image-wrap">
+                                <img
+                                    class="menu-card-image"
+                                    src="{{ asset('images/menu-choco.jpg') }}"
+                                    alt="Coklat"
+                                >
+                                <span class="menu-badge">Non Coffee</span>
+                            </div>
+                            <div class="menu-card-body">
+                                <div class="menu-card-title-row">
+                                    <h3>Coklat</h3>
+                                    <span class="menu-price">Rp12K</span>
+                                </div>
+                                <p>Rasa coklat susu yang lembut dan familiar, cocok untuk teman santai tanpa kopi.</p>
+                                <div class="menu-tags">
+                                    <span>Chocolate</span>
+                                    <span>Milky</span>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </div>
             </section>
 
             <section class="panel">
@@ -722,12 +2010,73 @@
             locations: @json($locations),
             activeUnits: @json($activeUnits),
             markers: [],
+            userMarker: null,
+            userLatLng: null,
             map: null,
         };
 
         const endpoints = {
             latest: @json(route('api.location.latest')),
         };
+
+        const mobileNavToggle = document.getElementById('mobile-nav-toggle');
+        const trackerNavActions = document.getElementById('tracker-nav-actions');
+        const slideInElements = document.querySelectorAll('.slide-in-up');
+
+        function closeMobileNav() {
+            if (!mobileNavToggle || !trackerNavActions) {
+                return;
+            }
+
+            mobileNavToggle.classList.remove('is-open');
+            trackerNavActions.classList.remove('is-open');
+            mobileNavToggle.setAttribute('aria-expanded', 'false');
+        }
+
+        if (mobileNavToggle && trackerNavActions) {
+            mobileNavToggle.addEventListener('click', () => {
+                const isOpen = trackerNavActions.classList.toggle('is-open');
+
+                mobileNavToggle.classList.toggle('is-open', isOpen);
+                mobileNavToggle.setAttribute('aria-expanded', String(isOpen));
+            });
+
+            trackerNavActions.querySelectorAll('a, button[type="submit"]').forEach((item) => {
+                item.addEventListener('click', closeMobileNav);
+            });
+
+            document.addEventListener('click', (event) => {
+                if (
+                    !trackerNavActions.contains(event.target) &&
+                    !mobileNavToggle.contains(event.target)
+                ) {
+                    closeMobileNav();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') {
+                    closeMobileNav();
+                }
+            });
+        }
+
+        if ('IntersectionObserver' in window) {
+            const slideObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        slideObserver.unobserve(entry.target);
+                    }
+                });
+            }, {
+                threshold: 0.2,
+            });
+
+            slideInElements.forEach((element) => slideObserver.observe(element));
+        } else {
+            slideInElements.forEach((element) => element.classList.add('is-visible'));
+        }
 
         const map = L.map('map', {
             zoomControl: false,
@@ -761,9 +2110,76 @@
             iconAnchor: [13, 13],
         });
 
+        const userIcon = L.divIcon({
+            className: 'user-location-marker-wrapper',
+            html: '<div class="user-location-marker"></div>',
+            iconSize: [22, 22],
+            iconAnchor: [11, 11],
+        });
+
         function updateSummary() {
             document.getElementById('active-unit-count').textContent = state.activeUnits.length;
             document.getElementById('active-unit-count-hero').textContent = state.activeUnits.length;
+        }
+
+        function calculateDistanceKm(from, to) {
+            const earthRadiusKm = 6371;
+            const toRadians = (degrees) => degrees * Math.PI / 180;
+            const latDelta = toRadians(to.lat - from.lat);
+            const lngDelta = toRadians(to.lng - from.lng);
+            const startLat = toRadians(from.lat);
+            const endLat = toRadians(to.lat);
+
+            const haversine =
+                Math.sin(latDelta / 2) ** 2 +
+                Math.cos(startLat) * Math.cos(endLat) * Math.sin(lngDelta / 2) ** 2;
+
+            return earthRadiusKm * 2 * Math.atan2(Math.sqrt(haversine), Math.sqrt(1 - haversine));
+        }
+
+        function formatDistance(distanceKm) {
+            if (distanceKm < 1) {
+                return `${Math.round(distanceKm * 1000)} m`;
+            }
+
+            return `${distanceKm.toFixed(distanceKm < 10 ? 1 : 0)} km`;
+        }
+
+        function updateNearestUnit() {
+            const distanceEl = document.getElementById('nearest-distance');
+            const copyEl = document.getElementById('nearest-copy');
+
+            if (!state.userLatLng) {
+                distanceEl.textContent = 'Mencari...';
+                copyEl.textContent = 'Aktifkan izin lokasi browser untuk melihat jarak gerobak paling dekat.';
+                return;
+            }
+
+            if (!state.activeUnits.length) {
+                distanceEl.textContent = '-';
+                copyEl.textContent = 'Belum ada Kopling yang tersedia di peta saat ini.';
+                return;
+            }
+
+            const nearest = state.activeUnits
+                .filter((unit) => unit.latitude !== null && unit.longitude !== null)
+                .map((unit) => ({
+                    ...unit,
+                    distanceKm: calculateDistanceKm(state.userLatLng, {
+                        lat: Number(unit.latitude),
+                        lng: Number(unit.longitude),
+                    }),
+                }))
+                .sort((a, b) => a.distanceKm - b.distanceKm)[0];
+
+            if (!nearest) {
+                distanceEl.textContent = '-';
+                copyEl.textContent = 'Data koordinat Kopling belum lengkap untuk menghitung jarak.';
+                return;
+            }
+
+            distanceEl.textContent = formatDistance(nearest.distanceKm);
+            copyEl.textContent = `${nearest.unit_name || nearest.device_id || 'Kopling'} adalah Kopling terdekat dari lokasimu.`;
         }
 
         function renderHistory() {
@@ -832,13 +2248,19 @@
         function renderMap() {
             const displayLocations = buildDisplayPositions(state.activeUnits);
             const latLngs = displayLocations.map((location) => [location.displayLatitude, location.displayLongitude]);
+            const boundsLatLngs = [...latLngs];
 
             state.markers.forEach((marker) => marker.remove());
             state.markers = [];
 
             if (!latLngs.length) {
+                if (state.userLatLng) {
+                    map.setView([state.userLatLng.lat, state.userLatLng.lng], 15);
+                }
+
                 renderHistory();
                 updateSummary();
+                updateNearestUnit();
                 return;
             }
 
@@ -858,10 +2280,14 @@
                 state.markers.push(marker);
             });
 
-            if (latLngs.length === 1) {
+            if (state.userLatLng) {
+                boundsLatLngs.push([state.userLatLng.lat, state.userLatLng.lng]);
+            }
+
+            if (boundsLatLngs.length === 1) {
                 map.setView(latLngs[0], 17);
-            } else if (latLngs.length > 1) {
-                map.fitBounds(latLngs, { padding: [24, 24] });
+            } else if (boundsLatLngs.length > 1) {
+                map.fitBounds(boundsLatLngs, { padding: [34, 34] });
             }
 
             requestAnimationFrame(() => {
@@ -870,6 +2296,45 @@
 
             renderHistory();
             updateSummary();
+            updateNearestUnit();
+        }
+
+        function setUserLocation(position) {
+            state.userLatLng = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude,
+            };
+
+            if (!state.userMarker) {
+                state.userMarker = L.marker([state.userLatLng.lat, state.userLatLng.lng], {
+                    icon: userIcon,
+                    zIndexOffset: 1000,
+                }).addTo(map).bindPopup('Lokasi kamu saat ini');
+            } else {
+                state.userMarker.setLatLng([state.userLatLng.lat, state.userLatLng.lng]);
+            }
+
+            renderMap();
+        }
+
+        function requestUserLocation() {
+            if (!navigator.geolocation) {
+                document.getElementById('nearest-distance').textContent = '-';
+                document.getElementById('nearest-copy').textContent = 'Browser ini belum mendukung deteksi lokasi.';
+                return;
+            }
+
+            navigator.geolocation.watchPosition(
+                setUserLocation,
+                () => {
+                    updateNearestUnit();
+                },
+                {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 10000,
+                },
+            );
         }
 
         async function refreshLocations() {
@@ -891,6 +2356,7 @@
         }
 
         renderMap();
+        requestUserLocation();
         refreshLocations().catch(() => null);
         setInterval(() => {
             refreshLocations().catch(() => null);
