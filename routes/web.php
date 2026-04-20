@@ -19,9 +19,29 @@ Route::post('/dashboard/drivers', [DashboardController::class, 'storeDriver'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.drivers.store');
 
+Route::patch('/dashboard/drivers/{user}', [DashboardController::class, 'updateDriver'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.drivers.update');
+
+Route::delete('/dashboard/drivers/{user}', [DashboardController::class, 'destroyDriver'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.drivers.destroy');
+
 Route::post('/dashboard/units', [DashboardController::class, 'storeUnit'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.units.store');
+
+Route::patch('/dashboard/units/{unit}', [DashboardController::class, 'updateUnit'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.units.update');
+
+Route::delete('/dashboard/units/{unit}', [DashboardController::class, 'destroyUnit'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.units.destroy');
+
+Route::get('/dashboard/manage', [DashboardController::class, 'manageResources'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.manage.index');
 
 Route::post('/dashboard/assignments', [DashboardController::class, 'assignDriver'])
     ->middleware(['auth', 'verified'])
@@ -30,6 +50,22 @@ Route::post('/dashboard/assignments', [DashboardController::class, 'assignDriver
 Route::get('/dashboard/assignments', [DashboardController::class, 'assignments'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.assignments.index');
+
+Route::get('/dashboard/menus', [DashboardController::class, 'menus'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.menus.index');
+
+Route::post('/dashboard/menus', [DashboardController::class, 'storeMenu'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.menus.store');
+
+Route::patch('/dashboard/menus/{menu}', [DashboardController::class, 'updateMenu'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.menus.update');
+
+Route::delete('/dashboard/menus/{menu}', [DashboardController::class, 'destroyMenu'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.menus.destroy');
 
 Route::patch('/dashboard/assignments/{assignment}/finish', [DashboardController::class, 'finishAssignment'])
     ->middleware(['auth', 'verified'])

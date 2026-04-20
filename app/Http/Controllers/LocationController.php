@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use App\Models\DriverUnitAssignment;
+use App\Models\Menu;
 use App\Models\TraccarRequestLog;
 use App\Models\Unit;
 use App\Models\User;
@@ -21,12 +22,19 @@ class LocationController extends Controller
     {
         $locations = $this->recentLocations();
         $activeUnits = $this->activeUnitLocations();
+        $menuCatalog = Menu::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
 
         return view('tracker', [
             'locations' => $locations,
             'activeUnits' => $activeUnits,
             'latestLocation' => $activeUnits->last() ?? $locations->last(),
             'traccarEndpoint' => url('/api/location'),
+            'menuCatalog' => $menuCatalog,
+            'menuStartingPrice' => $menuCatalog->min('price'),
         ]);
     }
 

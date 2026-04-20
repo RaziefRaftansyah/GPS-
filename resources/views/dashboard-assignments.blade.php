@@ -188,7 +188,7 @@
                         <article class="mini-item">
                             <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
                                 <div>
-                                    <strong style="display: block;">{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
+                                    <strong style="display: block;">{{ $assignment->driver?->name }} &rarr; {{ $assignment->unit?->name }}</strong>
                                     <span class="list-meta" style="display: block; margin-top: 6px;">
                                         Device ID: {{ $assignment->driver?->device_id ?? '-' }}
                                     </span>

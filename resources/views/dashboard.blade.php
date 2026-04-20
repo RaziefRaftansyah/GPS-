@@ -427,7 +427,7 @@
     </style>
 
     <x-slot name="header">
-        <div style="display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap;">
+        <div>
             <div>
                 <p style="margin: 0; color: #96a1bf; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 700;">
                     Dashboard Admin
@@ -438,29 +438,6 @@
                 <p style="margin: 10px 0 0; color: var(--text-soft); max-width: 760px;">
                     Tampilan disesuaikan mengikuti referensi klinik: sidebar lembut, kartu putih bersih, dan panel informasi yang lebih rapi tanpa mengubah fitur, isi, atau aksi dashboard.
                 </p>
-            </div>
-            <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-                <button
-                    type="button"
-                    class="primary-button"
-                    data-open-modal="unit-form-modal"
-                    aria-expanded="false"
-                    aria-controls="unit-form-modal"
-                >
-                    Tambah Gerobak
-                </button>
-                <button
-                    type="button"
-                    class="success-button"
-                    data-open-modal="driver-form-modal"
-                    aria-expanded="false"
-                    aria-controls="driver-form-modal"
-                >
-                    Tambah Driver
-                </button>
-                <a href="{{ route('dashboard.traccar') }}" class="section-button">
-                    Monitoring Traccar
-                </a>
             </div>
         </div>
     </x-slot>
@@ -519,7 +496,7 @@
                                 <div>
                                     <strong style="display: block; font-size: 1.08rem; color: var(--espresso);">{{ $unit['name'] }}</strong>
                                     <span class="unit-meta" style="display: block; margin-top: 6px;">
-                                        {{ $unit['code'] }} • {{ $unit['device_id'] ? 'HP '.$unit['device_id'] : 'Belum ada HP driver aktif' }}
+                                        {{ $unit['code'] }} &bull; {{ $unit['device_id'] ? 'HP '.$unit['device_id'] : 'Belum ada HP driver aktif' }}
                                     </span>
                                 </div>
                                 <span class="status-pill">{{ ucfirst($unit['status']) }}</span>
@@ -562,7 +539,7 @@
                     <div class="mini-list">
                         @forelse ($activeAssignments as $assignment)
                             <article class="mini-item">
-                                <strong style="display: block; color: var(--espresso);">{{ $assignment->driver?->name }} → {{ $assignment->unit?->name }}</strong>
+                                <strong style="display: block; color: var(--espresso);">{{ $assignment->driver?->name }} &rarr; {{ $assignment->unit?->name }}</strong>
                                 <span class="list-meta" style="display: block; margin-top: 6px;">
                                     Mulai {{ $assignment->assigned_at?->translatedFormat('d M Y H:i') }}
                                 </span>
@@ -652,7 +629,7 @@
                     <h3>Tambah gerobak</h3>
                     <p class="section-subtext" style="margin: 10px 0 0;">Buat master gerobak baru tanpa mengganggu fitur dashboard.</p>
                 </div>
-                <button type="button" class="modal-close" data-close-modal="unit-form-modal" aria-label="Tutup">×</button>
+                <button type="button" class="modal-close" data-close-modal="unit-form-modal" aria-label="Tutup">&times;</button>
             </div>
             <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
                 @csrf
@@ -687,7 +664,7 @@
                     <h3>Buat akun driver</h3>
                     <p class="section-subtext" style="margin: 10px 0 0;">Akun ini dipakai driver untuk login dan mengirim GPS dari HP sesuai <code>device_id</code> miliknya.</p>
                 </div>
-                <button type="button" class="modal-close" data-close-modal="driver-form-modal" aria-label="Tutup">×</button>
+                <button type="button" class="modal-close" data-close-modal="driver-form-modal" aria-label="Tutup">&times;</button>
             </div>
             <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
                 @csrf

@@ -947,11 +947,13 @@
         }
 
         .menu-card {
+            --menu-card-height: 280px;
             position: relative;
             display: grid;
-            grid-template-columns: minmax(240px, 0.42fr) minmax(0, 1fr);
+            grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
             overflow: hidden;
-            min-height: 260px;
+            height: var(--menu-card-height);
+            min-height: var(--menu-card-height);
             border-radius: 32px;
             border: 1px solid rgba(76, 48, 33, 0.12);
             background:
@@ -964,30 +966,30 @@
                 box-shadow 180ms ease;
         }
 
-        .menu-card:nth-child(even) {
+        .menu-card.is-reverse {
             grid-template-columns: minmax(0, 1fr) minmax(240px, 0.42fr);
         }
 
-        .menu-card:nth-child(even) .menu-card-image-wrap {
+        .menu-card.is-reverse .menu-card-image-wrap {
             grid-column: 2;
             grid-row: 1;
         }
 
-        .menu-card:nth-child(even) .menu-card-body {
+        .menu-card.is-reverse .menu-card-body {
             grid-column: 1;
             grid-row: 1;
             text-align: right;
         }
 
-        .menu-card:nth-child(even) .menu-card-title-row {
+        .menu-card.is-reverse .menu-card-title-row {
             flex-direction: row-reverse;
         }
 
-        .menu-card:nth-child(even) .menu-tags {
+        .menu-card.is-reverse .menu-tags {
             justify-content: flex-end;
         }
 
-        .menu-card:nth-child(even) .menu-badge {
+        .menu-card.is-reverse .menu-badge {
             right: 14px;
             left: auto;
         }
@@ -1004,7 +1006,8 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
-            min-height: 260px;
+            height: 100%;
+            min-height: 0;
             background:
                 radial-gradient(circle at 50% 44%, rgba(181, 106, 59, 0.16), transparent 46%),
                 #fff;
@@ -1014,9 +1017,8 @@
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
             object-position: center;
-            padding: 10px;
             transition: transform 220ms ease;
         }
 
@@ -1040,8 +1042,12 @@
         }
 
         .menu-card-body {
+            height: 100%;
             align-self: center;
             padding: clamp(22px, 3vw, 34px);
+            display: grid;
+            align-content: center;
+            gap: 10px;
         }
 
         .menu-card-title-row {
@@ -1056,6 +1062,10 @@
             font-size: clamp(1.55rem, 2.5vw, 2.2rem);
             line-height: 1.06;
             letter-spacing: -0.035em;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .menu-price {
@@ -1068,18 +1078,24 @@
         }
 
         .menu-card p {
-            max-width: 58ch;
-            margin-top: 12px;
+            max-width: none;
+            margin: 0;
             color: var(--text-soft);
             line-height: 1.78;
             font-size: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .menu-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-top: 14px;
+            margin-top: 0;
+            max-height: 72px;
+            overflow: hidden;
         }
 
         .menu-tags span {
@@ -1090,6 +1106,15 @@
             color: rgba(59, 36, 24, 0.74);
             font-size: 0.82rem;
             font-weight: 700;
+        }
+
+        .menu-empty {
+            padding: 20px;
+            border-radius: 22px;
+            border: 1px dashed rgba(76, 48, 33, 0.22);
+            background: rgba(255, 252, 247, 0.9);
+            color: var(--text-soft);
+            line-height: 1.7;
         }
 
         .eyebrow {
@@ -1595,35 +1620,46 @@
             }
 
             .menu-card,
-            .menu-card:nth-child(even) {
+            .menu-card.is-reverse {
                 grid-template-columns: 1fr;
                 grid-template-rows: 190px auto;
-                min-height: auto;
+                height: auto;
+                min-height: 0;
             }
 
-            .menu-card:nth-child(even) .menu-card-image-wrap,
-            .menu-card:nth-child(even) .menu-card-body {
+            .menu-card.is-reverse .menu-card-image-wrap,
+            .menu-card.is-reverse .menu-card-body {
                 grid-column: 1;
                 grid-row: auto;
             }
 
             .menu-card-image-wrap {
-                min-height: 190px;
+                height: 190px;
             }
 
-            .menu-card:nth-child(even) .menu-card-body {
+            .menu-card-body {
+                height: auto;
+                align-content: start;
+                gap: 8px;
+            }
+
+            .menu-card p {
+                -webkit-line-clamp: 3;
+            }
+
+            .menu-card.is-reverse .menu-card-body {
                 text-align: left;
             }
 
-            .menu-card:nth-child(even) .menu-card-title-row {
+            .menu-card.is-reverse .menu-card-title-row {
                 flex-direction: row;
             }
 
-            .menu-card:nth-child(even) .menu-tags {
+            .menu-card.is-reverse .menu-tags {
                 justify-content: flex-start;
             }
 
-            .menu-card:nth-child(even) .menu-badge {
+            .menu-card.is-reverse .menu-badge {
                 right: auto;
                 left: 14px;
             }
@@ -1841,148 +1877,57 @@
                     </div>
 
                     <div class="menu-note">
-                        <strong>Mulai Rp6K</strong>
-                        <span>Harga ramah untuk pelanggan harian, dengan pilihan coffee dan non coffee.</span>
+                        <strong>
+                            @if ($menuStartingPrice !== null)
+                                Mulai Rp{{ number_format((int) $menuStartingPrice, 0, ',', '.') }}
+                            @else
+                                Katalog sedang disiapkan
+                            @endif
+                        </strong>
+                        <span>Harga dan varian menu mengikuti katalog terbaru dari dashboard owner.</span>
                     </div>
                 </div>
 
                 <div class="menu-showcase">
                     <div class="menu-list">
-                        <article class="menu-card">
-                            <div class="menu-card-image-wrap">
-                                <img
-                                    class="menu-card-image"
-                                    src="{{ asset('images/menu-americano.jpg') }}"
-                                    alt="Americano"
-                                >
-                                <span class="menu-badge">Coffee</span>
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="menu-card-title-row">
-                                    <h3>Americano</h3>
-                                    <span class="menu-price">Rp6K</span>
+                        @forelse ($menuCatalog as $menu)
+                            @php
+                                $imagePath = $menu->image_path;
+                                $menuImage = blank($imagePath)
+                                    ? asset('images/about-cart.jpg')
+                                    : (\Illuminate\Support\Str::startsWith($imagePath, ['http://', 'https://'])
+                                        ? $imagePath
+                                        : asset(ltrim($imagePath, '/')));
+                            @endphp
+                            <article class="menu-card {{ $loop->even ? 'is-reverse' : '' }}">
+                                <div class="menu-card-image-wrap">
+                                    <img
+                                        class="menu-card-image"
+                                        src="{{ $menuImage }}"
+                                        alt="{{ $menu->name }}"
+                                    >
+                                    <span class="menu-badge">{{ $menu->category }}</span>
                                 </div>
-                                <p>
-                                    Kopi hitam dingin yang ringan, bersih, dan pas untuk kamu yang ingin rasa kopi
-                                    tanpa tambahan susu.
-                                </p>
-                                <div class="menu-tags">
-                                    <span>Bold</span>
-                                    <span>Less sweet</span>
-                                    <span>Ice coffee</span>
+                                <div class="menu-card-body">
+                                    <div class="menu-card-title-row">
+                                        <h3>{{ $menu->name }}</h3>
+                                        <span class="menu-price">Rp{{ number_format((int) $menu->price, 0, ',', '.') }}</span>
+                                    </div>
+                                    <p>{{ $menu->description ?: 'Menu favorit pelanggan Kopi Keliling siap dipesan dari gerobak terdekat.' }}</p>
+                                    @if (! empty($menu->tags))
+                                        <div class="menu-tags">
+                                            @foreach ($menu->tags as $tag)
+                                                <span>{{ $tag }}</span>
+                                            @endforeach
+                                        </div>
+                                    @endif
                                 </div>
+                            </article>
+                        @empty
+                            <div class="menu-empty">
+                                Belum ada menu aktif saat ini. Owner bisa menambahkan menu dari Dashboard Owner ke halaman Katalog Menu.
                             </div>
-                        </article>
-
-                        <article class="menu-card">
-                            <div class="menu-card-image-wrap">
-                                <img
-                                    class="menu-card-image"
-                                    src="{{ asset('images/menu-gula-aren.jpg') }}"
-                                    alt="Kopi susu gula aren"
-                                >
-                                <span class="menu-badge">Signature</span>
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="menu-card-title-row">
-                                    <h3>Kopi Gula Aren</h3>
-                                    <span class="menu-price">Rp13K</span>
-                                </div>
-                                <p>Perpaduan kopi, susu, dan gula aren yang creamy dengan manis karamel alami.</p>
-                                <div class="menu-tags">
-                                    <span>Creamy</span>
-                                    <span>Sweet</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="menu-card">
-                            <div class="menu-card-image-wrap">
-                                <img
-                                    class="menu-card-image"
-                                    src="{{ asset('images/menu-matcha.jpg') }}"
-                                    alt="Matcha"
-                                >
-                                <span class="menu-badge">Non Coffee</span>
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="menu-card-title-row">
-                                    <h3>Matcha</h3>
-                                    <span class="menu-price">Rp12K</span>
-                                </div>
-                                <p>Rasa teh hijau yang lembut dengan susu dingin, segar untuk pilihan tanpa kopi.</p>
-                                <div class="menu-tags">
-                                    <span>Fresh</span>
-                                    <span>Milky</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="menu-card">
-                            <div class="menu-card-image-wrap">
-                                <img
-                                    class="menu-card-image"
-                                    src="{{ asset('images/menu-taro.jpg') }}"
-                                    alt="Taro"
-                                >
-                                <span class="menu-badge">Non Coffee</span>
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="menu-card-title-row">
-                                    <h3>Taro</h3>
-                                    <span class="menu-price">Rp12K</span>
-                                </div>
-                                <p>Minuman ungu creamy dengan rasa taro yang manis, lembut, dan mudah disukai.</p>
-                                <div class="menu-tags">
-                                    <span>Creamy</span>
-                                    <span>Sweet</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="menu-card">
-                            <div class="menu-card-image-wrap">
-                                <img
-                                    class="menu-card-image"
-                                    src="{{ asset('images/menu-red-velvet.jpg') }}"
-                                    alt="Red velvet"
-                                >
-                                <span class="menu-badge">Non Coffee</span>
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="menu-card-title-row">
-                                    <h3>Red Velvet</h3>
-                                    <span class="menu-price">Rp12K</span>
-                                </div>
-                                <p>Manis lembut dengan karakter cake-like, cocok untuk pelanggan yang ingin rasa dessert.</p>
-                                <div class="menu-tags">
-                                    <span>Dessert</span>
-                                    <span>Milky</span>
-                                </div>
-                            </div>
-                        </article>
-
-                        <article class="menu-card">
-                            <div class="menu-card-image-wrap">
-                                <img
-                                    class="menu-card-image"
-                                    src="{{ asset('images/menu-choco.jpg') }}"
-                                    alt="Coklat"
-                                >
-                                <span class="menu-badge">Non Coffee</span>
-                            </div>
-                            <div class="menu-card-body">
-                                <div class="menu-card-title-row">
-                                    <h3>Coklat</h3>
-                                    <span class="menu-price">Rp12K</span>
-                                </div>
-                                <p>Rasa coklat susu yang lembut dan familiar, cocok untuk teman santai tanpa kopi.</p>
-                                <div class="menu-tags">
-                                    <span>Chocolate</span>
-                                    <span>Milky</span>
-                                </div>
-                            </div>
-                        </article>
+                        @endforelse
                     </div>
                 </div>
             </section>

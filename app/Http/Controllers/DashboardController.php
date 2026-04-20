@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\DriverUnitAssignment;
 use App\Models\Location;
+use App\Models\Menu;
 use App\Models\TraccarRequestLog;
 use App\Models\Unit;
 use App\Models\User;
@@ -11,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -284,6 +286,86 @@ class DashboardController extends Controller
         ]);
     }
 
+    public function manageResources(Request $request): View
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $drivers = User::query()
+            ->where('role', 'driver')
+            ->latest('id')
+            ->with(['activeDriverAssignment.unit'])
+            ->paginate(6, ['*'], 'driver_page')
+            ->withQueryString();
+
+        $units = Unit::query()
+            ->latest('id')
+            ->with([
+                'assignments' => fn ($query) => $query->with('driver')->latest('assigned_at'),
+            ])
+            ->paginate(6, ['*'], 'unit_page')
+            ->withQueryString();
+
+        return view('dashboard-manage', [
+            'drivers' => $drivers,
+            'units' => $units,
+        ]);
+    }
+
+    public function menus(Request $request): View
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $menus = Menu::query()
+            ->orderByDesc('is_active')
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        return view('dashboard-menus', [
+            'menus' => $menus,
+        ]);
+    }
+
+    public function storeMenu(Request $request): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        Menu::query()->create($this->extractMenuPayload($request));
+
+        return $this->redirectWithDashboardStatus($request, 'Menu baru berhasil ditambahkan.');
+    }
+
+    public function updateMenu(Request $request, Menu $menu): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $menu->update($this->extractMenuPayload($request, $menu));
+
+        return $this->redirectWithDashboardStatus($request, 'Data menu berhasil diperbarui.');
+    }
+
+    public function destroyMenu(Request $request, Menu $menu): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $this->deleteManagedMenuImage($menu->image_path);
+
+        $menuName = $menu->name;
+        $menu->delete();
+
+        return $this->redirectWithDashboardStatus($request, "Menu {$menuName} berhasil dihapus.");
+    }
+
     public function storeDriver(Request $request): RedirectResponse
     {
         $owner = $request->user();
@@ -312,6 +394,67 @@ class DashboardController extends Controller
         return $this->redirectWithDashboardStatus($request, 'Akun driver baru berhasil dibuat.');
     }
 
+    public function updateDriver(Request $request, User $user): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        if (! $user->isDriver()) {
+            return $this->redirectWithDashboardStatus($request, 'User yang dipilih bukan akun driver.');
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
+            'device_id' => ['required', 'string', 'max:120', 'unique:users,device_id,'.$user->id],
+            'password' => ['nullable', 'string', 'min:8'],
+            'is_active' => ['nullable', 'boolean'],
+        ]);
+
+        $payload = [
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'device_id' => $validated['device_id'],
+            'is_active' => $request->boolean('is_active'),
+            'role' => 'driver',
+        ];
+
+        if (! blank($validated['password'] ?? null)) {
+            $payload['password'] = Hash::make($validated['password']);
+        }
+
+        $user->update($payload);
+
+        return $this->redirectWithDashboardStatus($request, 'Data driver berhasil diperbarui.');
+    }
+
+    public function destroyDriver(Request $request, User $user): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        if (! $user->isDriver()) {
+            return $this->redirectWithDashboardStatus($request, 'User yang dipilih bukan akun driver.');
+        }
+
+        $hasActiveAssignment = DriverUnitAssignment::query()
+            ->where('driver_id', $user->id)
+            ->where('status', 'active')
+            ->whereNull('ended_at')
+            ->exists();
+
+        if ($hasActiveAssignment) {
+            return $this->redirectWithDashboardStatus($request, 'Driver masih memiliki assignment aktif. Selesaikan dulu assignment-nya.');
+        }
+
+        $driverName = $user->name;
+        $user->delete();
+
+        return $this->redirectWithDashboardStatus($request, "Driver {$driverName} berhasil dihapus.");
+    }
+
     public function storeUnit(Request $request): RedirectResponse
     {
         if (! $this->isOwner($request->user())) {
@@ -328,6 +471,46 @@ class DashboardController extends Controller
         Unit::query()->create($validated);
 
         return $this->redirectWithDashboardStatus($request, 'Gerobak baru berhasil ditambahkan.');
+    }
+
+    public function updateUnit(Request $request, Unit $unit): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'code' => ['required', 'string', 'max:80', 'unique:units,code,'.$unit->id],
+            'status' => ['required', 'string', 'max:30'],
+            'notes' => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $unit->update($validated);
+
+        return $this->redirectWithDashboardStatus($request, 'Data gerobak berhasil diperbarui.');
+    }
+
+    public function destroyUnit(Request $request, Unit $unit): RedirectResponse
+    {
+        if (! $this->isOwner($request->user())) {
+            abort(403);
+        }
+
+        $hasActiveAssignment = DriverUnitAssignment::query()
+            ->where('unit_id', $unit->id)
+            ->where('status', 'active')
+            ->whereNull('ended_at')
+            ->exists();
+
+        if ($hasActiveAssignment) {
+            return $this->redirectWithDashboardStatus($request, 'Gerobak masih memiliki assignment aktif. Selesaikan dulu assignment-nya.');
+        }
+
+        $unitName = $unit->name;
+        $unit->delete();
+
+        return $this->redirectWithDashboardStatus($request, "Gerobak {$unitName} berhasil dihapus.");
     }
 
     public function assignDriver(Request $request): RedirectResponse
@@ -394,6 +577,74 @@ class DashboardController extends Controller
         }
 
         return $this->redirectWithDashboardStatus($request, 'Assignment driver berhasil diselesaikan.');
+    }
+
+    private function extractMenuPayload(Request $request, ?Menu $existingMenu = null): array
+    {
+        $validated = Validator::make($request->all(), [
+            'name' => ['required', 'string', 'max:120'],
+            'category' => ['required', 'string', 'max:80'],
+            'price' => ['required', 'integer', 'min:0', 'max:100000000'],
+            'description' => ['nullable', 'string', 'max:2000'],
+            'image_path' => ['nullable', 'string', 'max:255'],
+            'image_file' => ['nullable', 'file', 'image', 'max:4096'],
+            'remove_image' => ['nullable', 'boolean'],
+            'tags_input' => ['nullable', 'string', 'max:255'],
+            'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
+            'is_active' => ['nullable', 'boolean'],
+        ])->validate();
+
+        $tags = collect(explode(',', (string) ($validated['tags_input'] ?? '')))
+            ->map(fn (string $tag): string => trim($tag))
+            ->filter()
+            ->unique()
+            ->values()
+            ->all();
+
+        $currentImagePath = $existingMenu?->image_path;
+        $manualImagePath = blank($validated['image_path'] ?? null)
+            ? null
+            : trim((string) $validated['image_path']);
+
+        $resolvedImagePath = $currentImagePath;
+
+        if ($request->hasFile('image_file')) {
+            $storedPath = $request->file('image_file')->store('menus', 'public');
+            $resolvedImagePath = 'storage/'.$storedPath;
+            $this->deleteManagedMenuImage($currentImagePath);
+        } elseif ($request->boolean('remove_image')) {
+            $resolvedImagePath = null;
+            $this->deleteManagedMenuImage($currentImagePath);
+        } elseif ($manualImagePath !== null) {
+            if ($currentImagePath !== null && $manualImagePath !== $currentImagePath) {
+                $this->deleteManagedMenuImage($currentImagePath);
+            }
+
+            $resolvedImagePath = $manualImagePath;
+        } elseif ($existingMenu === null) {
+            $resolvedImagePath = null;
+        }
+
+        return [
+            'name' => $validated['name'],
+            'category' => $validated['category'],
+            'price' => (int) $validated['price'],
+            'description' => blank($validated['description'] ?? null) ? null : $validated['description'],
+            'image_path' => $resolvedImagePath,
+            'tags' => $tags,
+            'sort_order' => (int) ($validated['sort_order'] ?? 0),
+            'is_active' => $request->boolean('is_active'),
+        ];
+    }
+
+    private function deleteManagedMenuImage(?string $imagePath): void
+    {
+        if (blank($imagePath) || ! Str::startsWith((string) $imagePath, 'storage/menus/')) {
+            return;
+        }
+
+        $relativeStoragePath = Str::after((string) $imagePath, 'storage/');
+        Storage::disk('public')->delete($relativeStoragePath);
     }
 
     private function adminEmail(): string
@@ -465,9 +716,24 @@ class DashboardController extends Controller
     {
         $target = $request->input('redirect_to');
 
-        if (in_array($target, ['dashboard', 'dashboard.assignments.index'], true)) {
+        if (in_array($target, ['dashboard', 'dashboard.assignments.index', 'dashboard.menus.index', 'dashboard.manage.index'], true)) {
+            $routeParameters = [];
+
+            if ($target === 'dashboard.manage.index') {
+                $driverPage = $request->input('driver_page');
+                $unitPage = $request->input('unit_page');
+
+                if (! blank($driverPage)) {
+                    $routeParameters['driver_page'] = $driverPage;
+                }
+
+                if (! blank($unitPage)) {
+                    $routeParameters['unit_page'] = $unitPage;
+                }
+            }
+
             return redirect()
-                ->route($target)
+                ->route($target, $routeParameters)
                 ->with('dashboard_status', $message);
         }
 

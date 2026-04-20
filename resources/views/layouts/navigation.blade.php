@@ -123,6 +123,91 @@
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
+        .clinic-nav-manage {
+            position: relative;
+            display: grid;
+            gap: 6px;
+        }
+
+        .clinic-nav-toggle-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .clinic-nav-manage .clinic-nav-link {
+            margin: 0;
+            width: 100%;
+            padding-right: 46px;
+        }
+
+        .clinic-nav-arrow-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 26px;
+            height: 26px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.24);
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+            cursor: pointer;
+            display: inline-grid;
+            place-items: center;
+            transition: background 0.2s ease, transform 0.2s ease;
+            z-index: 1;
+        }
+
+        .clinic-nav-arrow-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .clinic-nav-toggle-input:checked ~ .clinic-nav-arrow-btn {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .clinic-nav-arrow-btn .clinic-nav-caret {
+            font-size: 0.76rem;
+            line-height: 1;
+            transition: transform 0.2s ease;
+        }
+
+        .clinic-nav-toggle-input:checked ~ .clinic-nav-arrow-btn .clinic-nav-caret {
+            transform: rotate(180deg);
+        }
+
+        .clinic-nav-submenu {
+            display: none;
+            gap: 6px;
+            width: 100%;
+            padding: 0 10px 6px;
+            box-sizing: border-box;
+        }
+
+        .clinic-nav-toggle-input:checked ~ .clinic-nav-submenu {
+            display: grid;
+        }
+
+        .clinic-nav-sub-link {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.86);
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.08);
+            font-size: 0.9rem;
+            transition: background 0.2s ease;
+        }
+
+        .clinic-nav-sub-link:hover {
+            background: rgba(255, 255, 255, 0.16);
+        }
+
+        .clinic-nav-sub-link.is-active {
+            background: rgba(255, 255, 255, 0.22);
+            color: #fff;
+            font-weight: 700;
+        }
+
         .clinic-nav-icon {
             width: 22px;
             height: 22px;
@@ -141,123 +226,6 @@
             display: grid;
             gap: 14px;
             flex-shrink: 0;
-        }
-
-        .clinic-action-dropdown {
-            margin: 2px 6px 0;
-            border-radius: 22px;
-            background: rgba(255, 249, 241, 0.1);
-            border: 1px solid rgba(255, 249, 241, 0.18);
-            backdrop-filter: blur(10px);
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .clinic-action-summary {
-            list-style: none;
-            cursor: pointer;
-            padding: 16px 18px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .clinic-action-summary::-webkit-details-marker {
-            display: none;
-        }
-
-        .clinic-action-summary small,
-        .clinic-action-summary strong {
-            display: block;
-        }
-
-        .clinic-action-summary small {
-            color: rgba(255, 249, 241, 0.72);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 0.72rem;
-        }
-
-        .clinic-action-summary strong {
-            margin-top: 6px;
-            font-size: 1rem;
-            line-height: 1.3;
-        }
-
-        .clinic-action-chevron {
-            flex-shrink: 0;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            display: grid;
-            place-items: center;
-            background: rgba(255, 255, 255, 0.12);
-            transition: transform 0.2s ease;
-        }
-
-        .clinic-action-dropdown[open] .clinic-action-chevron {
-            transform: rotate(180deg);
-        }
-
-        .clinic-action-menu {
-            display: grid;
-            gap: 10px;
-            padding: 0 16px 16px;
-        }
-
-        .clinic-action-item {
-            padding: 14px;
-            border-radius: 18px;
-            background: rgba(255, 249, 241, 0.08);
-            border: 1px solid rgba(255, 249, 241, 0.1);
-        }
-
-        .clinic-action-item small,
-        .clinic-action-item strong,
-        .clinic-action-item span {
-            display: block;
-        }
-
-        .clinic-action-item small {
-            color: rgba(255, 249, 241, 0.72);
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-size: 0.7rem;
-        }
-
-        .clinic-action-item strong {
-            margin-top: 8px;
-            font-size: 0.96rem;
-            line-height: 1.35;
-        }
-
-        .clinic-action-item span {
-            margin-top: 8px;
-            color: rgba(255, 249, 241, 0.8);
-            font-size: 0.84rem;
-            line-height: 1.45;
-        }
-
-        .clinic-action-button {
-            width: 100%;
-            margin-top: 12px;
-            padding: 11px 14px;
-            border: 0;
-            border-radius: 999px;
-            background: linear-gradient(135deg, rgba(255, 249, 241, 0.22) 0%, rgba(181, 106, 59, 0.3) 100%);
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            text-align: center;
-            text-decoration: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .clinic-action-button.is-secondary {
-            background: linear-gradient(135deg, rgba(47, 107, 85, 0.92) 0%, rgba(77, 139, 115, 0.92) 100%);
         }
 
         .clinic-pro-card {
@@ -337,9 +305,7 @@
                 padding-top: 16px;
             }
 
-            .clinic-action-dropdown {
-                margin-top: 4px;
-            }
+        }
 
         .clinic-sidebar-close {
             display: none;
@@ -365,7 +331,7 @@
         }
     </style>
 
-    <button type="button" class="clinic-sidebar-close" data-sidebar-close aria-label="Tutup navigasi">×</button>
+    <button type="button" class="clinic-sidebar-close" data-sidebar-close aria-label="Tutup navigasi">&times;</button>
 
     <div class="clinic-brand">
         <strong>KOPI</strong>
@@ -386,9 +352,45 @@
         </a>
 
         @if (! Auth::user()->isDriver())
+            <div class="clinic-nav-manage" data-manage-menu>
+                <input
+                    id="manage-nav-toggle"
+                    type="checkbox"
+                    class="clinic-nav-toggle-input"
+                    @checked(request()->routeIs('dashboard.manage.*'))
+                >
+
+                <a href="{{ route('dashboard.manage.index') }}" class="clinic-nav-link {{ request()->routeIs('dashboard.manage.*') ? 'is-active' : '' }}">
+                    <span class="clinic-nav-icon">U</span>
+                    <span>Kelola Unit & Driver</span>
+                </a>
+
+                <label
+                    for="manage-nav-toggle"
+                    class="clinic-nav-arrow-btn"
+                    aria-label="Buka pilihan unit dan driver"
+                >
+                    <span class="clinic-nav-caret">&#9662;</span>
+                </label>
+
+                <div class="clinic-nav-submenu" data-manage-submenu>
+                    <a href="{{ route('dashboard.manage.index', ['focus' => 'driver']) }}#driver-input" class="clinic-nav-sub-link {{ request()->routeIs('dashboard.manage.*') && request('focus') === 'driver' ? 'is-active' : '' }}">
+                        Input Driver
+                    </a>
+                    <a href="{{ route('dashboard.manage.index', ['focus' => 'unit']) }}#unit-input" class="clinic-nav-sub-link {{ request()->routeIs('dashboard.manage.*') && request('focus') === 'unit' ? 'is-active' : '' }}">
+                        Input Unit
+                    </a>
+                </div>
+            </div>
+
             <a href="{{ route('dashboard.assignments.index') }}" class="clinic-nav-link {{ request()->routeIs('dashboard.assignments.*') ? 'is-active' : '' }}">
                 <span class="clinic-nav-icon">A</span>
                 <span>Assignment</span>
+            </a>
+
+            <a href="{{ route('dashboard.menus.index') }}" class="clinic-nav-link {{ request()->routeIs('dashboard.menus.*') ? 'is-active' : '' }}">
+                <span class="clinic-nav-icon">K</span>
+                <span>Katalog Menu</span>
             </a>
 
             <a href="{{ route('dashboard.traccar') }}" class="clinic-nav-link {{ request()->routeIs('dashboard.traccar') ? 'is-active' : '' }}">
@@ -407,49 +409,6 @@
             <span>Peta Publik</span>
         </a>
     </nav>
-
-    @if (! Auth::user()->isDriver())
-        <details class="clinic-action-dropdown" open>
-            <summary class="clinic-action-summary">
-                <div>
-                    <small>Aksi Cepat</small>
-                    <strong>Kelola unit dan driver</strong>
-                </div>
-                <span class="clinic-action-chevron">⌄</span>
-            </summary>
-
-            <div class="clinic-action-menu">
-                <article class="clinic-action-item">
-                    <small>Data Unit</small>
-                    <strong>Tambah gerobak</strong>
-                    <span>Buat master gerobak baru tanpa memenuhi area utama dashboard.</span>
-                    <button
-                        type="button"
-                        class="clinic-action-button"
-                        data-open-modal="unit-form-modal"
-                        aria-expanded="{{ $errors->hasAny(['name', 'code', 'status', 'notes']) ? 'true' : 'false' }}"
-                    >
-                        Tambah Gerobak
-                    </button>
-                </article>
-
-                <article class="clinic-action-item">
-                    <small>Data Driver</small>
-                    <strong>Buat akun driver</strong>
-                    <span>Siapkan akun login dan <code>device_id</code> untuk driver dari sidebar.</span>
-                    <button
-                        type="button"
-                        class="clinic-action-button"
-                        data-open-modal="driver-form-modal"
-                        aria-expanded="{{ $errors->hasAny(['email', 'device_id', 'password']) ? 'true' : 'false' }}"
-                    >
-                        Buat Akun Driver
-                    </button>
-                </article>
-
-            </div>
-        </details>
-    @endif
 
     <div class="clinic-sidebar-footer">
         <div class="clinic-pro-card">

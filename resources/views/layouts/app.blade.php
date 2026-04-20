@@ -276,7 +276,7 @@
                         </button>
 
                         <a href="{{ route('tracker.index') }}" class="dashboard-back">
-                            <span>←</span>
+                            <span>&larr;</span>
                             <span>Kembali ke Peta</span>
                         </a>
                     </div>
