@@ -585,49 +585,49 @@
 
         .hero-landing-grid {
             width: min(1440px, calc(100% - 64px));
-            min-height: 620px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
             display: grid;
-            grid-template-columns: minmax(320px, 390px) minmax(0, 1fr);
-            gap: clamp(22px, 4vw, 46px);
+            grid-template-columns: 1fr;
+            gap: clamp(22px, 3vw, 28px);
             align-items: stretch;
         }
 
         .hero-gps-panel {
-            padding: 14px;
-            border-radius: 20px;
+            padding: 20px;
+            border-radius: 26px;
             border: 1px solid rgba(255, 255, 255, 0.62);
             background: rgba(255, 252, 247, 0.94);
             box-shadow: 0 32px 90px rgba(0, 0, 0, 0.34);
             backdrop-filter: blur(18px);
             display: grid;
             grid-template-rows: auto 1fr;
-            justify-self: start;
+            gap: 18px;
+            justify-self: stretch;
             align-self: stretch;
-            width: min(100%, 390px);
+            width: 100%;
         }
 
         .hero-gps-panel .hero-map-frame {
-            height: 100%;
-            min-height: 0;
-            border-width: 5px;
-            border-radius: 14px;
+            min-height: 520px;
+            border-width: 6px;
+            border-radius: 22px;
             box-shadow:
                 inset 0 0 0 1px rgba(76, 48, 33, 0.08),
-                0 12px 28px rgba(59, 36, 24, 0.1);
+                0 16px 34px rgba(59, 36, 24, 0.12);
         }
 
         .hero-gps-panel #map {
-            height: 100%;
-            min-height: 0;
+            min-height: 520px;
         }
 
         .hero-gps-caption {
             display: grid;
-            gap: 12px;
-            padding: 8px 10px 14px;
+            grid-template-columns: minmax(0, 1fr) auto;
+            gap: 16px;
+            align-items: end;
+            padding: 0;
         }
 
         .hero-gps-caption h2 {
@@ -639,10 +639,42 @@
 
         .hero-gps-caption p {
             margin-top: 8px;
-            max-width: 30ch;
+            max-width: 72ch;
             color: var(--text-soft);
             line-height: 1.6;
-            font-size: 0.88rem;
+            font-size: 0.96rem;
+        }
+
+        .between-map-section {
+            width: 100%;
+            max-width: none;
+            margin: 10px 0 14px;
+            position: relative;
+            z-index: 2;
+            justify-self: stretch;
+            padding: clamp(28px, 3vw, 40px);
+            border-radius: 34px;
+        }
+
+        .between-map-section .hero-gps-caption {
+            grid-template-columns: minmax(0, 1fr) auto;
+            align-items: end;
+            gap: 22px;
+        }
+
+        .between-map-section .hero-gps-caption h2 {
+            font-size: clamp(2.3rem, 3.6vw, 4rem);
+        }
+
+        .between-map-section .hero-gps-caption p {
+            max-width: 96ch;
+            font-size: 0.98rem;
+            line-height: 1.66;
+        }
+
+        .between-map-section .hero-map-frame,
+        .between-map-section #map {
+            min-height: 760px;
         }
 
         .hero-description-panel {
@@ -749,8 +781,8 @@
 
         .about-section {
             display: grid;
-            grid-template-columns: minmax(0, 1fr) minmax(280px, 390px);
-            gap: clamp(32px, 3vw, 52px);
+            grid-template-columns: minmax(0, 1.18fr) minmax(280px, 0.62fr);
+            gap: clamp(24px, 2.2vw, 34px);
             align-items: center;
             justify-content: center;
             padding: clamp(30px, 4vw, 52px);
@@ -758,10 +790,10 @@
         }
 
         .about-copy {
-            justify-self: end;
+            justify-self: stretch;
             width: 100%;
-            max-width: 760px;
-            padding-right: 0;
+            max-width: 980px;
+            padding-right: clamp(6px, 1.5vw, 24px);
         }
 
         .slide-in-up {
@@ -779,26 +811,23 @@
 
         .about-copy h2 {
             margin-top: 16px;
-            margin-left: auto;
-            max-width: 14ch;
-            font-size: clamp(2.4rem, 4vw, 4.6rem);
+            max-width: 12ch;
+            font-size: clamp(2.6rem, 4.1vw, 4.8rem);
             line-height: 1.02;
             letter-spacing: -0.055em;
-            text-align: right;
+            text-align: left;
         }
 
         .about-copy p {
-            max-width: 72ch;
-            margin-left: auto;
-            margin-top: 18px;
+            max-width: 62ch;
+            margin-top: 16px;
             color: var(--text-soft);
-            line-height: 1.82;
-            font-size: clamp(1rem, 1.2vw, 1.08rem);
-            text-align: right;
+            line-height: 1.74;
+            font-size: clamp(1rem, 1.08vw, 1.05rem);
+            text-align: left;
         }
 
         .about-copy .eyebrow {
-            margin-left: auto;
             display: flex;
             width: fit-content;
         }
@@ -806,8 +835,9 @@
         .about-points {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 12px;
-            margin-top: 24px;
+            gap: 14px;
+            margin-top: 26px;
+            max-width: 860px;
         }
 
         .about-point {
@@ -815,7 +845,7 @@
             border-radius: 18px;
             border: 1px solid var(--panel-border);
             background: rgba(255, 249, 241, 0.76);
-            text-align: right;
+            text-align: left;
         }
 
         .about-point strong,
@@ -837,7 +867,7 @@
         .about-photo-wrap {
             position: relative;
             justify-self: end;
-            width: min(100%, 390px);
+            width: min(100%, 340px);
         }
 
         .about-photo-wrap::before {
@@ -1351,15 +1381,52 @@
             min-height: 510px;
         }
 
-        .user-location-marker {
-            width: 22px;
-            height: 22px;
+        .map-avatar-marker {
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
-            background: #2d63e2;
-            border: 4px solid #fff;
+            display: grid;
+            place-items: center;
+            color: #fff;
+            border: 3px solid rgba(255, 250, 242, 0.96);
+            box-shadow: 0 14px 28px rgba(20, 18, 16, 0.28);
+            position: relative;
+        }
+
+        .map-avatar-marker::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            width: 16px;
+            height: 16px;
+            background: inherit;
+            border-right: inherit;
+            border-bottom: inherit;
+            transform: translateX(-50%) rotate(45deg);
+            border-radius: 0 0 6px 0;
+            box-sizing: border-box;
+        }
+
+        .map-avatar-marker svg {
+            width: 20px;
+            height: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .map-avatar-marker.is-user {
+            background: linear-gradient(135deg, #2d63e2, #6f9bff);
             box-shadow:
                 0 0 0 8px rgba(45, 99, 226, 0.18),
-                0 10px 20px rgba(45, 99, 226, 0.28);
+                0 14px 28px rgba(45, 99, 226, 0.28);
+        }
+
+        .map-avatar-marker.is-driver {
+            background: linear-gradient(135deg, #6a412d, #b56a3b);
+            box-shadow:
+                0 0 0 8px rgba(181, 106, 59, 0.18),
+                0 14px 28px rgba(59, 36, 24, 0.28);
         }
 
         .history-list {
@@ -1451,6 +1518,17 @@
                 min-height: auto;
             }
 
+            .between-map-section {
+                width: 100%;
+                margin-top: 8px;
+                padding: 24px;
+            }
+
+            .between-map-section .hero-map-frame,
+            .between-map-section #map {
+                min-height: 560px;
+            }
+
             .hero-floating-row {
                 width: min(720px, calc(100% - 36px));
                 margin-top: -96px;
@@ -1460,19 +1538,9 @@
                 order: -1;
             }
 
-            .hero-gps-panel {
-                order: 2;
-                justify-self: center;
-                width: min(100%, 390px);
-            }
-
-            .hero-description-panel {
-                order: 1;
-            }
-
             .hero-gps-panel .hero-map-frame,
             .hero-gps-panel #map {
-                min-height: 480px;
+                min-height: 440px;
             }
 
             #map,
@@ -1578,6 +1646,16 @@
                 gap: 18px;
             }
 
+            .between-map-section {
+                width: 100%;
+                padding: 16px;
+            }
+
+            .hero-gps-caption {
+                grid-template-columns: 1fr;
+                align-items: start;
+            }
+
             .hero-description-panel h1 {
                 max-width: 14ch;
                 font-size: clamp(2.6rem, 14vw, 4.4rem);
@@ -1585,10 +1663,6 @@
 
             .hero-info-cards {
                 grid-template-columns: 1fr;
-            }
-
-            .hero-gps-caption {
-                flex-direction: column;
             }
 
             .about-section,
@@ -1717,6 +1791,11 @@
             .hero-gps-panel #map {
                 min-height: 420px;
             }
+
+            .between-map-section .hero-map-frame,
+            .between-map-section #map {
+                min-height: 460px;
+            }
         }
     </style>
 </head>
@@ -1774,31 +1853,13 @@
         <main class="tracker-content">
             <section class="hero-showcase" id="beranda">
                 <div class="hero-landing-grid" id="lacak">
-                    <section class="hero-gps-panel">
-                        <div class="hero-gps-caption">
-                            <div>
-                                <span class="eyebrow">GPS Live Map</span>
-                                <h2>Peta Kopling terdekat.</h2>
-                                <p>
-                                    Map berada di sisi kiri sebagai panel utama. Izinkan lokasi browser agar pin biru
-                                    menunjukkan posisi kamu dan marker Kopling aktif langsung terhitung jaraknya.
-                                </p>
-                            </div>
-
-                            <div class="live-pill">GPS aktif otomatis</div>
-                        </div>
-
-                        <div class="hero-map-frame">
-                            <div id="map"></div>
-                        </div>
-                    </section>
-
                     <section class="hero-description-panel">
                         <span class="eyebrow">Kopi Keliling Tracker</span>
                         <h1>Kopling terdekat langsung terlihat.</h1>
                         <p>
-                            Temukan gerobak Kopi Keliling dari halaman depan. Panel GPS di sebelah kiri menampilkan
-                            posisimu, Kopling aktif, dan jarak terdekat secara realtime dari browser.
+                            Temukan gerobak Kopi Keliling dari halaman depan. Panel utama di atas merangkum info
+                            lokasi, lalu card peta di tengah halaman menampilkan posisimu, Kopling aktif, dan jarak
+                            terdekat secara realtime dari browser.
                         </p>
 
                         <div class="hero-actions">
@@ -1862,6 +1923,26 @@
                         src="{{ asset('images/about-cart.jpg') }}"
                         alt="Gerobak kopi keliling"
                     >
+                </div>
+            </section>
+
+            <section class="hero-gps-panel between-map-section slide-in-up" id="lacak">
+                <div class="hero-gps-caption">
+                    <div>
+                        <span class="eyebrow">GPS Live Map</span>
+                        <h2>Peta Kopling terdekat.</h2>
+                        <p>
+                            Card peta sekarang berada tepat di bawah section About Us dan di atas Katalog Menu, dengan
+                            posisi tengah supaya jadi jembatan visual antar dua section utama. Izinkan lokasi browser
+                            agar ikon kamu dan driver aktif langsung terlihat di area peta.
+                        </p>
+                    </div>
+
+                    <div class="live-pill">GPS aktif otomatis</div>
+                </div>
+
+                <div class="hero-map-frame">
+                    <div id="map"></div>
                 </div>
             </section>
 
@@ -1958,6 +2039,7 @@
             userMarker: null,
             userLatLng: null,
             map: null,
+            hasAutoFramedMap: false,
         };
 
         const endpoints = {
@@ -2032,34 +2114,40 @@
             position: 'bottomright',
         }).addTo(map);
 
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            subdomains: 'abcd',
-            maxZoom: 20,
+        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            maxZoom: 19,
             detectRetina: true,
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics, and the GIS User Community',
         }).addTo(map);
 
-        const coffeeIcon = L.divIcon({
-            className: 'coffee-marker',
+        const driverIcon = L.divIcon({
+            className: 'driver-location-marker-wrapper',
             html: `
-                <div style="
-                    width: 26px;
-                    height: 26px;
-                    border-radius: 50%;
-                    background: linear-gradient(135deg, #6a412d, #b56a3b);
-                    border: 3px solid #fff7ed;
-                    box-shadow: 0 10px 18px rgba(59, 36, 24, 0.28);
-                "></div>
+                <div class="map-avatar-marker is-driver" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4" fill="currentColor"></circle>
+                        <path d="M5.5 19.5c1.8-3.4 4.2-5.1 6.5-5.1s4.7 1.7 6.5 5.1" fill="currentColor"></path>
+                    </svg>
+                </div>
             `,
-            iconSize: [26, 26],
-            iconAnchor: [13, 13],
+            iconSize: [44, 54],
+            iconAnchor: [22, 48],
+            popupAnchor: [0, -40],
         });
 
         const userIcon = L.divIcon({
             className: 'user-location-marker-wrapper',
-            html: '<div class="user-location-marker"></div>',
-            iconSize: [22, 22],
-            iconAnchor: [11, 11],
+            html: `
+                <div class="map-avatar-marker is-user" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="8" r="4" fill="currentColor"></circle>
+                        <path d="M5.5 19.5c1.8-3.4 4.2-5.1 6.5-5.1s4.7 1.7 6.5 5.1" fill="currentColor"></path>
+                    </svg>
+                </div>
+            `,
+            iconSize: [44, 54],
+            iconAnchor: [22, 48],
+            popupAnchor: [0, -40],
         });
 
         function updateSummary() {
@@ -2199,8 +2287,9 @@
             state.markers = [];
 
             if (!latLngs.length) {
-                if (state.userLatLng) {
+                if (state.userLatLng && !state.hasAutoFramedMap) {
                     map.setView([state.userLatLng.lat, state.userLatLng.lng], 15);
+                    state.hasAutoFramedMap = true;
                 }
 
                 renderHistory();
@@ -2211,7 +2300,7 @@
 
             displayLocations.forEach((unitLocation) => {
                 const marker = L.marker([unitLocation.displayLatitude, unitLocation.displayLongitude], {
-                    icon: coffeeIcon,
+                    icon: driverIcon,
                 }).addTo(map).bindPopup(`
                     <strong>${unitLocation.unit_name || 'Gerobak Kopi'}</strong><br>
                     Driver: ${unitLocation.driver_name || '-'}<br>
@@ -2222,6 +2311,13 @@
                     Updated: ${unitLocation.recorded_at || '-'}
                 `);
 
+                marker.on('click', () => {
+                    map.flyTo([unitLocation.displayLatitude, unitLocation.displayLongitude], Math.max(map.getZoom(), 18), {
+                        animate: true,
+                        duration: 0.8,
+                    });
+                });
+
                 state.markers.push(marker);
             });
 
@@ -2229,10 +2325,14 @@
                 boundsLatLngs.push([state.userLatLng.lat, state.userLatLng.lng]);
             }
 
-            if (boundsLatLngs.length === 1) {
-                map.setView(latLngs[0], 17);
-            } else if (boundsLatLngs.length > 1) {
-                map.fitBounds(boundsLatLngs, { padding: [34, 34] });
+            if (!state.hasAutoFramedMap) {
+                if (boundsLatLngs.length === 1) {
+                    map.setView(latLngs[0], 17);
+                } else if (boundsLatLngs.length > 1) {
+                    map.fitBounds(boundsLatLngs, { padding: [34, 34] });
+                }
+
+                state.hasAutoFramedMap = true;
             }
 
             requestAnimationFrame(() => {
@@ -2254,7 +2354,14 @@
                 state.userMarker = L.marker([state.userLatLng.lat, state.userLatLng.lng], {
                     icon: userIcon,
                     zIndexOffset: 1000,
-                }).addTo(map).bindPopup('Lokasi kamu saat ini');
+                }).addTo(map).bindPopup('Posisi kamu saat ini');
+
+                state.userMarker.on('click', () => {
+                    map.flyTo([state.userLatLng.lat, state.userLatLng.lng], Math.max(map.getZoom(), 18), {
+                        animate: true,
+                        duration: 0.8,
+                    });
+                });
             } else {
                 state.userMarker.setLatLng([state.userLatLng.lat, state.userLatLng.lng]);
             }
