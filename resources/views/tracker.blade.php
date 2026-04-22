@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    @php
+        $heroCustomPath = public_path('images/hero-user.jpg');
+        $heroBannerImage = file_exists($heroCustomPath)
+            ? asset('images/hero-user.jpg').'?v='.filemtime($heroCustomPath)
+            : asset('images/coffee-hero-banner-new.png');
+    @endphp
     <title>Kopi Keliling Tracker</title>
     <link rel="icon" type="image/png" href="{{ asset('images/ada-coffee-logo.png') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -147,15 +153,30 @@
         }
 
         .tracker-topbar-actions {
+            display: none;
+            position: absolute;
+            top: calc(100% + 10px);
+            right: var(--page-pad);
+            width: min(320px, calc(100% - (var(--page-pad) * 2)));
+            padding: 14px;
+            border: 1px solid var(--panel-border);
+            border-radius: 22px;
+            background: rgba(255, 250, 242, 0.97);
+            box-shadow: 0 24px 60px rgba(59, 36, 24, 0.18);
+            backdrop-filter: blur(18px);
+            justify-content: flex-start;
+            align-items: stretch;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 1001;
+        }
+
+        .tracker-topbar-actions.is-open {
             display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
         }
 
         .mobile-nav-toggle {
-            display: none;
+            display: inline-grid;
             width: 44px;
             height: 44px;
             border: 1px solid var(--panel-border);
@@ -165,6 +186,7 @@
             color: var(--espresso);
             cursor: pointer;
             place-items: center;
+            margin-left: auto;
         }
 
         .mobile-nav-toggle span {
@@ -244,6 +266,8 @@
         .tracker-link,
         .tracker-auth {
             font-weight: 700;
+            width: 100%;
+            justify-content: center;
         }
 
         .tracker-auth.is-primary {
@@ -567,20 +591,14 @@
             padding: clamp(34px, 5vw, 72px) 0 clamp(38px, 5vw, 72px);
             position: relative;
             overflow: hidden;
-            background:
-                linear-gradient(90deg, rgba(8, 12, 12, 0.7) 0%, rgba(8, 12, 12, 0.42) 46%, rgba(8, 12, 12, 0.68) 100%),
-                linear-gradient(180deg, rgba(8, 12, 12, 0.18), rgba(8, 12, 12, 0.62)),
-                url("{{ asset('images/coffee-hero-banner-new.png') }}") center / cover no-repeat;
+            min-height: calc(100dvh - 84px);
+            display: grid;
+            align-items: center;
+            background: url("{{ $heroBannerImage }}") center / cover no-repeat;
         }
 
         .hero-showcase::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background:
-                radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.12), transparent 18%),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.34), transparent 58%);
-            pointer-events: none;
+            content: none;
         }
 
         .hero-landing-grid {
@@ -592,6 +610,8 @@
             grid-template-columns: 1fr;
             gap: clamp(22px, 3vw, 28px);
             align-items: stretch;
+            min-height: 100%;
+            align-content: center;
         }
 
         .hero-gps-panel {
@@ -654,6 +674,8 @@
             justify-self: stretch;
             padding: clamp(28px, 3vw, 40px);
             border-radius: 34px;
+            min-height: calc(100dvh - 96px);
+            align-content: stretch;
         }
 
         .between-map-section .hero-gps-caption {
@@ -672,22 +694,65 @@
             line-height: 1.66;
         }
 
+        .hero-map-stats {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 8px;
+        }
+
+        .hero-map-stat-card {
+            padding: 16px 18px;
+            border-radius: 18px;
+            border: 1px solid var(--panel-border);
+            background: rgba(255, 249, 241, 0.88);
+            box-shadow: 0 10px 24px rgba(59, 36, 24, 0.09);
+        }
+
+        .hero-map-stat-card small,
+        .hero-map-stat-card strong,
+        .hero-map-stat-card span {
+            display: block;
+        }
+
+        .hero-map-stat-card small {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text-soft);
+        }
+
+        .hero-map-stat-card strong {
+            margin-top: 8px;
+            font-size: clamp(1.45rem, 2.1vw, 2.05rem);
+            line-height: 1.08;
+            letter-spacing: -0.04em;
+            color: var(--espresso);
+        }
+
+        .hero-map-stat-card span {
+            margin-top: 8px;
+            color: var(--text-soft);
+            line-height: 1.52;
+            font-size: 0.9rem;
+        }
+
         .between-map-section .hero-map-frame,
         .between-map-section #map {
-            min-height: 760px;
+            height: 100%;
+            min-height: 0;
         }
 
         .hero-description-panel {
             padding: clamp(22px, 3vw, 34px);
-            border: 1px solid rgba(255, 255, 255, 0.24);
-            border-radius: 26px;
-            background:
-                linear-gradient(180deg, rgba(12, 13, 12, 0.28), rgba(12, 13, 12, 0.18)),
-                rgba(255, 255, 255, 0.08);
-            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.18);
-            backdrop-filter: blur(10px);
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            box-shadow: none;
+            backdrop-filter: none;
             color: #fff;
-            text-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+            text-shadow: 0 10px 30px rgba(0, 0, 0, 0.28);
             justify-self: stretch;
             align-self: stretch;
             width: 100%;
@@ -697,9 +762,10 @@
         }
 
         .hero-description-panel .eyebrow {
-            background: rgba(255, 198, 74, 0.16);
+            background: transparent;
             color: #ffc64a;
-            border: 1px solid rgba(255, 198, 74, 0.2);
+            border: 0;
+            padding: 0;
         }
 
         .hero-description-panel h1 {
@@ -719,64 +785,11 @@
             font-size: clamp(1rem, 1.18vw, 1.12rem);
         }
 
-        .hero-info-cards {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 12px;
-            margin-top: 22px;
-        }
-
-        .hero-info-card {
-            min-height: 112px;
-            padding: 16px 18px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.54);
-            background: rgba(255, 252, 247, 0.92);
-            box-shadow: 0 24px 54px rgba(0, 0, 0, 0.18);
-            color: var(--text-main);
-            text-shadow: none;
-            backdrop-filter: blur(14px);
-        }
-
-        .hero-info-card small,
-        .hero-info-card strong,
-        .hero-info-card span {
-            display: block;
-        }
-
-        .hero-info-card small {
-            color: var(--text-soft);
-            font-size: 0.72rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .hero-info-card strong {
-            margin-top: 10px;
-            font-size: clamp(1.55rem, 2.1vw, 2.12rem);
-            line-height: 1;
-            letter-spacing: -0.04em;
-        }
-
-        .hero-info-card span {
-            margin-top: 10px;
-            color: var(--text-soft);
-            line-height: 1.45;
-            font-size: 0.86rem;
-        }
-
-        .hero-info-card.is-highlight {
-            color: #fff;
-            border-color: rgba(255, 255, 255, 0.22);
-            background:
-                radial-gradient(circle at top right, rgba(255, 255, 255, 0.18), transparent 34%),
-                linear-gradient(180deg, #6a412d 0%, #8a5536 58%, #b56a3b 100%);
-        }
-
-        .hero-info-card.is-highlight small,
-        .hero-info-card.is-highlight span {
-            color: rgba(255, 249, 241, 0.82);
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 26px;
         }
 
         .about-section {
@@ -978,6 +991,8 @@
 
         .menu-card {
             --menu-card-height: 280px;
+            --menu-image-box-width: 320px;
+            --menu-image-box-height: 220px;
             position: relative;
             display: grid;
             grid-template-columns: minmax(260px, 0.42fr) minmax(0, 1fr);
@@ -1036,6 +1051,7 @@
             align-items: center;
             justify-content: center;
             overflow: hidden;
+            padding: 16px;
             height: 100%;
             min-height: 0;
             background:
@@ -1045,10 +1061,13 @@
 
         .menu-card-image {
             display: block;
-            width: 100%;
-            height: 100%;
+            width: min(100%, var(--menu-image-box-width));
+            height: var(--menu-image-box-height);
             object-fit: cover;
             object-position: center;
+            border-radius: 22px;
+            border: 1px solid rgba(76, 48, 33, 0.12);
+            box-shadow: 0 10px 24px rgba(59, 36, 24, 0.12);
             transition: transform 220ms ease;
         }
 
@@ -1153,8 +1172,9 @@
             gap: 8px;
             padding: 8px 12px;
             border-radius: 999px;
-            background: var(--accent-soft);
-            color: var(--accent);
+            border: 1px solid rgba(181, 106, 59, 0.24);
+            background: rgba(181, 106, 59, 0.14);
+            color: var(--mocha);
             font-size: 0.74rem;
             font-weight: 700;
             letter-spacing: 0.08em;
@@ -1182,13 +1202,6 @@
             color: var(--text-soft);
             line-height: 1.8;
             font-size: 1rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-top: 26px;
         }
 
         .button-link {
@@ -1515,18 +1528,20 @@
 
             .hero-landing-grid {
                 width: min(760px, calc(100% - 36px));
-                min-height: auto;
+                min-height: 100%;
             }
 
             .between-map-section {
                 width: 100%;
                 margin-top: 8px;
                 padding: 24px;
+                min-height: calc(100dvh - 92px);
             }
 
             .between-map-section .hero-map-frame,
             .between-map-section #map {
-                min-height: 560px;
+                height: 100%;
+                min-height: 0;
             }
 
             .hero-floating-row {
@@ -1579,11 +1594,6 @@
                 display: none;
             }
 
-            .mobile-nav-toggle {
-                display: inline-grid;
-                margin-left: auto;
-            }
-
             .hero-card,
             .hero-map-card,
             .hero-floating-card,
@@ -1619,6 +1629,7 @@
             .hero-showcase {
                 margin: -18px calc(var(--page-pad) * -1) 0;
                 padding: 38px 0;
+                min-height: calc(100dvh - 76px);
                 background-position: 32% center;
             }
 
@@ -1649,6 +1660,11 @@
             .between-map-section {
                 width: 100%;
                 padding: 16px;
+                min-height: calc(100dvh - 80px);
+            }
+
+            .hero-map-stats {
+                grid-template-columns: 1fr;
             }
 
             .hero-gps-caption {
@@ -1709,6 +1725,13 @@
 
             .menu-card-image-wrap {
                 height: 190px;
+                padding: 10px;
+            }
+
+            .menu-card-image {
+                width: 100%;
+                height: 100%;
+                border-radius: 16px;
             }
 
             .menu-card-body {
@@ -1739,29 +1762,12 @@
             }
 
             .tracker-topbar-actions {
-                display: none;
-                position: absolute;
-                top: calc(100% + 10px);
                 left: var(--page-pad);
                 right: var(--page-pad);
                 width: auto;
-                padding: 14px;
-                border: 1px solid var(--panel-border);
-                border-radius: 22px;
-                background: rgba(255, 250, 242, 0.97);
-                box-shadow: 0 24px 60px rgba(59, 36, 24, 0.18);
-                backdrop-filter: blur(18px);
-                justify-content: flex-start;
-                align-items: stretch;
-                flex-direction: column;
-                z-index: 1001;
+                max-width: none;
             }
 
-            .tracker-topbar-actions.is-open {
-                display: flex;
-            }
-
-            .tracker-chip,
             .tracker-link,
             .tracker-auth,
             .button-link {
@@ -1794,8 +1800,10 @@
 
             .between-map-section .hero-map-frame,
             .between-map-section #map {
-                min-height: 460px;
+                height: 100%;
+                min-height: 0;
             }
+
         }
     </style>
 </head>
@@ -1826,33 +1834,23 @@
             </button>
 
             <div class="tracker-topbar-actions" id="tracker-nav-actions">
-                <div class="tracker-chip">
-                    <div>
-                        <small>Status</small>
-                        <strong><span id="active-unit-count">{{ count($activeUnits) }}</span> gerobak aktif</strong>
-                    </div>
-                </div>
-
+                <a href="#lacak" class="tracker-link">Lacak</a>
                 <a href="#menu" class="tracker-link">Menu</a>
-
                 @auth
-                    <a href="{{ route('dashboard') }}" class="tracker-link">Buka Dashboard</a>
-
+                    <a href="{{ route('dashboard') }}" class="tracker-auth is-primary">Dashboard</a>
                     <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                         @csrf
                         <button type="submit" class="tracker-auth">Logout</button>
                     </form>
                 @else
-                    @if (Route::has('login'))
-                        <a href="{{ route('login') }}" class="tracker-auth is-primary">Login Dashboard</a>
-                    @endif
+                    <a href="{{ route('login') }}" class="tracker-auth is-primary">Login</a>
                 @endauth
             </div>
         </header>
 
         <main class="tracker-content">
             <section class="hero-showcase" id="beranda">
-                <div class="hero-landing-grid" id="lacak">
+                <div class="hero-landing-grid">
                     <section class="hero-description-panel">
                         <span class="eyebrow">Kopi Keliling Tracker</span>
                         <h1>Kopling terdekat langsung terlihat.</h1>
@@ -1863,27 +1861,30 @@
                         </p>
 
                         <div class="hero-actions">
-                            @auth
-                                <a href="{{ route('dashboard') }}" class="button-link secondary">Masuk ke Dashboard</a>
-                            @elseif (Route::has('login'))
-                                <a href="{{ route('login') }}" class="button-link secondary">Masuk sebagai Admin</a>
-                            @endif
-                        </div>
-
-                        <div class="hero-info-cards">
-                            <article class="hero-info-card is-highlight">
-                                <small>Kopling tersedia</small>
-                                <strong><span id="active-unit-count-hero">{{ count($activeUnits) }}</span></strong>
-                                <span>Unit Kopi Keliling yang sedang online dan mengirim lokasi terbaru.</span>
-                            </article>
-
-                            <article class="hero-info-card">
-                                <small>Kopling terdekat</small>
-                                <strong id="nearest-distance">Mencari...</strong>
-                                <span id="nearest-copy">Aktifkan izin lokasi browser untuk melihat jarak gerobak paling dekat.</span>
-                            </article>
+                            <a href="#lacak" class="button-link primary js-scroll-map-center">Temukan Kami</a>
+                            <a href="#menu" class="button-link secondary">Katalog Kopi</a>
                         </div>
                     </section>
+                </div>
+            </section>
+
+            <section class="hero-gps-panel between-map-section slide-in-up" id="lacak">
+                <div class="hero-map-stats">
+                    <article class="hero-map-stat-card">
+                        <small>Kopling Terdekat</small>
+                        <strong id="nearest-distance">Mencari...</strong>
+                        <span id="nearest-copy">Aktifkan izin lokasi browser untuk melihat jarak gerobak paling dekat.</span>
+                    </article>
+
+                    <article class="hero-map-stat-card">
+                        <small>Kopling Tersedia</small>
+                        <strong><span id="active-unit-count-hero">{{ count($activeUnits) }}</span></strong>
+                        <span>Unit Kopi Keliling yang sedang aktif dan mengirim lokasi terbaru.</span>
+                    </article>
+                </div>
+
+                <div class="hero-map-frame">
+                    <div id="map"></div>
                 </div>
             </section>
 
@@ -1901,20 +1902,6 @@
                         kecil terasa lebih modern, transparan, dan siap menjangkau lebih banyak pelanggan.
                     </p>
 
-                    <div class="about-points">
-                        <div class="about-point">
-                            <strong>Dekat</strong>
-                            <span>Gerobak hadir di sekitar aktivitas harian pelanggan.</span>
-                        </div>
-                        <div class="about-point">
-                            <strong>Realtime</strong>
-                            <span>Lokasi Kopling aktif diperbarui langsung lewat sistem GPS.</span>
-                        </div>
-                        <div class="about-point">
-                            <strong>Sederhana</strong>
-                            <span>Konsep gerobak tetap ringan, tapi pengalamannya dibuat digital.</span>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="about-photo-wrap">
@@ -1923,26 +1910,6 @@
                         src="{{ asset('images/about-cart.jpg') }}"
                         alt="Gerobak kopi keliling"
                     >
-                </div>
-            </section>
-
-            <section class="hero-gps-panel between-map-section slide-in-up" id="lacak">
-                <div class="hero-gps-caption">
-                    <div>
-                        <span class="eyebrow">GPS Live Map</span>
-                        <h2>Peta Kopling terdekat.</h2>
-                        <p>
-                            Card peta sekarang berada tepat di bawah section About Us dan di atas Katalog Menu, dengan
-                            posisi tengah supaya jadi jembatan visual antar dua section utama. Izinkan lokasi browser
-                            agar ikon kamu dan driver aktif langsung terlihat di area peta.
-                        </p>
-                    </div>
-
-                    <div class="live-pill">GPS aktif otomatis</div>
-                </div>
-
-                <div class="hero-map-frame">
-                    <div id="map"></div>
                 </div>
             </section>
 
@@ -2049,6 +2016,9 @@
         const mobileNavToggle = document.getElementById('mobile-nav-toggle');
         const trackerNavActions = document.getElementById('tracker-nav-actions');
         const slideInElements = document.querySelectorAll('.slide-in-up');
+        const mapCenterTrigger = document.querySelector('.js-scroll-map-center');
+        const mapSection = document.getElementById('lacak');
+        const trackerTopbar = document.querySelector('.tracker-topbar');
 
         function closeMobileNav() {
             if (!mobileNavToggle || !trackerNavActions) {
@@ -2085,6 +2055,23 @@
                 if (event.key === 'Escape') {
                     closeMobileNav();
                 }
+            });
+        }
+
+        if (mapCenterTrigger && mapSection) {
+            mapCenterTrigger.addEventListener('click', (event) => {
+                event.preventDefault();
+
+                const topbarHeight = trackerTopbar ? trackerTopbar.offsetHeight : 0;
+                const sectionTop = mapSection.getBoundingClientRect().top + window.pageYOffset;
+                const visibleViewportHeight = window.innerHeight - topbarHeight;
+                const centeredOffset = topbarHeight + Math.max((visibleViewportHeight - mapSection.offsetHeight) / 2, 0);
+                const targetTop = Math.max(sectionTop - centeredOffset, 0);
+
+                window.scrollTo({
+                    top: targetTop,
+                    behavior: 'smooth',
+                });
             });
         }
 
@@ -2151,8 +2138,16 @@
         });
 
         function updateSummary() {
-            document.getElementById('active-unit-count').textContent = state.activeUnits.length;
-            document.getElementById('active-unit-count-hero').textContent = state.activeUnits.length;
+            const activeCountElement = document.getElementById('active-unit-count');
+            const heroActiveCountElement = document.getElementById('active-unit-count-hero');
+
+            if (activeCountElement) {
+                activeCountElement.textContent = state.activeUnits.length;
+            }
+
+            if (heroActiveCountElement) {
+                heroActiveCountElement.textContent = state.activeUnits.length;
+            }
         }
 
         function calculateDistanceKm(from, to) {
@@ -2181,6 +2176,10 @@
         function updateNearestUnit() {
             const distanceEl = document.getElementById('nearest-distance');
             const copyEl = document.getElementById('nearest-copy');
+
+            if (!distanceEl || !copyEl) {
+                return;
+            }
 
             if (!state.userLatLng) {
                 distanceEl.textContent = 'Mencari...';
@@ -2371,8 +2370,17 @@
 
         function requestUserLocation() {
             if (!navigator.geolocation) {
-                document.getElementById('nearest-distance').textContent = '-';
-                document.getElementById('nearest-copy').textContent = 'Browser ini belum mendukung deteksi lokasi.';
+                const distanceEl = document.getElementById('nearest-distance');
+                const copyEl = document.getElementById('nearest-copy');
+
+                if (distanceEl) {
+                    distanceEl.textContent = '-';
+                }
+
+                if (copyEl) {
+                    copyEl.textContent = 'Browser ini belum mendukung deteksi lokasi.';
+                }
+
                 return;
             }
 
