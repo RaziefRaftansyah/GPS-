@@ -1,107 +1,14 @@
 <x-app-layout>
-    <style>
-        .driver-dashboard {
-            display: grid;
-            gap: 24px;
-        }
-
-        .driver-grid-top,
-        .driver-grid-main {
-            display: grid;
-            gap: 20px;
-        }
-
-        .driver-grid-top {
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .driver-grid-main {
-            grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.85fr);
-        }
-
-        .driver-card {
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 20px;
-            box-shadow: var(--shadow-sm);
-            padding: 24px;
-        }
-
-        .driver-label {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--text-soft);
-            font-size: 0.76rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-        }
-
-        .driver-card strong {
-            display: block;
-        }
-
-        .driver-stat-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 14px;
-            margin-top: 18px;
-        }
-
-        .driver-stat {
-            border-radius: 16px;
-            padding: 16px;
-            border: 1px solid var(--panel-border);
-            background: #f8fafc;
-        }
-
-        .driver-stat span {
-            display: block;
-            color: var(--text-soft);
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-        }
-
-        .driver-stat strong {
-            margin-top: 8px;
-        }
-
-        .driver-empty {
-            padding: 18px;
-            border-radius: 16px;
-            border: 1px dashed var(--panel-border);
-            background: #f8fafc;
-            color: var(--text-soft);
-        }
-
-        .driver-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .driver-list article {
-            padding: 16px 18px;
-            border-radius: 16px;
-            background: #fff;
-            border: 1px solid var(--panel-border);
-        }
-
-        @media (max-width: 1180px) {
-            .driver-grid-top,
-            .driver-grid-main,
-            .driver-stat-grid {
-                grid-template-columns: 1fr !important;
-            }
-        }
-    </style>
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/driver-dashboard.css') }}">
+@endpush
 
     <x-slot name="header">
         <div>
-            <p style="margin: 0; color: var(--text-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">
+            <p class="page-header-kicker">
                 Dashboard Driver
             </p>
-            <h2 style="margin: 8px 0 0; font-size: 2rem; color: var(--text-main);">
+            <h2 class="page-header-title">
                 Lihat gerobak tugasmu hari ini
             </h2>
         </div>
@@ -111,25 +18,25 @@
         <section class="driver-grid-top">
             <article class="driver-card">
                 <span class="driver-label">Driver</span>
-                <strong style="font-size: 1.6rem;">{{ $driver->name }}</strong>
-                <span style="display: block; margin-top: 8px; color: var(--text-soft);">{{ $driver->email }}</span>
+                <strong class="driver-strong-lg">{{ $driver->name }}</strong>
+                <span class="driver-muted">{{ $driver->email }}</span>
             </article>
             <article class="driver-card">
                 <span class="driver-label">Gerobak Aktif</span>
-                <strong style="font-size: 1.6rem;">{{ $unit?->name ?? 'Belum ada assignment' }}</strong>
-                <span style="display: block; margin-top: 8px; color: var(--text-soft);">{{ $unit?->code ? 'Kode '.$unit->code : 'Hubungi owner untuk penugasan.' }}</span>
+                <strong class="driver-strong-lg">{{ $unit?->name ?? 'Belum ada assignment' }}</strong>
+                <span class="driver-muted">{{ $unit?->code ? 'Kode '.$unit->code : 'Hubungi owner untuk penugasan.' }}</span>
             </article>
             <article class="driver-card">
                 <span class="driver-label">Device Tracker</span>
-                <strong style="font-size: 1.4rem;">{{ $driver->device_id ?? '-' }}</strong>
-                <span style="display: block; margin-top: 8px; color: var(--text-soft);">Gunakan `device_id` HP ini di aplikasi Traccar.</span>
+                <strong class="driver-strong-md">{{ $driver->device_id ?? '-' }}</strong>
+                <span class="driver-muted">Gunakan `device_id` HP ini di aplikasi Traccar.</span>
             </article>
         </section>
 
         <section class="driver-grid-main">
             <article class="driver-card">
                 <span class="driver-label">Status Tugas</span>
-                <h3 style="margin: 0; font-size: 1.7rem;">{{ $assignment ? 'Kamu sedang bertugas.' : 'Belum ada penugasan aktif.' }}</h3>
+                <h3 class="driver-title">{{ $assignment ? 'Kamu sedang bertugas.' : 'Belum ada penugasan aktif.' }}</h3>
 
                 @if ($assignment && $unit)
                     <div class="driver-stat-grid">
@@ -151,7 +58,7 @@
                         </div>
                     </div>
                 @else
-                    <div class="driver-empty" style="margin-top: 18px;">
+                    <div class="driver-empty driver-empty-gap">
                         Owner belum assign gerobak ke akunmu. Begitu assignment dibuat, detail gerobak dan device tracker akan muncul di sini.
                     </div>
                 @endif
@@ -159,12 +66,12 @@
 
             <article class="driver-card">
                 <span class="driver-label">Riwayat Tugas</span>
-                <h3 style="margin: 0 0 16px; font-size: 1.5rem;">5 assignment terakhir</h3>
+                <h3 class="driver-subtitle">5 assignment terakhir</h3>
                 <div class="driver-list">
                     @forelse ($recentAssignments as $item)
                         <article>
                             <strong>{{ $item->unit?->name ?? 'Gerobak tidak ditemukan' }}</strong>
-                            <span style="display: block; margin-top: 6px; color: var(--text-soft);">
+                            <span class="driver-muted driver-list-meta">
                                 {{ $item->assigned_at?->translatedFormat('d M Y H:i') }} - {{ $item->ended_at?->translatedFormat('d M Y H:i') ?? 'Masih aktif' }}
                             </span>
                         </article>

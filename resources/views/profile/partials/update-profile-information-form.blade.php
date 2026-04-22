@@ -3,7 +3,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" style="display: grid; gap: 20px;">
+    <form method="post" action="{{ route('profile.update') }}" class="profile-update-form">
         @csrf
         @method('patch')
 
@@ -40,16 +40,16 @@
             @endforeach
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div style="margin-top: 12px; padding: 14px 16px; border-radius: 20px; background: rgba(255,255,255,0.66); border: 1px solid rgba(106, 65, 45, 0.1);">
-                    <p style="margin: 0; color: #6c5244; line-height: 1.7;">
+                <div class="profile-verification-box">
+                    <p class="profile-verification-text">
                         Email kamu belum terverifikasi.
-                        <button form="send-verification" type="submit" style="padding: 0; border: 0; background: transparent; color: #8b5634; font-weight: 800; cursor: pointer;">
+                        <button form="send-verification" type="submit" class="profile-verification-button">
                             Kirim ulang verifikasi
                         </button>
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p style="margin: 8px 0 0; color: #2f6b55; font-weight: 700;">
+                        <p class="profile-verification-sent">
                             Link verifikasi baru sudah dikirim ke email kamu.
                         </p>
                     @endif
@@ -57,11 +57,11 @@
             @endif
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; flex-wrap: wrap; padding-top: 10px;">
+        <div class="profile-form-footer">
             @if (session('status') === 'profile-updated')
-                <p style="margin: 0; color: #2f6b55; font-weight: 700;">Perubahan berhasil disimpan.</p>
+                <p class="profile-form-footer-success">Perubahan berhasil disimpan.</p>
             @else
-                <span style="color: #8a634b; line-height: 1.7;">Pastikan nama dan email sudah benar sebelum menyimpan.</span>
+                <span class="profile-form-footer-note">Pastikan nama dan email sudah benar sebelum menyimpan.</span>
             @endif
 
             <button type="submit" class="profile-edit-submit">Simpan Perubahan</button>

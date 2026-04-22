@@ -1,281 +1,18 @@
 <x-app-layout>
-    <style>
-        .menu-dashboard {
-            display: grid;
-            gap: 24px;
-        }
-
-        .menu-grid {
-            display: grid;
-            grid-template-columns: minmax(340px, 0.82fr) minmax(0, 1.18fr);
-            gap: 20px;
-            align-items: start;
-        }
-
-        .panel-card {
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 20px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .section-card,
-        .mini-card {
-            padding: 24px;
-        }
-
-        .eyebrow {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--text-soft);
-            font-size: 0.76rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-        }
-
-        .section-subtext,
-        .list-meta {
-            color: var(--text-soft);
-            line-height: 1.6;
-        }
-
-        .status-banner {
-            padding: 16px 18px;
-            border-radius: 18px;
-            background: rgba(22, 163, 74, 0.12);
-            border: 1px solid rgba(22, 163, 74, 0.16);
-            color: #166534;
-        }
-
-        .validation-list {
-            margin: 0;
-            padding: 14px 16px 14px 30px;
-            border: 1px solid rgba(220, 38, 38, 0.2);
-            border-radius: 14px;
-            color: var(--danger);
-            background: rgba(220, 38, 38, 0.08);
-            line-height: 1.55;
-        }
-
-        .form-grid {
-            display: grid;
-            gap: 12px;
-        }
-
-        .form-row-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .dashboard-input,
-        .dashboard-textarea {
-            width: 100%;
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 13px 14px;
-            font: inherit;
-            color: var(--text-main);
-            background: #fff;
-        }
-
-        .dashboard-textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-
-        .field-label {
-            font-size: 0.86rem;
-            color: var(--text-soft);
-            font-weight: 700;
-        }
-
-        .field-help {
-            margin: -6px 0 0;
-            color: var(--text-soft);
-            font-size: 0.82rem;
-            line-height: 1.5;
-        }
-
-        .menu-thumb {
-            width: 78px;
-            height: 78px;
-            border-radius: 12px;
-            border: 1px solid var(--panel-border);
-            object-fit: cover;
-            background: #fff;
-        }
-
-        .menu-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .menu-item {
-            border: 1px solid var(--panel-border);
-            border-radius: 16px;
-            background: #fff;
-            padding: 16px;
-            display: grid;
-            gap: 12px;
-        }
-
-        .menu-item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .menu-item-main {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            min-width: 0;
-            flex: 1;
-        }
-
-        .menu-item-meta {
-            min-width: 0;
-        }
-
-        .menu-item-meta strong {
-            display: block;
-            font-size: 1.1rem;
-            line-height: 1.2;
-            word-break: break-word;
-        }
-
-        .menu-summary-thumb {
-            width: 54px;
-            height: 54px;
-            border-radius: 10px;
-            border: 1px solid var(--panel-border);
-            object-fit: cover;
-            background: #fff;
-            flex-shrink: 0;
-        }
-
-        .menu-item-actions {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-        }
-
-        .menu-status {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            padding: 6px 10px;
-            font-size: 0.76rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
-
-        .menu-status.is-active {
-            background: rgba(22, 163, 74, 0.12);
-            color: #166534;
-        }
-
-        .menu-status.is-inactive {
-            background: rgba(100, 116, 139, 0.16);
-            color: #334155;
-        }
-
-        .checkbox-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .button-row {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .menu-inline-form {
-            margin: 0;
-        }
-
-        .menu-edit-toggle {
-            padding: 10px 14px;
-        }
-
-        .menu-edit-panel {
-            border-top: 1px dashed var(--panel-border);
-            padding-top: 12px;
-            display: grid;
-            gap: 12px;
-        }
-
-        .menu-edit-panel[hidden] {
-            display: none !important;
-        }
-
-        .section-button,
-        .primary-button,
-        .danger-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: 0;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .section-button {
-            background: #fff;
-            color: var(--text-main);
-            border: 1px solid var(--panel-border);
-        }
-
-        .primary-button {
-            background: var(--success);
-            color: #fff;
-        }
-
-        .danger-button {
-            background: rgba(220, 38, 38, 0.12);
-            color: var(--danger);
-        }
-
-        .empty-state {
-            padding: 16px;
-            border-radius: 14px;
-            border: 1px dashed var(--panel-border);
-            color: var(--text-soft);
-            background: #f8fafc;
-        }
-
-        @media (max-width: 1080px) {
-            .menu-grid,
-            .form-row-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/dashboard-menus.css') }}">
+@endpush
 
     <x-slot name="header">
-        <div style="display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap;">
+        <div class="page-header-row">
             <div>
-                <p style="margin: 0; color: var(--text-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">
+                <p class="page-header-kicker">
                     Dashboard Admin
                 </p>
-                <h2 style="margin: 8px 0 0; font-size: 2rem; color: var(--text-main);">
+                <h2 class="page-header-title">
                     Kelola katalog menu
                 </h2>
-                <p style="margin: 8px 0 0; color: var(--text-soft);">
+                <p class="page-header-subtitle">
                     Tambah, ubah, aktifkan/nonaktifkan, dan hapus menu yang ditampilkan di halaman tracker publik.
                 </p>
             </div>
@@ -303,8 +40,8 @@
         <section class="menu-grid">
             <article class="panel-card section-card">
                 <span class="eyebrow">Tambah Menu</span>
-                <h3 style="margin: 0 0 14px; font-size: 1.65rem;">Menu baru</h3>
-                <p class="section-subtext" style="margin: 0 0 18px;">
+                <h3 class="section-title">Menu baru</h3>
+                <p class="section-subtext section-subtext-gap">
                     Semua data disimpan ke database. Menu aktif akan otomatis muncul di katalog halaman utama.
                 </p>
 
@@ -342,7 +79,7 @@
 
             <article class="panel-card mini-card">
                 <span class="eyebrow">Daftar Menu</span>
-                <h3 style="margin: 0 0 16px; font-size: 1.65rem;">Edit atau hapus menu</h3>
+                <h3 class="section-title section-title-lg-gap">Edit atau hapus menu</h3>
 
                 <div class="menu-list">
                     @forelse ($menus as $menu)
@@ -404,9 +141,9 @@
                                     </div>
 
                                     @if ($menu->image_path)
-                                        <div style="display: flex; align-items: center; gap: 10px;">
+                                        <div class="menu-image-current">
                                             <img class="menu-thumb" src="{{ \Illuminate\Support\Str::startsWith($menu->image_path, ['http://', 'https://']) ? $menu->image_path : asset(ltrim($menu->image_path, '/')) }}" alt="{{ $menu->name }}">
-                                            <span class="field-help" style="margin: 0;">Gambar saat ini: {{ $menu->image_path }}</span>
+                                            <span class="field-help field-help-inline">Gambar saat ini: {{ $menu->image_path }}</span>
                                         </div>
                                     @endif
 
@@ -443,41 +180,7 @@
         </section>
     </div>
 
-    <script>
-        const menuEditToggles = document.querySelectorAll('[data-edit-toggle]');
-
-        function setMenuEditPanelState(button, isOpen) {
-            const panel = document.getElementById(button.dataset.targetId);
-
-            if (!panel) {
-                return;
-            }
-
-            panel.hidden = !isOpen;
-            button.setAttribute('aria-expanded', String(isOpen));
-            button.textContent = isOpen ? button.dataset.labelOpen : button.dataset.labelClose;
-        }
-
-        menuEditToggles.forEach((button) => {
-            setMenuEditPanelState(button, false);
-
-            button.addEventListener('click', () => {
-                const panel = document.getElementById(button.dataset.targetId);
-
-                if (!panel) {
-                    return;
-                }
-
-                const shouldOpen = panel.hidden;
-
-                menuEditToggles.forEach((otherButton) => {
-                    if (otherButton !== button) {
-                        setMenuEditPanelState(otherButton, false);
-                    }
-                });
-
-                setMenuEditPanelState(button, shouldOpen);
-            });
-        });
-    </script>
+    @push('scripts')
+    <script src="{{ asset('js/pages/dashboard-menus.js') }}"></script>
+@endpush
 </x-app-layout>

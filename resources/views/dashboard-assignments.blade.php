@@ -1,138 +1,18 @@
 <x-app-layout>
-    <style>
-        .assignment-page {
-            display: grid;
-            gap: 24px;
-        }
-
-        .assignment-grid {
-            display: grid;
-            grid-template-columns: minmax(340px, 0.9fr) minmax(0, 1.1fr);
-            gap: 20px;
-        }
-
-        .panel-card {
-            background: var(--panel);
-            border: 1px solid var(--panel-border);
-            border-radius: 20px;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .section-card,
-        .mini-card {
-            padding: 24px;
-        }
-
-        .eyebrow {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--text-soft);
-            font-size: 0.76rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            font-weight: 700;
-        }
-
-        .section-subtext,
-        .list-meta {
-            color: var(--text-soft);
-            line-height: 1.6;
-        }
-
-        .dashboard-input,
-        .dashboard-select,
-        .dashboard-textarea {
-            width: 100%;
-            border: 1px solid var(--panel-border);
-            border-radius: 12px;
-            padding: 13px 14px;
-            font: inherit;
-            color: var(--text-main);
-            background: #fff;
-        }
-
-        .dashboard-textarea {
-            min-height: 120px;
-            resize: vertical;
-        }
-
-        .form-stack,
-        .mini-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .section-button,
-        .success-button,
-        .danger-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: 0;
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-weight: 700;
-            cursor: pointer;
-            text-decoration: none;
-        }
-
-        .section-button {
-            background: #fff;
-            color: var(--text-main);
-            border: 1px solid var(--panel-border);
-        }
-
-        .success-button {
-            background: var(--success);
-            color: #fff;
-        }
-
-        .danger-button {
-            background: rgba(220, 38, 38, 0.12);
-            color: var(--danger);
-        }
-
-        .mini-item {
-            padding: 18px;
-            border-radius: 18px;
-            border: 1px solid var(--panel-border);
-            background: #fff;
-        }
-
-        .status-banner {
-            padding: 16px 18px;
-            border-radius: 18px;
-            background: rgba(22, 163, 74, 0.12);
-            border: 1px solid rgba(22, 163, 74, 0.16);
-            color: #166534;
-        }
-
-        .empty-state {
-            padding: 18px;
-            border-radius: 16px;
-            border: 1px dashed var(--panel-border);
-            color: var(--text-soft);
-            background: #f8fafc;
-        }
-
-        @media (max-width: 1080px) {
-            .assignment-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
+    @push('styles')
+    <link rel="stylesheet" href="{{ asset('css/pages/dashboard-assignments.css') }}">
+@endpush
 
     <x-slot name="header">
-        <div style="display: flex; justify-content: space-between; gap: 16px; align-items: center; flex-wrap: wrap;">
+        <div class="page-header-row">
             <div>
-                <p style="margin: 0; color: var(--text-soft); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">
+                <p class="page-header-kicker">
                     Dashboard Admin
                 </p>
-                <h2 style="margin: 8px 0 0; font-size: 2rem; color: var(--text-main);">
+                <h2 class="page-header-title">
                     Kelola assignment driver
                 </h2>
-                <p style="margin: 8px 0 0; color: var(--text-soft);">
+                <p class="page-header-subtitle">
                     Pilih driver dan gerobak aktif dari halaman khusus assignment.
                 </p>
             </div>
@@ -152,8 +32,8 @@
         <section class="assignment-grid">
             <article class="panel-card section-card">
                 <span class="eyebrow">Form Assignment</span>
-                <h3 style="margin: 0 0 14px; font-size: 1.7rem;">Assign driver ke gerobak</h3>
-                <p class="section-subtext" style="margin: 0 0 18px;">
+                <h3 class="section-title">Assign driver ke gerobak</h3>
+                <p class="section-subtext section-subtext-gap">
                     Satu driver aktif untuk satu gerobak aktif. Assignment lama akan ditutup otomatis saat dibuat yang baru.
                 </p>
                 <form method="POST" action="{{ route('dashboard.assignments.store') }}" class="form-stack">
@@ -182,21 +62,21 @@
 
             <article class="panel-card mini-card">
                 <span class="eyebrow">Assignment Aktif</span>
-                <h3 style="margin: 0 0 16px; font-size: 1.7rem;">Daftar penugasan berjalan</h3>
+                <h3 class="section-title section-title-lg-gap">Daftar penugasan berjalan</h3>
                 <div class="mini-list">
                     @forelse ($activeAssignments as $assignment)
                         <article class="mini-item">
-                            <div style="display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+                            <div class="assignment-row">
                                 <div>
-                                    <strong style="display: block;">{{ $assignment->driver?->name }} &rarr; {{ $assignment->unit?->name }}</strong>
-                                    <span class="list-meta" style="display: block; margin-top: 6px;">
+                                    <strong class="assignment-name">{{ $assignment->driver?->name }} &rarr; {{ $assignment->unit?->name }}</strong>
+                                    <span class="list-meta">
                                         Device ID: {{ $assignment->driver?->device_id ?? '-' }}
                                     </span>
-                                    <span class="list-meta" style="display: block; margin-top: 6px;">
+                                    <span class="list-meta">
                                         Mulai {{ $assignment->assigned_at?->translatedFormat('d M Y H:i') }}
                                     </span>
                                 </div>
-                                <form method="POST" action="{{ route('dashboard.assignments.finish', $assignment) }}" style="margin: 0;">
+                                <form method="POST" action="{{ route('dashboard.assignments.finish', $assignment) }}" class="inline-form">
                                     @csrf
                                     @method('PATCH')
                                     <input type="hidden" name="redirect_to" value="dashboard.assignments.index">
