@@ -261,10 +261,10 @@
                     <section>
                         <h4>Hubungi Kami</h4>
                         <ul class="tracker-contact-list">
-                            <li><strong>WhatsApp:</strong> <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">+62 812-3456-7890</a></li>
+                            <li><strong>WhatsApp:</strong> <a href="https://wa.me/6282353151402" target="_blank" rel="noopener">+62 823-531-514-02</a></li>
                             <li><strong>Email:</strong> <a href="mailto:hello@adacoffee.id">hello@adacoffee.id</a></li>
                             <li><strong>Instagram:</strong> <a href="https://instagram.com/adacoffee.id" target="_blank" rel="noopener">@adacoffee.id</a></li>
-                            <li><strong>Alamat:</strong> Makassar, Sulawesi Selatan</li>
+                            <li><strong>Alamat:</strong> Samarinda, Kalimantan Timur</li>
                         </ul>
                     </section>
 

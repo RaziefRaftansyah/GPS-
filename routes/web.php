@@ -1,99 +1,52 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Dashboard\AssignmentController;
+use App\Http\Controllers\Dashboard\AttendanceController;
+use App\Http\Controllers\Dashboard\DriverProductController;
+use App\Http\Controllers\Dashboard\HomeController;
+use App\Http\Controllers\Dashboard\MenuController;
+use App\Http\Controllers\Dashboard\ResourceController;
+use App\Http\Controllers\Dashboard\TraccarController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [LocationController::class, 'index'])->name('tracker.index');
 
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::post('/dashboard/users/{user}/kick', [HomeController::class, 'kickUser'])->name('dashboard.users.kick');
 
-Route::post('/dashboard/users/{user}/kick', [DashboardController::class, 'kickUser'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.users.kick');
+    Route::prefix('dashboard')->name('dashboard.')->group(function () {
+        Route::get('/manage', [ResourceController::class, 'index'])->name('manage.index');
+        Route::post('/drivers', [ResourceController::class, 'storeDriver'])->name('drivers.store');
+        Route::patch('/drivers/{user}', [ResourceController::class, 'updateDriver'])->name('drivers.update');
+        Route::delete('/drivers/{user}', [ResourceController::class, 'destroyDriver'])->name('drivers.destroy');
+        Route::post('/units', [ResourceController::class, 'storeUnit'])->name('units.store');
+        Route::patch('/units/{unit}', [ResourceController::class, 'updateUnit'])->name('units.update');
+        Route::delete('/units/{unit}', [ResourceController::class, 'destroyUnit'])->name('units.destroy');
 
-Route::post('/dashboard/drivers', [DashboardController::class, 'storeDriver'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.drivers.store');
+        Route::get('/assignments', [AssignmentController::class, 'index'])->name('assignments.index');
+        Route::post('/assignments', [AssignmentController::class, 'store'])->name('assignments.store');
+        Route::patch('/assignments/{assignment}/finish', [AssignmentController::class, 'finish'])->name('assignments.finish');
 
-Route::patch('/dashboard/drivers/{user}', [DashboardController::class, 'updateDriver'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.drivers.update');
+        Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
+        Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
+        Route::patch('/menus/{menu}', [MenuController::class, 'update'])->name('menus.update');
+        Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menus.destroy');
 
-Route::delete('/dashboard/drivers/{user}', [DashboardController::class, 'destroyDriver'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.drivers.destroy');
+        Route::post('/driver/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('driver.attendance.clock-in');
+        Route::post('/driver/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('driver.attendance.clock-out');
+        Route::get('/driver/attendance/qr', [AttendanceController::class, 'viaQr'])
+            ->middleware('signed:relative')
+            ->name('driver.attendance.qr');
 
-Route::post('/dashboard/units', [DashboardController::class, 'storeUnit'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.units.store');
+        Route::get('/driver/products', [DriverProductController::class, 'index'])->name('driver.products.index');
+        Route::put('/driver/products', [DriverProductController::class, 'update'])->name('driver.products.update');
 
-Route::patch('/dashboard/units/{unit}', [DashboardController::class, 'updateUnit'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.units.update');
-
-Route::delete('/dashboard/units/{unit}', [DashboardController::class, 'destroyUnit'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.units.destroy');
-
-Route::get('/dashboard/manage', [DashboardController::class, 'manageResources'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.manage.index');
-
-Route::post('/dashboard/assignments', [DashboardController::class, 'assignDriver'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.assignments.store');
-
-Route::get('/dashboard/assignments', [DashboardController::class, 'assignments'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.assignments.index');
-
-Route::get('/dashboard/menus', [DashboardController::class, 'menus'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.menus.index');
-
-Route::post('/dashboard/menus', [DashboardController::class, 'storeMenu'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.menus.store');
-
-Route::patch('/dashboard/menus/{menu}', [DashboardController::class, 'updateMenu'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.menus.update');
-
-Route::delete('/dashboard/menus/{menu}', [DashboardController::class, 'destroyMenu'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.menus.destroy');
-
-Route::patch('/dashboard/assignments/{assignment}/finish', [DashboardController::class, 'finishAssignment'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.assignments.finish');
-
-Route::post('/dashboard/driver/attendance/clock-in', [DashboardController::class, 'driverClockIn'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.driver.attendance.clock-in');
-
-Route::post('/dashboard/driver/attendance/clock-out', [DashboardController::class, 'driverClockOut'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.driver.attendance.clock-out');
-
-Route::get('/dashboard/driver/attendance/qr', [DashboardController::class, 'driverAttendanceViaQr'])
-    ->middleware(['auth', 'verified', 'signed:relative'])
-    ->name('dashboard.driver.attendance.qr');
-
-Route::get('/dashboard/driver/products', [DashboardController::class, 'driverProducts'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.driver.products.index');
-
-Route::put('/dashboard/driver/products', [DashboardController::class, 'updateDriverProducts'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.driver.products.update');
-
-Route::get('/dashboard/traccar', [DashboardController::class, 'traccar'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard.traccar');
+        Route::get('/traccar', [TraccarController::class, 'index'])->name('traccar');
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

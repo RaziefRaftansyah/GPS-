@@ -1,6 +1,6 @@
 <x-app-layout>
     @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/dashboard-assignments.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/dashboard/owner/assignments.css') }}">
 @endpush
 
     <x-slot name="header">

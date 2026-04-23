@@ -1,6 +1,6 @@
 <x-app-layout>
     @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/profile-edit.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/profile/edit.css') }}">
 @endpush
 
     <x-slot name="header">

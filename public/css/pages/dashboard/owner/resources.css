@@ -272,6 +272,73 @@
             margin-top: 14px;
         }
 
+        .manage-pagination {
+            display: grid;
+            gap: 10px;
+        }
+
+        .manage-pagination__summary {
+            margin: 0;
+            color: var(--text-soft);
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .manage-pagination__controls,
+        .manage-pagination__pages {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .manage-pagination__button,
+        .manage-pagination__link,
+        .manage-pagination__current,
+        .manage-pagination__ellipsis {
+            min-width: 42px;
+            min-height: 42px;
+            padding: 10px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+            background: #fff;
+            color: var(--text-main);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            line-height: 1;
+            font-weight: 700;
+            box-sizing: border-box;
+        }
+
+        .manage-pagination__button:hover,
+        .manage-pagination__link:hover {
+            background: var(--panel-alt);
+        }
+
+        .manage-pagination__current {
+            background: rgba(59, 36, 24, 0.08);
+            border-color: rgba(59, 36, 24, 0.18);
+        }
+
+        .manage-pagination__ellipsis,
+        .manage-pagination__button.is-disabled {
+            color: var(--text-soft);
+            background: rgba(255, 249, 241, 0.82);
+            cursor: default;
+        }
+
+        .manage-pagination__arrow {
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .manage-pagination__button-label {
+            white-space: nowrap;
+        }
+
         .empty-state {
             padding: 16px;
             border-radius: 14px;
@@ -284,5 +351,15 @@
             .manage-grid,
             .form-row-2 {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .manage-pagination__controls {
+                align-items: stretch;
+            }
+
+            .manage-pagination__button {
+                flex: 1 1 140px;
             }
         }

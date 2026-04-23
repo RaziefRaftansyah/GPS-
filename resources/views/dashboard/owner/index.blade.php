@@ -1,6 +1,6 @@
 <x-app-layout>
     @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/dashboard.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/dashboard/owner/index.css') }}">
 @endpush
 
     <x-slot name="header">
@@ -269,6 +269,6 @@
     </div>
 
     @push('scripts')
-    <script src="{{ asset('js/pages/dashboard.js') }}"></script>
+    <script src="{{ asset('js/pages/dashboard/owner/index.js') }}"></script>
 @endpush
 </x-app-layout>

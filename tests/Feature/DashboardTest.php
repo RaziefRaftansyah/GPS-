@@ -49,7 +49,7 @@ class DashboardTest extends TestCase
 
         $response->assertOk()
             ->assertSee('Dashboard Admin')
-            ->assertSee('Pantau user yang sedang login')
+            ->assertSee('Patient profile style untuk dashboard operasional')
             ->assertSee('Aulia Coffee')
             ->assertSee('2 user online');
     }

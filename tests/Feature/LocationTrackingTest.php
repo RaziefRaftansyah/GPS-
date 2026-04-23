@@ -17,7 +17,7 @@ class LocationTrackingTest extends TestCase
     {
         $this->get(route('tracker.index'))
             ->assertOk()
-            ->assertSee('Kopi hangat yang bisa kamu kejar di peta.');
+            ->assertSee('Kopling terdekat langsung terlihat.');
     }
 
     public function test_api_location_stores_latitude_and_longitude(): void
@@ -134,6 +134,7 @@ class LocationTrackingTest extends TestCase
             'driver_id' => $driver->id,
             'unit_id' => $unit->id,
             'assigned_at' => now(),
+            'checked_in_at' => now(),
             'status' => 'active',
         ]);
 
@@ -184,6 +185,7 @@ class LocationTrackingTest extends TestCase
             'driver_id' => $driverOne->id,
             'unit_id' => $unitOne->id,
             'assigned_at' => now(),
+            'checked_in_at' => now(),
             'status' => 'active',
         ]);
 
@@ -191,6 +193,7 @@ class LocationTrackingTest extends TestCase
             'driver_id' => $driverTwo->id,
             'unit_id' => $unitTwo->id,
             'assigned_at' => now(),
+            'checked_in_at' => now(),
             'status' => 'active',
         ]);
 

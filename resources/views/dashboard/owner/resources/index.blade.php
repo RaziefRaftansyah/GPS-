@@ -1,6 +1,6 @@
 <x-app-layout>
     @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/dashboard-manage.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/dashboard/owner/resources.css') }}">
 @endpush
 
     <x-slot name="header">
@@ -154,7 +154,7 @@
                 </div>
 
                 <div class="pagination-wrap">
-                    {{ $drivers->links() }}
+                    {{ $drivers->onEachSide(1)->links('vendor.pagination.dashboard-manage') }}
                 </div>
             </article>
 
@@ -259,7 +259,7 @@
                 </div>
 
                 <div class="pagination-wrap">
-                    {{ $units->links() }}
+                    {{ $units->onEachSide(1)->links('vendor.pagination.dashboard-manage') }}
                 </div>
             </article>
         </section>

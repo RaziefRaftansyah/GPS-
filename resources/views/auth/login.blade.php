@@ -1,6 +1,6 @@
 <x-guest-layout>
     @push('styles')
-    <link rel="stylesheet" href="{{ asset('css/pages/auth-login.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/pages/auth/login.css') }}">
 @endpush
 
     <div class="coffee-login-shell">
@@ -93,6 +93,6 @@
     </div>
 
     @push('scripts')
-    <script src="{{ asset('js/pages/auth-login.js') }}"></script>
+    <script src="{{ asset('js/pages/auth/login.js') }}"></script>
 @endpush
 </x-guest-layout>
