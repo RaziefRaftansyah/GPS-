@@ -42,7 +42,15 @@
                                 <span>{{ Auth::user()->isDriver() ? 'Driver aktif' : 'Owner aktif' }}</span>
                             </div>
                             <div class="dashboard-user-avatar">
-                                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @if (! blank(Auth::user()->profile_photo_url))
+                                    <img
+                                        src="{{ Auth::user()->profile_photo_url }}"
+                                        alt="Avatar {{ Auth::user()->name }}"
+                                        class="dashboard-user-avatar-image"
+                                    >
+                                @else
+                                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                                @endif
                             </div>
                         </div>
                     </div>

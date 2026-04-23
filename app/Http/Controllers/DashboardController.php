@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DriverAttendanceLog;
 use App\Models\DriverUnitAssignment;
 use App\Models\Location;
 use App\Models\Menu;
@@ -9,10 +10,12 @@ use App\Models\TraccarRequestLog;
 use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -104,6 +107,7 @@ class DashboardController extends Controller
             'driverCount' => $drivers->count(),
             'availableDrivers' => $drivers->filter(fn (User $driver) => $driver->activeDriverAssignment === null)->values(),
             'activeAssignments' => $activeAssignments,
+            'driverAttendanceQrLink' => URL::signedRoute('dashboard.driver.attendance.qr', [], null, false),
         ]);
     }
 
@@ -546,6 +550,7 @@ class DashboardController extends Controller
             ->update([
                 'status' => 'completed',
                 'ended_at' => $now,
+                'checked_out_at' => $now,
             ]);
 
         DriverUnitAssignment::query()->create([
@@ -553,6 +558,8 @@ class DashboardController extends Controller
             'unit_id' => $unit->id,
             'assigned_by' => $owner?->id,
             'assigned_at' => $now,
+            'checked_in_at' => null,
+            'checked_out_at' => null,
             'status' => 'active',
             'notes' => $validated['notes'] ?? null,
         ]);
@@ -573,10 +580,184 @@ class DashboardController extends Controller
             $assignment->update([
                 'status' => 'completed',
                 'ended_at' => now(),
+                'checked_out_at' => $assignment->checked_out_at ?? now(),
             ]);
         }
 
         return $this->redirectWithDashboardStatus($request, 'Assignment driver berhasil diselesaikan.');
+    }
+
+    public function driverClockIn(Request $request): RedirectResponse
+    {
+        $driver = $request->user();
+
+        if (! $driver?->isDriver()) {
+            abort(403);
+        }
+
+        $assignment = $driver->activeDriverAssignment()->first();
+
+        if (! $assignment) {
+            return $this->redirectWithDashboardStatus($request, 'Kamu belum punya assignment aktif, jadi belum bisa absen masuk.');
+        }
+
+        if ($assignment->checked_in_at !== null && $assignment->checked_out_at === null) {
+            return $this->redirectWithDashboardStatus($request, 'Kamu sudah absen masuk. Lokasi GPS sekarang tampil di peta publik.');
+        }
+
+        $assignment->update([
+            'checked_in_at' => now(),
+            'checked_out_at' => null,
+        ]);
+        $this->logDriverClockIn($driver, $assignment);
+
+        return $this->redirectWithDashboardStatus($request, 'Absen masuk berhasil. Lokasi GPS kamu sekarang muncul di peta publik.');
+    }
+
+    public function driverClockOut(Request $request): RedirectResponse
+    {
+        $driver = $request->user();
+
+        if (! $driver?->isDriver()) {
+            abort(403);
+        }
+
+        $assignment = $driver->activeDriverAssignment()->first();
+
+        if (! $assignment) {
+            return $this->redirectWithDashboardStatus($request, 'Kamu belum punya assignment aktif.');
+        }
+
+        if ($assignment->checked_in_at === null) {
+            return $this->redirectWithDashboardStatus($request, 'Kamu belum absen masuk, jadi tidak bisa absen keluar.');
+        }
+
+        if ($assignment->checked_out_at !== null) {
+            return $this->redirectWithDashboardStatus($request, 'Kamu sudah absen keluar.');
+        }
+
+        $assignment->update([
+            'checked_out_at' => now(),
+        ]);
+        $this->logDriverClockOut($driver, $assignment);
+
+        return $this->redirectWithDashboardStatus($request, 'Absen keluar berhasil. Lokasi GPS kamu disembunyikan dari peta publik.');
+    }
+
+    public function driverAttendanceViaQr(Request $request): RedirectResponse|JsonResponse
+    {
+        $driver = $request->user();
+
+        if (! $driver?->isDriver()) {
+            abort(403);
+        }
+
+        $assignment = $driver->activeDriverAssignment()->with('unit')->first();
+
+        if (! $assignment) {
+            return $this->attendanceResponse(
+                $request,
+                false,
+                null,
+                'Kamu belum punya assignment aktif, jadi QR absensi belum bisa dipakai.',
+                'no_assignment',
+                'Belum ada assignment aktif.'
+            );
+        }
+
+        if ($assignment->checked_in_at === null || $assignment->checked_out_at !== null) {
+            $assignment->update([
+                'checked_in_at' => now(),
+                'checked_out_at' => null,
+            ]);
+            $this->logDriverClockIn($driver, $assignment);
+
+            return $this->attendanceResponse(
+                $request,
+                true,
+                'clock_in',
+                'QR berhasil dipindai. Absen masuk tercatat dan lokasi GPS kamu sekarang tampil di peta publik.',
+                'clocked_in',
+                'Sudah absen masuk.'
+            );
+        }
+
+        $assignment->update([
+            'checked_out_at' => now(),
+        ]);
+        $this->logDriverClockOut($driver, $assignment);
+
+        return $this->attendanceResponse(
+            $request,
+            true,
+            'clock_out',
+            'QR berhasil dipindai. Absen keluar tercatat dan lokasi GPS kamu disembunyikan dari peta publik.',
+            'clocked_out',
+            'Sudah absen keluar.'
+        );
+    }
+
+    public function driverProducts(Request $request): View
+    {
+        $driver = $request->user();
+
+        if (! $driver?->isDriver()) {
+            abort(403);
+        }
+
+        $menus = Menu::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+        $selectedMenuIds = $driver->selectedMenus()
+            ->pluck('menus.id')
+            ->map(fn ($id): int => (int) $id)
+            ->values()
+            ->all();
+
+        return view('driver-products', [
+            'driver' => $driver,
+            'menus' => $menus,
+            'selectedMenuIds' => $selectedMenuIds,
+        ]);
+    }
+
+    public function updateDriverProducts(Request $request): RedirectResponse
+    {
+        $driver = $request->user();
+
+        if (! $driver?->isDriver()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'menu_ids' => ['nullable', 'array'],
+            'menu_ids.*' => ['integer'],
+        ]);
+
+        $activeMenuIds = Menu::query()
+            ->where('is_active', true)
+            ->pluck('id');
+
+        $selectedMenuIds = collect($validated['menu_ids'] ?? [])
+            ->map(fn ($id): int => (int) $id)
+            ->unique()
+            ->values()
+            ->intersect($activeMenuIds)
+            ->values();
+
+        $driver->selectedMenus()->sync($selectedMenuIds->all());
+
+        $selectedCount = $selectedMenuIds->count();
+        $message = $selectedCount > 0
+            ? "Pilihan produk berhasil disimpan ({$selectedCount} menu aktif)."
+            : 'Pilihan produk dikosongkan. Tidak ada menu yang dipilih untuk jualan.';
+
+        return redirect()
+            ->route('dashboard.driver.products.index')
+            ->with('dashboard_status', $message);
     }
 
     private function extractMenuPayload(Request $request, ?Menu $existingMenu = null): array
@@ -660,27 +841,48 @@ class DashboardController extends Controller
 
     private function driverDashboard(User $driver): View
     {
-        $driver->load(['activeDriverAssignment.unit']);
+        $driver->load(['activeDriverAssignment.unit', 'activeDriverAssignment.assignedBy']);
 
         $assignment = $driver->activeDriverAssignment;
         $unit = $assignment?->unit;
-        $latestLocation = null;
+        $isClockedIn = $assignment !== null
+            && $assignment->checked_in_at !== null
+            && $assignment->checked_out_at === null;
+        $isClockedOut = $assignment !== null
+            && $assignment->checked_in_at !== null
+            && $assignment->checked_out_at !== null;
+        $recentLocations = collect();
 
-        if ($unit !== null) {
-            $latestLocation = Location::query()
+        if (! blank($driver->device_id)) {
+            $recentLocations = Location::query()
                 ->where('device_id', $driver->device_id)
                 ->latest('recorded_at')
-                ->first();
+                ->limit(5)
+                ->get();
         }
+
+        $latestLocation = $recentLocations->first();
+        $locationAgeMinutes = $latestLocation?->recorded_at?->diffInMinutes(now());
+        $isLocationFresh = $locationAgeMinutes !== null && $locationAgeMinutes <= 5;
+        $shiftStartAt = $isClockedIn ? $assignment?->checked_in_at : null;
+        $shiftDurationMinutes = $shiftStartAt?->diffInMinutes(now());
 
         return view('driver-dashboard', [
             'driver' => $driver,
             'assignment' => $assignment,
             'unit' => $unit,
             'latestLocation' => $latestLocation,
-            'recentAssignments' => $driver->driverAssignments()
-                ->with('unit')
-                ->latest('assigned_at')
+            'recentLocations' => $recentLocations,
+            'locationAgeMinutes' => $locationAgeMinutes,
+            'isLocationFresh' => $isLocationFresh,
+            'isClockedIn' => $isClockedIn,
+            'isClockedOut' => $isClockedOut,
+            'shiftStartAt' => $shiftStartAt,
+            'shiftDurationMinutes' => $shiftDurationMinutes,
+            'recentAttendanceLogs' => DriverAttendanceLog::query()
+                ->where('user_id', $driver->id)
+                ->with('assignment.unit')
+                ->latest('clocked_in_at')
                 ->limit(5)
                 ->get(),
         ]);
@@ -735,6 +937,88 @@ class DashboardController extends Controller
             return redirect()
                 ->route($target, $routeParameters)
                 ->with('dashboard_status', $message);
+        }
+
+        return redirect()
+            ->route('dashboard')
+            ->with('dashboard_status', $message);
+    }
+
+    private function logDriverClockIn(User $driver, ?DriverUnitAssignment $assignment): void
+    {
+        if (! $driver->isDriver()) {
+            return;
+        }
+
+        $assignment?->loadMissing('unit');
+
+        DriverAttendanceLog::query()->create([
+            'user_id' => $driver->id,
+            'driver_unit_assignment_id' => $assignment?->id,
+            'unit_name' => $assignment?->unit?->name,
+            'clocked_in_at' => now(),
+            'clocked_out_at' => null,
+        ]);
+    }
+
+    private function logDriverClockOut(User $driver, ?DriverUnitAssignment $assignment): void
+    {
+        if (! $driver->isDriver()) {
+            return;
+        }
+
+        $openLogQuery = DriverAttendanceLog::query()
+            ->where('user_id', $driver->id)
+            ->whereNull('clocked_out_at')
+            ->latest('clocked_in_at');
+
+        $openLog = null;
+
+        if ($assignment) {
+            $openLog = (clone $openLogQuery)
+                ->where('driver_unit_assignment_id', $assignment->id)
+                ->first();
+        }
+
+        if (! $openLog) {
+            $openLog = $openLogQuery->first();
+        }
+
+        if ($openLog) {
+            $openLog->update([
+                'clocked_out_at' => now(),
+            ]);
+
+            return;
+        }
+
+        $assignment?->loadMissing('unit');
+
+        DriverAttendanceLog::query()->create([
+            'user_id' => $driver->id,
+            'driver_unit_assignment_id' => $assignment?->id,
+            'unit_name' => $assignment?->unit?->name,
+            'clocked_in_at' => $assignment?->checked_in_at ?? now(),
+            'clocked_out_at' => now(),
+        ]);
+    }
+
+    private function attendanceResponse(
+        Request $request,
+        bool $success,
+        ?string $action,
+        string $message,
+        ?string $attendanceState = null,
+        ?string $attendanceLabel = null
+    ): RedirectResponse|JsonResponse {
+        if ($request->expectsJson() || $request->wantsJson()) {
+            return response()->json([
+                'success' => $success,
+                'action' => $action,
+                'message' => $message,
+                'attendance_state' => $attendanceState,
+                'attendance_label' => $attendanceLabel,
+            ]);
         }
 
         return redirect()

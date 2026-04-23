@@ -15,6 +15,8 @@ class DriverUnitAssignment extends Model
         'unit_id',
         'assigned_by',
         'assigned_at',
+        'checked_in_at',
+        'checked_out_at',
         'ended_at',
         'status',
         'notes',
@@ -24,6 +26,8 @@ class DriverUnitAssignment extends Model
     {
         return [
             'assigned_at' => 'datetime',
+            'checked_in_at' => 'datetime',
+            'checked_out_at' => 'datetime',
             'ended_at' => 'datetime',
         ];
     }

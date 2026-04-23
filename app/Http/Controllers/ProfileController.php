@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -27,13 +29,30 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $validated = $request->validated();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user->fill([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+        ]);
+
+        if ($request->boolean('remove_avatar')) {
+            $this->deleteManagedProfilePhoto($user->profile_photo_path);
+            $user->profile_photo_path = null;
         }
 
-        $request->user()->save();
+        if ($request->hasFile('avatar_file')) {
+            $storedPath = $request->file('avatar_file')->store('avatars', 'public');
+            $this->deleteManagedProfilePhoto($user->profile_photo_path);
+            $user->profile_photo_path = $storedPath;
+        }
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
@@ -81,5 +100,24 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/')->with('status', 'account-deactivated');
+    }
+
+    private function deleteManagedProfilePhoto(?string $profilePhotoPath): void
+    {
+        if (blank($profilePhotoPath)) {
+            return;
+        }
+
+        $normalizedPath = ltrim((string) $profilePhotoPath, '/');
+
+        if (Str::startsWith($normalizedPath, 'storage/avatars/')) {
+            $normalizedPath = Str::after($normalizedPath, 'storage/');
+        }
+
+        if (! Str::startsWith($normalizedPath, 'avatars/')) {
+            return;
+        }
+
+        Storage::disk('public')->delete($normalizedPath);
     }
 }

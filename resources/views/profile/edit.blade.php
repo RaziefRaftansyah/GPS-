@@ -42,6 +42,18 @@
                             <span class="profile-status-value">{{ $user->created_at?->translatedFormat('d F Y') }}</span>
                         </div>
                     </div>
+
+                    <div class="profile-status-actions">
+                        <a href="#profile-info-panel" class="profile-action-btn is-primary">
+                            Edit nama &amp; email
+                        </a>
+                        <a href="#password-panel" class="profile-action-btn">
+                            Ganti password
+                        </a>
+                        <a href="#deactivate-panel" class="profile-action-btn is-danger">
+                            Nonaktifkan akun
+                        </a>
+                    </div>
                 </article>
             </section>
         </div>

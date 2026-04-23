@@ -151,44 +151,62 @@ class LocationController extends Controller
 
     protected function recentLocations(): Collection
     {
+        $visibleAssignments = DriverUnitAssignment::query()
+            ->with([
+                'driver.selectedMenus' => fn ($query) => $query
+                    ->where('menus.is_active', true)
+                    ->orderBy('menus.sort_order')
+                    ->orderBy('menus.name'),
+                'unit',
+            ])
+            ->where('status', 'active')
+            ->whereNull('ended_at')
+            ->whereNotNull('checked_in_at')
+            ->whereNull('checked_out_at')
+            ->latest('assigned_at')
+            ->get()
+            ->unique('driver_id')
+            ->values();
+
+        $visibleDeviceIds = $visibleAssignments
+            ->map(fn (DriverUnitAssignment $assignment): ?string => $assignment->driver?->device_id)
+            ->filter(fn (?string $deviceId): bool => ! blank($deviceId))
+            ->values();
+
+        if ($visibleDeviceIds->isEmpty()) {
+            return collect();
+        }
+
         $locations = Location::query()
-            ->whereNotNull('device_id')
-            ->where('device_id', '!=', '')
+            ->whereIn('device_id', $visibleDeviceIds)
             ->latest('recorded_at')
             ->limit(50)
             ->get()
             ->reverse()
             ->values();
 
-        $deviceIds = $locations
-            ->pluck('device_id')
+        $driversByDeviceId = $visibleAssignments
+            ->map(fn (DriverUnitAssignment $assignment): ?User => $assignment->driver)
             ->filter()
-            ->unique()
-            ->values();
-
-        $driversByDeviceId = User::query()
-            ->where('role', 'driver')
-            ->whereIn('device_id', $deviceIds)
-            ->get()
             ->keyBy('device_id');
 
-        $activeAssignments = DriverUnitAssignment::query()
-            ->with(['driver', 'unit'])
-            ->whereIn('driver_id', $driversByDeviceId->pluck('id'))
-            ->where('status', 'active')
-            ->whereNull('ended_at')
-            ->latest('assigned_at')
-            ->get()
-            ->unique('driver_id')
+        $activeAssignments = $visibleAssignments
             ->keyBy('driver_id');
 
-        return $locations->map(function (Location $location) use ($driversByDeviceId, $activeAssignments): array {
+        return $locations->map(function (Location $location) use ($driversByDeviceId, $activeAssignments): ?array {
             $driver = $driversByDeviceId->get($location->device_id);
             $assignment = $driver ? $activeAssignments->get($driver->id) : null;
-            $unit = $assignment?->unit;
+
+            if ($assignment === null) {
+                return null;
+            }
+
+            $unit = $assignment->unit;
 
             return $this->transformLocation($location, $unit, $assignment);
-        });
+        })
+            ->filter()
+            ->values();
     }
 
     protected function transformLocation(
@@ -203,6 +221,8 @@ class LocationController extends Controller
             'unit_name' => $unit?->name,
             'unit_code' => $unit?->code,
             'driver_name' => $assignment?->driver?->name,
+            'driver_avatar_url' => $this->driverAvatarUrl($assignment?->driver),
+            'menu_catalog' => $this->driverMenuCatalog($assignment?->driver),
             'latitude' => (float) $location->latitude,
             'longitude' => (float) $location->longitude,
             'accuracy' => $location->accuracy,
@@ -223,9 +243,17 @@ class LocationController extends Controller
     protected function activeUnitLocations(): Collection
     {
         $activeAssignments = DriverUnitAssignment::query()
-            ->with(['driver', 'unit'])
+            ->with([
+                'driver.selectedMenus' => fn ($query) => $query
+                    ->where('menus.is_active', true)
+                    ->orderBy('menus.sort_order')
+                    ->orderBy('menus.name'),
+                'unit',
+            ])
             ->where('status', 'active')
             ->whereNull('ended_at')
+            ->whereNotNull('checked_in_at')
+            ->whereNull('checked_out_at')
             ->latest('assigned_at')
             ->get()
             ->unique('driver_id');
@@ -252,6 +280,56 @@ class LocationController extends Controller
             ->filter()
             ->sortBy('unit_name')
             ->values();
+    }
+
+    protected function driverMenuCatalog(?User $driver): array
+    {
+        if ($driver === null) {
+            return [];
+        }
+
+        $menus = $driver->relationLoaded('selectedMenus')
+            ? $driver->selectedMenus
+            : $driver->selectedMenus()
+                ->where('menus.is_active', true)
+                ->orderBy('menus.sort_order')
+                ->orderBy('menus.name')
+                ->get();
+
+        return $menus
+            ->map(fn (Menu $menu): array => [
+                'id' => $menu->id,
+                'name' => $menu->name,
+                'category' => $menu->category,
+                'price' => (int) $menu->price,
+            ])
+            ->values()
+            ->all();
+    }
+
+    protected function driverAvatarUrl(?User $driver): string
+    {
+        if ($driver !== null) {
+            $profilePhotoUrl = (string) ($driver->profile_photo_url ?? '');
+
+            if (! blank($profilePhotoUrl)) {
+                return $profilePhotoUrl;
+            }
+
+            $profilePhotoPath = (string) ($driver->profile_photo_path ?? '');
+
+            if (! blank($profilePhotoPath)) {
+                if (str_starts_with($profilePhotoPath, 'http://') || str_starts_with($profilePhotoPath, 'https://')) {
+                    return $profilePhotoPath;
+                }
+
+                return url('/storage/'.ltrim($profilePhotoPath, '/'));
+            }
+        }
+
+        $seed = rawurlencode((string) ($driver?->name ?? 'Driver'));
+
+        return "https://ui-avatars.com/api/?name={$seed}&background=b56a3b&color=ffffff&size=160&rounded=true&bold=true";
     }
 
     protected function normalizePayload(Request $request): array

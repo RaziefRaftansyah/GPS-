@@ -184,6 +184,10 @@
                                 <strong class="info-endpoint">{{ $traccarEndpoint }}</strong>
                             </div>
                             <div class="info-row">
+                                <span>Link QR Absensi Driver</span>
+                                <strong class="info-endpoint">{{ $driverAttendanceQrLink }}</strong>
+                            </div>
+                            <div class="info-row">
                                 <span>Assignment aktif</span>
                                 <strong>{{ $activeAssignments->count() }} assignment sedang berjalan</strong>
                             </div>

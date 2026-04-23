@@ -71,6 +71,26 @@ Route::patch('/dashboard/assignments/{assignment}/finish', [DashboardController:
     ->middleware(['auth', 'verified'])
     ->name('dashboard.assignments.finish');
 
+Route::post('/dashboard/driver/attendance/clock-in', [DashboardController::class, 'driverClockIn'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.driver.attendance.clock-in');
+
+Route::post('/dashboard/driver/attendance/clock-out', [DashboardController::class, 'driverClockOut'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.driver.attendance.clock-out');
+
+Route::get('/dashboard/driver/attendance/qr', [DashboardController::class, 'driverAttendanceViaQr'])
+    ->middleware(['auth', 'verified', 'signed:relative'])
+    ->name('dashboard.driver.attendance.qr');
+
+Route::get('/dashboard/driver/products', [DashboardController::class, 'driverProducts'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.driver.products.index');
+
+Route::put('/dashboard/driver/products', [DashboardController::class, 'updateDriverProducts'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard.driver.products.update');
+
 Route::get('/dashboard/traccar', [DashboardController::class, 'traccar'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard.traccar');

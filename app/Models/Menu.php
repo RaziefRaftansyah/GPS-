@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Menu extends Model
 {
@@ -26,5 +27,11 @@ class Menu extends Model
             'tags' => 'array',
             'is_active' => 'boolean',
         ];
+    }
+
+    public function selectedByDrivers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'driver_menu_selections', 'menu_id', 'user_id')
+            ->withTimestamps();
     }
 }

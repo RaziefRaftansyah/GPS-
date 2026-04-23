@@ -11,6 +11,13 @@
     </div>
 
     <div class="clinic-account">
+        <div class="clinic-account-avatar">
+            @if (! blank(Auth::user()->profile_photo_url))
+                <img src="{{ Auth::user()->profile_photo_url }}" alt="Avatar {{ Auth::user()->name }}">
+            @else
+                <span>{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</span>
+            @endif
+        </div>
         <small>Akun Aktif</small>
         <strong>{{ Auth::user()->name }}</strong>
         <span>{{ Auth::user()->email }}</span>
@@ -22,6 +29,13 @@
             <span class="clinic-nav-icon">D</span>
             <span>{{ Auth::user()->isDriver() ? 'Dashboard Driver' : 'Dashboard Owner' }}</span>
         </a>
+
+        @if (Auth::user()->isDriver())
+            <a href="{{ route('dashboard.driver.products.index') }}" class="clinic-nav-link {{ request()->routeIs('dashboard.driver.products.*') ? 'is-active' : '' }}">
+                <span class="clinic-nav-icon">J</span>
+                <span>Pilih Produk Jualan</span>
+            </a>
+        @endif
 
         @if (! Auth::user()->isDriver())
             <div class="clinic-nav-manage" data-manage-menu>

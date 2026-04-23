@@ -7,11 +7,40 @@
     @php
         $assetBase = rtrim(request()->getBasePath(), '/');
         $assetPath = static fn (string $path): string => ($assetBase !== '' ? $assetBase : '').'/'.ltrim($path, '/');
+        $isDriver = auth()->check() && auth()->user()->isDriver();
+        $driverAttendanceState = 'guest';
+        $driverAttendanceLabel = 'Login sebagai driver untuk melihat status absensi.';
 
         $heroCustomPath = public_path('images/hero-user.jpg');
         $heroBannerImage = file_exists($heroCustomPath)
             ? $assetPath('images/hero-user.jpg').'?v='.filemtime($heroCustomPath)
             : $assetPath('images/coffee-hero-banner-new.png');
+        $menuCatalogForPopup = $menuCatalog->map(static function ($menu): array {
+            return [
+                'name' => (string) $menu->name,
+                'price' => (int) $menu->price,
+                'category' => (string) $menu->category,
+            ];
+        })->values();
+
+        if ($isDriver) {
+            $driverAccount = auth()->user()->loadMissing('activeDriverAssignment');
+            $activeAssignment = $driverAccount->activeDriverAssignment;
+
+            if (! $activeAssignment) {
+                $driverAttendanceState = 'no_assignment';
+                $driverAttendanceLabel = 'Belum ada assignment aktif.';
+            } elseif ($activeAssignment->checked_in_at !== null && $activeAssignment->checked_out_at === null) {
+                $driverAttendanceState = 'clocked_in';
+                $driverAttendanceLabel = 'Sudah absen masuk.';
+            } elseif ($activeAssignment->checked_in_at !== null && $activeAssignment->checked_out_at !== null) {
+                $driverAttendanceState = 'clocked_out';
+                $driverAttendanceLabel = 'Sudah absen keluar.';
+            } else {
+                $driverAttendanceState = 'not_clocked_in';
+                $driverAttendanceLabel = 'Belum absen masuk.';
+            }
+        }
     @endphp
     <title>Kopi Keliling Tracker</title>
     <link rel="icon" type="image/png" href="{{ $assetPath('images/ada-coffee-logo.png') }}">
@@ -28,6 +57,9 @@
 <body
     data-tracker-latest-endpoint="{{ route('api.location.latest') }}"
     data-hero-banner-image="{{ $heroBannerImage }}"
+    data-driver-qr-enabled="{{ $isDriver ? '1' : '0' }}"
+    data-driver-attendance-state="{{ $driverAttendanceState }}"
+    data-driver-attendance-label="{{ $driverAttendanceLabel }}"
 >
     <div class="tracker-shell">
         <header class="tracker-topbar">
@@ -43,16 +75,30 @@
                 </div>
             </div>
 
-            <button
-                class="mobile-nav-toggle"
-                id="mobile-nav-toggle"
-                type="button"
-                aria-label="Buka menu navigasi"
-                aria-expanded="false"
-                aria-controls="tracker-nav-actions"
-            >
-                <span></span>
-            </button>
+            <div class="tracker-nav-controls">
+                @if ($isDriver)
+                    <button
+                        type="button"
+                        class="tracker-scan-toggle"
+                        data-driver-qr-open
+                        aria-label="Buka scanner QR driver"
+                    >
+                        <img src="{{ $assetPath('images/qrscan.png') }}" alt="" aria-hidden="true">
+                        <span class="tracker-sr-only">Scan QR</span>
+                    </button>
+                @endif
+
+                <button
+                    class="mobile-nav-toggle"
+                    id="mobile-nav-toggle"
+                    type="button"
+                    aria-label="Buka menu navigasi"
+                    aria-expanded="false"
+                    aria-controls="tracker-nav-actions"
+                >
+                    <span></span>
+                </button>
+            </div>
 
             <div class="tracker-topbar-actions" id="tracker-nav-actions">
                 <a href="#lacak" class="tracker-link">Lacak</a>
@@ -201,24 +247,78 @@
                 </div>
             </section>
 
-            <section class="panel">
-                <span class="eyebrow">Lokasi Terbaru</span>
-                <h3>Daftar posisi terakhir per gerobak aktif.</h3>
-                <p>Panel ini akan selalu menampilkan pembaruan lokasi terbaru yang berhasil masuk ke sistem.</p>
-                <ul id="history-list" class="history-list"></ul>
-            </section>
+            <footer class="tracker-contact-footer">
+                <div class="tracker-contact-inner">
+                    <section class="tracker-contact-brand">
+                        <span class="eyebrow">Kontak Info</span>
+                        <h3>AD.A Coffee</h3>
+                        <p>
+                            Kopi keliling dengan tracker realtime. Hubungi kami untuk kolaborasi event,
+                            pemesanan rombongan, atau info titik jual terdekat.
+                        </p>
+                    </section>
 
-            <footer>
-                Kopi Keliling Tracker menggunakan Laravel, Traccar Android, dan Leaflet.js untuk membantu pelanggan menemukan gerobak kopi.
+                    <section>
+                        <h4>Hubungi Kami</h4>
+                        <ul class="tracker-contact-list">
+                            <li><strong>WhatsApp:</strong> <a href="https://wa.me/6281234567890" target="_blank" rel="noopener">+62 812-3456-7890</a></li>
+                            <li><strong>Email:</strong> <a href="mailto:hello@adacoffee.id">hello@adacoffee.id</a></li>
+                            <li><strong>Instagram:</strong> <a href="https://instagram.com/adacoffee.id" target="_blank" rel="noopener">@adacoffee.id</a></li>
+                            <li><strong>Alamat:</strong> Makassar, Sulawesi Selatan</li>
+                        </ul>
+                    </section>
+
+                    <section>
+                        <h4>Navigasi Cepat</h4>
+                        <ul class="tracker-footer-links">
+                            <li><a href="#beranda">Beranda</a></li>
+                            <li><a href="#lacak">Lacak Kopling</a></li>
+                            <li><a href="#menu">Katalog Menu</a></li>
+                            <li><a href="#tentang">About Us</a></li>
+                        </ul>
+                    </section>
+                </div>
+
+                <div class="tracker-contact-bottom">
+                    <span>&copy; {{ now()->year }} AD.A Coffee. Seluruh hak cipta dilindungi.</span>
+                </div>
             </footer>
         </main>
     </div>
+
+    @if ($isDriver)
+        <div class="driver-qr-modal" id="driver-qr-modal" hidden>
+            <div class="driver-qr-dialog" role="dialog" aria-modal="true" aria-labelledby="driver-qr-title">
+                <div class="driver-qr-header">
+                    <div>
+                        <p class="driver-qr-kicker">Driver Tools</p>
+                        <h3 id="driver-qr-title">Scan QR di landing page</h3>
+                    </div>
+                    <button type="button" class="driver-qr-close" id="driver-qr-close" aria-label="Tutup scanner">&times;</button>
+                </div>
+
+                <div class="driver-qr-attendance" id="driver-qr-attendance" data-state="{{ $driverAttendanceState }}">
+                    <span>Status absen sekarang</span>
+                    <strong id="driver-qr-attendance-value">{{ $driverAttendanceLabel }}</strong>
+                </div>
+
+                <div id="driver-qr-reader" class="driver-qr-reader"></div>
+                <p id="driver-qr-status" class="driver-qr-status">Arahkan kamera ke QR code untuk membaca data.</p>
+            </div>
+        </div>
+    @endif
 
     <script
         src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
         crossorigin=""
     ></script>
+    <script id="menu-catalog-json" type="application/json">
+        @json($menuCatalogForPopup)
+    </script>
+    @if ($isDriver)
+        <script src="https://unpkg.com/html5-qrcode"></script>
+    @endif
     <script src="{{ $assetPath('js/tracker.js') }}"></script>
 </body>
 </html>
