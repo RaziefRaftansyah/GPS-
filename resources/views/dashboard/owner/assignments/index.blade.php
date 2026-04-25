@@ -4,30 +4,14 @@
 @endpush
 
     <x-slot name="header">
-        <div class="page-header-row">
-            <div>
-                <p class="page-header-kicker">
-                    Dashboard Admin
-                </p>
-                <h2 class="page-header-title">
-                    Kelola assignment driver
-                </h2>
-                <p class="page-header-subtitle">
-                    Pilih driver dan gerobak aktif dari halaman khusus assignment.
-                </p>
-            </div>
-            <a href="{{ route('dashboard') }}" class="section-button">
-                Kembali ke Dashboard
-            </a>
-        </div>
+        <x-dashboard.owner-page-header
+            title="Kelola assignment driver"
+            subtitle="Pilih driver dan gerobak aktif dari halaman khusus assignment."
+        />
     </x-slot>
 
     <div class="assignment-page">
-        @if (session('dashboard_status'))
-            <section class="status-banner">
-                {{ session('dashboard_status') }}
-            </section>
-        @endif
+        <x-dashboard.status-banner :message="session('dashboard_status')" />
 
         <section class="assignment-grid">
             <article class="panel-card section-card">
@@ -85,7 +69,7 @@
                             </div>
                         </article>
                     @empty
-                        <div class="empty-state">Belum ada assignment aktif.</div>
+                        <x-dashboard.empty-state message="Belum ada assignment aktif." />
                     @endforelse
                 </div>
             </article>

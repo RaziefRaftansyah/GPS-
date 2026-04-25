@@ -4,38 +4,15 @@
 @endpush
 
     <x-slot name="header">
-        <div class="page-header-row">
-            <div>
-                <p class="page-header-kicker">
-                    Dashboard Admin
-                </p>
-                <h2 class="page-header-title">
-                    Kelola katalog menu
-                </h2>
-                <p class="page-header-subtitle">
-                    Tambah, ubah, aktifkan/nonaktifkan, dan hapus menu yang ditampilkan di halaman tracker publik.
-                </p>
-            </div>
-            <a href="{{ route('dashboard') }}" class="section-button">
-                Kembali ke Dashboard
-            </a>
-        </div>
+        <x-dashboard.owner-page-header
+            title="Kelola katalog menu"
+            subtitle="Tambah, ubah, aktifkan/nonaktifkan, dan hapus menu yang ditampilkan di halaman tracker publik."
+        />
     </x-slot>
 
     <div class="menu-dashboard">
-        @if (session('dashboard_status'))
-            <section class="status-banner">
-                {{ session('dashboard_status') }}
-            </section>
-        @endif
-
-        @if ($errors->any())
-            <ul class="validation-list">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
+        <x-dashboard.status-banner :message="session('dashboard_status')" />
+        <x-dashboard.validation-list :messages="$errors->all()" />
 
         <section class="menu-grid">
             <article class="panel-card section-card">
@@ -47,31 +24,18 @@
 
                 <form method="POST" action="{{ route('dashboard.menus.store') }}" class="form-grid" enctype="multipart/form-data">
                     @csrf
-                    <input type="hidden" name="redirect_to" value="dashboard.menus.index">
-
-                    <input class="dashboard-input" type="text" name="name" placeholder="Nama menu" value="{{ old('name') }}" required>
-
-                    <div class="form-row-2">
-                        <input class="dashboard-input" type="text" name="category" placeholder="Kategori, contoh Coffee" value="{{ old('category', 'Coffee') }}" required>
-                        <input class="dashboard-input" type="number" name="price" min="0" step="1" placeholder="Harga rupiah, contoh 12000" value="{{ old('price') }}" required>
-                    </div>
-
-                    <div class="form-row-2">
-                        <input class="dashboard-input" type="number" name="sort_order" min="0" step="1" placeholder="Urutan tampil" value="{{ old('sort_order', 0) }}">
-                        <input class="dashboard-input" type="text" name="tags_input" placeholder="Tag dipisah koma, contoh creamy,sweet" value="{{ old('tags_input') }}">
-                    </div>
-
-                    <label class="field-label" for="create-image-file">Gambar menu (dari file manager)</label>
-                    <input id="create-image-file" class="dashboard-input" type="file" name="image_file" accept="image/*">
-                    <p class="field-help">Pilih file gambar dari komputer. Kosongkan jika menu tanpa foto.</p>
-
-                    <input class="dashboard-input" type="text" name="image_path" placeholder="Opsional: URL/path manual jika perlu override" value="{{ old('image_path') }}">
-                    <textarea class="dashboard-textarea" name="description" placeholder="Deskripsi menu">{{ old('description') }}</textarea>
-
-                    <label class="checkbox-row">
-                        <input type="checkbox" name="is_active" value="1" @checked(old('is_active', true))>
-                        <span>Aktif (ditampilkan di tracker publik)</span>
-                    </label>
+                    <x-dashboard.forms.redirect-fields redirect-to="dashboard.menus.index" />
+                    <x-dashboard.forms.menu-fields
+                        image-file-input-id="create-image-file"
+                        :name-value="old('name')"
+                        :category-value="old('category', 'Coffee')"
+                        :price-value="old('price')"
+                        :sort-order-value="old('sort_order', 0)"
+                        :tags-value="old('tags_input')"
+                        :image-path-value="old('image_path')"
+                        :description-value="old('description')"
+                        :is-active="old('is_active', true)"
+                    />
 
                     <button type="submit" class="primary-button">Simpan Menu</button>
                 </form>
@@ -126,45 +90,25 @@
                                 <form method="POST" action="{{ route('dashboard.menus.update', $menu) }}" class="form-grid" enctype="multipart/form-data">
                                     @csrf
                                     @method('PATCH')
-                                    <input type="hidden" name="redirect_to" value="dashboard.menus.index">
-
-                                    <input class="dashboard-input" type="text" name="name" value="{{ $menu->name }}" required>
-
-                                    <div class="form-row-2">
-                                        <input class="dashboard-input" type="text" name="category" value="{{ $menu->category }}" required>
-                                        <input class="dashboard-input" type="number" name="price" min="0" step="1" value="{{ $menu->price }}" required>
-                                    </div>
-
-                                    <div class="form-row-2">
-                                        <input class="dashboard-input" type="number" name="sort_order" min="0" step="1" value="{{ $menu->sort_order }}">
-                                        <input class="dashboard-input" type="text" name="tags_input" value="{{ implode(',', $menu->tags ?? []) }}">
-                                    </div>
-
-                                    @if ($menu->image_path)
-                                        <div class="menu-image-current">
-                                            <img class="menu-thumb" src="{{ \Illuminate\Support\Str::startsWith($menu->image_path, ['http://', 'https://']) ? $menu->image_path : asset(ltrim($menu->image_path, '/')) }}" alt="{{ $menu->name }}">
-                                            <span class="field-help field-help-inline">Gambar saat ini: {{ $menu->image_path }}</span>
-                                        </div>
-                                    @endif
-
-                                    <label class="field-label">Ganti gambar (file manager)</label>
-                                    <input class="dashboard-input" type="file" name="image_file" accept="image/*">
-                                    <p class="field-help">Upload file baru jika ingin mengganti gambar menu.</p>
-
-                                    <input class="dashboard-input" type="text" name="image_path" value="{{ $menu->image_path }}" placeholder="Opsional: URL/path manual">
-
-                                    @if ($menu->image_path)
-                                        <label class="checkbox-row">
-                                            <input type="checkbox" name="remove_image" value="1">
-                                            <span>Hapus gambar saat ini</span>
-                                        </label>
-                                    @endif
-                                    <textarea class="dashboard-textarea" name="description">{{ $menu->description }}</textarea>
-
-                                    <label class="checkbox-row">
-                                        <input type="checkbox" name="is_active" value="1" @checked($menu->is_active)>
-                                        <span>Tampilkan di tracker publik</span>
-                                    </label>
+                                    <x-dashboard.forms.redirect-fields redirect-to="dashboard.menus.index" />
+                                    <x-dashboard.forms.menu-fields
+                                        :image-file-input-id="'edit-image-file-'.$menu->id"
+                                        image-label="Ganti gambar (file manager)"
+                                        image-help="Upload file baru jika ingin mengganti gambar menu."
+                                        image-path-placeholder="Opsional: URL/path manual"
+                                        :name-value="$menu->name"
+                                        :category-value="$menu->category"
+                                        :price-value="$menu->price"
+                                        :sort-order-value="$menu->sort_order"
+                                        :tags-value="implode(',', $menu->tags ?? [])"
+                                        :image-path-value="$menu->image_path"
+                                        :description-value="$menu->description"
+                                        :is-active="(bool) $menu->is_active"
+                                        :show-current-image="filled($menu->image_path)"
+                                        :show-remove-image="filled($menu->image_path)"
+                                        :menu-name="$menu->name"
+                                        active-label="Tampilkan di tracker publik"
+                                    />
 
                                     <div class="button-row">
                                         <button type="submit" class="primary-button">Simpan Perubahan</button>
@@ -173,7 +117,7 @@
                             </div>
                         </article>
                     @empty
-                        <div class="empty-state">Belum ada data menu. Tambahkan menu pertama dari form di sebelah kiri.</div>
+                        <x-dashboard.empty-state message="Belum ada data menu. Tambahkan menu pertama dari form di sebelah kiri." />
                     @endforelse
                 </div>
             </article>

@@ -18,11 +18,7 @@
     </x-slot>
 
     <div class="driver-page">
-        @if (session('dashboard_status'))
-            <section class="driver-alert">
-                {{ session('dashboard_status') }}
-            </section>
-        @endif
+        <x-dashboard.status-banner class="driver-alert" :message="session('dashboard_status')" />
 
         <section class="driver-overview-grid">
             <article class="driver-overview-card">

@@ -13,7 +13,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -142,21 +141,8 @@ abstract class BaseDashboardController extends Controller
             ->with('dashboard_status', $message);
     }
 
-    protected function extractMenuPayload(Request $request, ?Menu $existingMenu = null): array
+    protected function extractMenuPayload(Request $request, array $validated, ?Menu $existingMenu = null): array
     {
-        $validated = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:120'],
-            'category' => ['required', 'string', 'max:80'],
-            'price' => ['required', 'integer', 'min:0', 'max:100000000'],
-            'description' => ['nullable', 'string', 'max:2000'],
-            'image_path' => ['nullable', 'string', 'max:255'],
-            'image_file' => ['nullable', 'file', 'image', 'max:4096'],
-            'remove_image' => ['nullable', 'boolean'],
-            'tags_input' => ['nullable', 'string', 'max:255'],
-            'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
-            'is_active' => ['nullable', 'boolean'],
-        ])->validate();
-
         $tags = collect(explode(',', (string) ($validated['tags_input'] ?? '')))
             ->map(fn (string $tag): string => trim($tag))
             ->filter()

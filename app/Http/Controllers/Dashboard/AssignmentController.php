@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Requests\Dashboard\Owner\StoreAssignmentRequest;
 use App\Models\DriverUnitAssignment;
 use App\Models\Unit;
 use App\Models\User;
@@ -40,16 +41,10 @@ class AssignmentController extends BaseDashboardController
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreAssignmentRequest $request): RedirectResponse
     {
         $owner = $request->user();
-        $this->abortUnlessOwner($owner);
-
-        $validated = $request->validate([
-            'driver_id' => ['required', 'integer', 'exists:users,id'],
-            'unit_id' => ['required', 'integer', 'exists:units,id'],
-            'notes' => ['nullable', 'string', 'max:1000'],
-        ]);
+        $validated = $request->validated();
 
         $driver = User::query()->findOrFail($validated['driver_id']);
         $unit = Unit::query()->findOrFail($validated['unit_id']);

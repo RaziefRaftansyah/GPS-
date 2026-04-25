@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Requests\Dashboard\Owner\StoreDriverRequest;
+use App\Http\Requests\Dashboard\Owner\StoreUnitRequest;
+use App\Http\Requests\Dashboard\Owner\UpdateDriverRequest;
+use App\Http\Requests\Dashboard\Owner\UpdateUnitRequest;
 use App\Models\DriverUnitAssignment;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 
 class ResourceController extends BaseDashboardController
@@ -38,17 +41,9 @@ class ResourceController extends BaseDashboardController
         ]);
     }
 
-    public function storeDriver(Request $request): RedirectResponse
+    public function storeDriver(StoreDriverRequest $request): RedirectResponse
     {
-        $owner = $request->user();
-        $this->abortUnlessOwner($owner);
-
-        $validated = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
-            'device_id' => ['required', 'string', 'max:120', 'unique:users,device_id'],
-            'password' => ['required', 'string', 'min:8'],
-        ])->validateWithBag('driverForm');
+        $validated = $request->validated();
 
         User::query()->create([
             'name' => $validated['name'],
@@ -63,21 +58,13 @@ class ResourceController extends BaseDashboardController
         return $this->redirectWithDashboardStatus($request, 'Akun driver baru berhasil dibuat.');
     }
 
-    public function updateDriver(Request $request, User $user): RedirectResponse
+    public function updateDriver(UpdateDriverRequest $request, User $user): RedirectResponse
     {
-        $this->abortUnlessOwner($request->user());
-
         if (! $user->isDriver()) {
             return $this->redirectWithDashboardStatus($request, 'User yang dipilih bukan akun driver.');
         }
 
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email,'.$user->id],
-            'device_id' => ['required', 'string', 'max:120', 'unique:users,device_id,'.$user->id],
-            'password' => ['nullable', 'string', 'min:8'],
-            'is_active' => ['nullable', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $payload = [
             'name' => $validated['name'],
@@ -120,32 +107,18 @@ class ResourceController extends BaseDashboardController
         return $this->redirectWithDashboardStatus($request, "Driver {$driverName} berhasil dihapus.");
     }
 
-    public function storeUnit(Request $request): RedirectResponse
+    public function storeUnit(StoreUnitRequest $request): RedirectResponse
     {
-        $this->abortUnlessOwner($request->user());
-
-        $validated = Validator::make($request->all(), [
-            'name' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:80', 'unique:units,code'],
-            'status' => ['required', 'string', 'max:30'],
-            'notes' => ['nullable', 'string', 'max:1000'],
-        ])->validateWithBag('unitForm');
+        $validated = $request->validated();
 
         Unit::query()->create($validated);
 
         return $this->redirectWithDashboardStatus($request, 'Gerobak baru berhasil ditambahkan.');
     }
 
-    public function updateUnit(Request $request, Unit $unit): RedirectResponse
+    public function updateUnit(UpdateUnitRequest $request, Unit $unit): RedirectResponse
     {
-        $this->abortUnlessOwner($request->user());
-
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'code' => ['required', 'string', 'max:80', 'unique:units,code,'.$unit->id],
-            'status' => ['required', 'string', 'max:30'],
-            'notes' => ['nullable', 'string', 'max:1000'],
-        ]);
+        $validated = $request->validated();
 
         $unit->update($validated);
 

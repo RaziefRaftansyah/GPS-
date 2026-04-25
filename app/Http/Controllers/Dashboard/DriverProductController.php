@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Requests\Dashboard\Driver\UpdateDriverProductsRequest;
 use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -35,18 +36,10 @@ class DriverProductController extends BaseDashboardController
         ]);
     }
 
-    public function update(Request $request): RedirectResponse
+    public function update(UpdateDriverProductsRequest $request): RedirectResponse
     {
         $driver = $request->user();
-
-        if (! $driver?->isDriver()) {
-            abort(403);
-        }
-
-        $validated = $request->validate([
-            'menu_ids' => ['nullable', 'array'],
-            'menu_ids.*' => ['integer'],
-        ]);
+        $validated = $request->validated();
 
         $activeMenuIds = Menu::query()
             ->where('is_active', true)

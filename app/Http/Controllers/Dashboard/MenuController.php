@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Http\Requests\Dashboard\Owner\SaveMenuRequest;
 use App\Models\Menu;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,20 +25,16 @@ class MenuController extends BaseDashboardController
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(SaveMenuRequest $request): RedirectResponse
     {
-        $this->abortUnlessOwner($request->user());
-
-        Menu::query()->create($this->extractMenuPayload($request));
+        Menu::query()->create($this->extractMenuPayload($request, $request->validated()));
 
         return $this->redirectWithDashboardStatus($request, 'Menu baru berhasil ditambahkan.');
     }
 
-    public function update(Request $request, Menu $menu): RedirectResponse
+    public function update(SaveMenuRequest $request, Menu $menu): RedirectResponse
     {
-        $this->abortUnlessOwner($request->user());
-
-        $menu->update($this->extractMenuPayload($request, $menu));
+        $menu->update($this->extractMenuPayload($request, $request->validated(), $menu));
 
         return $this->redirectWithDashboardStatus($request, 'Data menu berhasil diperbarui.');
     }

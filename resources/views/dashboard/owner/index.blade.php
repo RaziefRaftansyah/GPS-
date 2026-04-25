@@ -25,11 +25,7 @@
     @endphp
 
     <div class="owner-dashboard">
-        @if (session('dashboard_status'))
-            <section class="status-banner">
-                {{ session('dashboard_status') }}
-            </section>
-        @endif
+        <x-dashboard.status-banner :message="session('dashboard_status')" />
 
         <section class="owner-grid-4">
             <article class="panel-card metric-card">
@@ -104,7 +100,7 @@
                             @endif
                         </article>
                     @empty
-                        <div class="empty-state">Belum ada gerobak terdaftar.</div>
+                        <x-dashboard.empty-state message="Belum ada gerobak terdaftar." />
                     @endforelse
                 </div>
             </article>
@@ -122,7 +118,7 @@
                                 </span>
                             </article>
                         @empty
-                            <div class="empty-state">Belum ada assignment aktif.</div>
+                            <x-dashboard.empty-state message="Belum ada assignment aktif." />
                         @endforelse
                     </div>
                 </article>
@@ -148,7 +144,7 @@
                                 </div>
                             </article>
                         @empty
-                            <div class="empty-state">Belum ada user aktif.</div>
+                            <x-dashboard.empty-state message="Belum ada user aktif." />
                         @endforelse
                     </div>
                 </article>
@@ -214,24 +210,19 @@
             </div>
             <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-stack">
                 @csrf
-                <input type="hidden" name="redirect_to" value="dashboard">
+                <x-dashboard.forms.redirect-fields redirect-to="dashboard" />
 
                 @if ($unitFormOpen)
-                    <ul class="validation-list">
-                        @foreach ($errors->unitForm->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    <x-dashboard.validation-list :messages="$errors->unitForm->all()" />
                 @endif
 
-                <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ old('name') }}">
-                <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}">
-                <select class="dashboard-select" name="status">
-                    <option value="ready" @selected(old('status', 'ready') === 'ready')>Siap Operasi</option>
-                    <option value="maintenance" @selected(old('status') === 'maintenance')>Maintenance</option>
-                    <option value="inactive" @selected(old('status') === 'inactive')>Nonaktif</option>
-                </select>
-                <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ old('notes') }}</textarea>
+                <x-dashboard.forms.unit-fields
+                    layout="stack"
+                    :name-value="old('name')"
+                    :code-value="old('code')"
+                    :status-value="old('status', 'ready')"
+                    :notes-value="old('notes')"
+                />
                 <button type="submit" class="primary-button">Simpan Gerobak</button>
             </form>
         </div>
@@ -249,20 +240,18 @@
             </div>
             <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-stack">
                 @csrf
-                <input type="hidden" name="redirect_to" value="dashboard">
+                <x-dashboard.forms.redirect-fields redirect-to="dashboard" />
 
                 @if ($driverFormOpen)
-                    <ul class="validation-list">
-                        @foreach ($errors->driverForm->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
+                    <x-dashboard.validation-list :messages="$errors->driverForm->all()" />
                 @endif
 
-                <input class="dashboard-input" type="text" name="name" placeholder="Nama driver" value="{{ old('name') }}">
-                <input class="dashboard-input" type="email" name="email" placeholder="Email driver" value="{{ old('email') }}">
-                <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID HP driver" value="{{ old('device_id') }}">
-                <input class="dashboard-input" type="password" name="password" placeholder="Password minimal 8 karakter">
+                <x-dashboard.forms.driver-fields
+                    :name-value="old('name')"
+                    :email-value="old('email')"
+                    :device-id-value="old('device_id')"
+                    :password-required="true"
+                />
                 <button type="submit" class="primary-button">Simpan Driver</button>
             </form>
         </div>

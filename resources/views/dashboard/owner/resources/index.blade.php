@@ -4,22 +4,10 @@
 @endpush
 
     <x-slot name="header">
-        <div class="page-header-row">
-            <div>
-                <p class="page-header-kicker">
-                    Dashboard Admin
-                </p>
-                <h2 class="page-header-title">
-                    Kelola Unit & Driver
-                </h2>
-                <p class="page-header-subtitle">
-                    Satu halaman untuk tambah, edit, dan hapus data unit dan akun driver.
-                </p>
-            </div>
-            <a href="{{ route('dashboard') }}" class="section-button">
-                Kembali ke Dashboard
-            </a>
-        </div>
+        <x-dashboard.owner-page-header
+            title="Kelola Unit & Driver"
+            subtitle="Satu halaman untuk tambah, edit, dan hapus data unit dan akun driver."
+        />
     </x-slot>
 
     @php
@@ -31,35 +19,10 @@
     @endphp
 
     <div class="manage-page">
-        @if (session('dashboard_status'))
-            <section class="status-banner">
-                {{ session('dashboard_status') }}
-            </section>
-        @endif
-
-        @if ($errors->any())
-            <ul class="validation-list">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        @if ($errors->driverForm->any())
-            <ul class="validation-list">
-                @foreach ($errors->driverForm->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-
-        @if ($errors->unitForm->any())
-            <ul class="validation-list">
-                @foreach ($errors->unitForm->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
+        <x-dashboard.status-banner :message="session('dashboard_status')" />
+        <x-dashboard.validation-list :messages="$errors->all()" />
+        <x-dashboard.validation-list :messages="$errors->driverForm->all()" />
+        <x-dashboard.validation-list :messages="$errors->unitForm->all()" />
 
         <section class="manage-grid">
             <article class="panel-card section-card">
@@ -74,13 +37,17 @@
                     <div class="collapsible-body">
                         <form method="POST" action="{{ route('dashboard.drivers.store') }}" class="form-grid">
                             @csrf
-                            <input type="hidden" name="redirect_to" value="dashboard.manage.index">
-                            <input type="hidden" name="driver_page" value="1">
-                            <input type="hidden" name="unit_page" value="{{ $currentUnitPage }}">
-                            <input class="dashboard-input" type="text" name="name" placeholder="Nama driver" value="{{ $errors->driverForm->any() ? old('name') : '' }}" required>
-                            <input class="dashboard-input" type="email" name="email" placeholder="Email driver" value="{{ old('email') }}" required>
-                            <input class="dashboard-input" type="text" name="device_id" placeholder="Device ID HP driver" value="{{ old('device_id') }}" required>
-                            <input class="dashboard-input" type="password" name="password" placeholder="Password minimal 8 karakter" required>
+                            <x-dashboard.forms.redirect-fields
+                                redirect-to="dashboard.manage.index"
+                                :driver-page="1"
+                                :unit-page="$currentUnitPage"
+                            />
+                            <x-dashboard.forms.driver-fields
+                                :name-value="$errors->driverForm->any() ? old('name') : ''"
+                                :email-value="old('email')"
+                                :device-id-value="old('device_id')"
+                                :password-required="true"
+                            />
                             <button type="submit" class="primary-button">Tambah Driver</button>
                         </form>
                     </div>
@@ -113,24 +80,20 @@
                                     <form method="POST" action="{{ route('dashboard.drivers.update', $driver) }}" class="entity-form">
                                         @csrf
                                         @method('PATCH')
-                                        <input type="hidden" name="redirect_to" value="dashboard.manage.index">
-                                        <input type="hidden" name="driver_page" value="{{ $currentDriverPage }}">
-                                        <input type="hidden" name="unit_page" value="{{ $currentUnitPage }}">
-
-                                        <div class="form-row-2">
-                                            <input class="dashboard-input" type="text" name="name" value="{{ $driver->name }}" required>
-                                            <input class="dashboard-input" type="email" name="email" value="{{ $driver->email }}" required>
-                                        </div>
-
-                                        <div class="form-row-2">
-                                            <input class="dashboard-input" type="text" name="device_id" value="{{ $driver->device_id }}" required>
-                                            <input class="dashboard-input" type="password" name="password" placeholder="Kosongkan jika tidak ganti password">
-                                        </div>
-
-                                        <label class="checkbox-row">
-                                            <input type="checkbox" name="is_active" value="1" @checked($driver->is_active)>
-                                            <span>Akun aktif</span>
-                                        </label>
+                                        <x-dashboard.forms.redirect-fields
+                                            redirect-to="dashboard.manage.index"
+                                            :driver-page="$currentDriverPage"
+                                            :unit-page="$currentUnitPage"
+                                        />
+                                        <x-dashboard.forms.driver-fields
+                                            layout="split"
+                                            :name-value="$driver->name"
+                                            :email-value="$driver->email"
+                                            :device-id-value="$driver->device_id"
+                                            password-placeholder="Kosongkan jika tidak ganti password"
+                                            :show-active="true"
+                                            :is-active="(bool) $driver->is_active"
+                                        />
 
                                         <div class="button-row">
                                             <button type="submit" class="primary-button">Simpan Driver</button>
@@ -140,16 +103,18 @@
                                     <form method="POST" action="{{ route('dashboard.drivers.destroy', $driver) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <input type="hidden" name="redirect_to" value="dashboard.manage.index">
-                                        <input type="hidden" name="driver_page" value="{{ $currentDriverPage }}">
-                                        <input type="hidden" name="unit_page" value="{{ $currentUnitPage }}">
+                                        <x-dashboard.forms.redirect-fields
+                                            redirect-to="dashboard.manage.index"
+                                            :driver-page="$currentDriverPage"
+                                            :unit-page="$currentUnitPage"
+                                        />
                                         <button type="submit" class="danger-button">Hapus Driver</button>
                                     </form>
                                 </div>
                             </details>
                         </article>
                     @empty
-                        <div class="empty-state">Belum ada data driver.</div>
+                        <x-dashboard.empty-state message="Belum ada data driver." />
                     @endforelse
                 </div>
 
@@ -170,19 +135,17 @@
                     <div class="collapsible-body">
                         <form method="POST" action="{{ route('dashboard.units.store') }}" class="form-grid">
                             @csrf
-                            <input type="hidden" name="redirect_to" value="dashboard.manage.index">
-                            <input type="hidden" name="driver_page" value="{{ $currentDriverPage }}">
-                            <input type="hidden" name="unit_page" value="1">
-                            <div class="form-row-2">
-                                <input class="dashboard-input" type="text" name="name" placeholder="Nama gerobak" value="{{ $errors->unitForm->any() ? old('name') : '' }}" required>
-                                <input class="dashboard-input" type="text" name="code" placeholder="Kode unit, contoh GRBK-01" value="{{ old('code') }}" required>
-                            </div>
-                            <select class="dashboard-select" name="status" required>
-                                <option value="ready" @selected(old('status', 'ready') === 'ready')>Siap Operasi</option>
-                                <option value="maintenance" @selected(old('status') === 'maintenance')>Maintenance</option>
-                                <option value="inactive" @selected(old('status') === 'inactive')>Nonaktif</option>
-                            </select>
-                            <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ old('notes') }}</textarea>
+                            <x-dashboard.forms.redirect-fields
+                                redirect-to="dashboard.manage.index"
+                                :driver-page="$currentDriverPage"
+                                :unit-page="1"
+                            />
+                            <x-dashboard.forms.unit-fields
+                                :name-value="$errors->unitForm->any() ? old('name') : ''"
+                                :code-value="old('code')"
+                                :status-value="old('status', 'ready')"
+                                :notes-value="old('notes')"
+                            />
                             <button type="submit" class="primary-button">Tambah Unit</button>
                         </form>
                     </div>
@@ -220,22 +183,17 @@
                                     <form method="POST" action="{{ route('dashboard.units.update', $unit) }}" class="entity-form">
                                         @csrf
                                         @method('PATCH')
-                                        <input type="hidden" name="redirect_to" value="dashboard.manage.index">
-                                        <input type="hidden" name="driver_page" value="{{ $currentDriverPage }}">
-                                        <input type="hidden" name="unit_page" value="{{ $currentUnitPage }}">
-
-                                        <div class="form-row-2">
-                                            <input class="dashboard-input" type="text" name="name" value="{{ $unit->name }}" required>
-                                            <input class="dashboard-input" type="text" name="code" value="{{ $unit->code }}" required>
-                                        </div>
-
-                                        <select class="dashboard-select" name="status" required>
-                                            <option value="ready" @selected($unit->status === 'ready')>Siap Operasi</option>
-                                            <option value="maintenance" @selected($unit->status === 'maintenance')>Maintenance</option>
-                                            <option value="inactive" @selected($unit->status === 'inactive')>Nonaktif</option>
-                                        </select>
-
-                                        <textarea class="dashboard-textarea" name="notes" placeholder="Catatan unit">{{ $unit->notes }}</textarea>
+                                        <x-dashboard.forms.redirect-fields
+                                            redirect-to="dashboard.manage.index"
+                                            :driver-page="$currentDriverPage"
+                                            :unit-page="$currentUnitPage"
+                                        />
+                                        <x-dashboard.forms.unit-fields
+                                            :name-value="$unit->name"
+                                            :code-value="$unit->code"
+                                            :status-value="$unit->status"
+                                            :notes-value="$unit->notes"
+                                        />
 
                                         <div class="button-row">
                                             <button type="submit" class="primary-button">Simpan Unit</button>
@@ -245,16 +203,18 @@
                                     <form method="POST" action="{{ route('dashboard.units.destroy', $unit) }}">
                                         @csrf
                                         @method('DELETE')
-                                        <input type="hidden" name="redirect_to" value="dashboard.manage.index">
-                                        <input type="hidden" name="driver_page" value="{{ $currentDriverPage }}">
-                                        <input type="hidden" name="unit_page" value="{{ $currentUnitPage }}">
+                                        <x-dashboard.forms.redirect-fields
+                                            redirect-to="dashboard.manage.index"
+                                            :driver-page="$currentDriverPage"
+                                            :unit-page="$currentUnitPage"
+                                        />
                                         <button type="submit" class="danger-button">Hapus Unit</button>
                                     </form>
                                 </div>
                             </details>
                         </article>
                     @empty
-                        <div class="empty-state">Belum ada data unit.</div>
+                        <x-dashboard.empty-state message="Belum ada data unit." />
                     @endforelse
                 </div>
 
