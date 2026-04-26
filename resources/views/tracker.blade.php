@@ -42,8 +42,9 @@
             }
         }
     @endphp
-    <title>Kopi Keliling Tracker</title>
-    <link rel="icon" type="image/png" href="{{ $assetPath('images/ada-coffee-logo.png') }}">
+    <title>FindMyCoffee</title>
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ $assetPath('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ $assetPath('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600;700;800&display=swap" rel="stylesheet" />
     <link
@@ -67,11 +68,11 @@
                 <img
                     class="tracker-brand-mark"
                     src="{{ $assetPath('images/ada-coffee-logo.png') }}"
-                    alt="AD.A Coffee"
+                    alt="FindMyCoffee"
                 >
                 <div class="tracker-brand-copy">
-                    <strong>AD.A Coffee</strong>
-                    <span>Peta publik dengan bahasa visual yang selaras dengan dashboard internal.</span>
+                    <strong><span class="brand-wordmark">FindMy<span class="brand-wordmark-accent">Coffee</span></span></strong>
+                    <span>Cara termudah mencari aroma kopi favorit yang sedang berpindah.</span>
                 </div>
             </div>
 
@@ -119,12 +120,11 @@
             <section class="hero-showcase" id="beranda">
                 <div class="hero-landing-grid">
                     <section class="hero-description-panel">
-                        <span class="eyebrow">Kopi Keliling Tracker</span>
+                        <span class="eyebrow"><span class="brand-wordmark">FindMy<span class="brand-wordmark-accent">Coffee</span></span></span>
                         <h1>Kopling terdekat langsung terlihat.</h1>
                         <p>
-                            Temukan gerobak Kopi Keliling dari halaman depan. Panel utama di atas merangkum info
-                            lokasi, lalu card peta di tengah halaman menampilkan posisimu, Kopling aktif, dan jarak
-                            terdekat secara realtime dari browser.
+                            Jangan biarkan antrean atau jarak menghalangi kafeinmu. Dari gang sempit hingga jalan
+                            protokol, kami petakan setiap gerobak agar kamu bisa pesan tanpa sasar.
                         </p>
 
                         <div class="hero-actions">
@@ -160,13 +160,11 @@
                     <span class="eyebrow">About Us</span>
                     <h2>Kopling lahir dari gerobak kopi yang dekat dengan pelanggan.</h2>
                     <p>
-                        Kopi Keliling bukan hanya soal menjual minuman, tetapi tentang membuat kopi lebih mudah
-                        ditemukan di titik ramai kota. Melalui tracker GPS ini, pelanggan bisa melihat gerobak
-                        yang aktif, mendekat ke lokasi terdekat, dan menikmati kopi tanpa harus menebak posisi penjual.
-                    </p>
-                    <p>
-                        Kami menggabungkan gerobak sederhana, menu yang familiar, dan teknologi realtime agar usaha
-                        kecil terasa lebih modern, transparan, dan siap menjangkau lebih banyak pelanggan.
+                        Kami percaya bahwa kopi enak tidak harus selalu ada di dalam gedung mewah. Bermula dari rasa
+                        penasaran mencari gerobak kopi langganan yang sering berpindah tempat, website ini lahir untuk
+                        mendukung ekosistem kopi jalanan. Kami hadir untuk memastikan tidak ada lagi pecinta kopi yang
+                        kehilangan jejak barista favoritnya. Kami menghubungkan teknologi dengan tradisi kopi keliling
+                        agar kamu bisa menikmati segelas inspirasi tepat di trotoar jalanan kota.
                     </p>
 
                 </div>
@@ -186,8 +184,8 @@
                         <span class="eyebrow">Katalog Menu</span>
                         <h2>Menu gerobak yang siap menemani hari.</h2>
                         <p>
-                            Pilih menu favorit AD.A Coffee langsung dari katalog ini. Dari kopi hitam yang ringan,
-                            signature gula aren, sampai non coffee yang manis dan creamy.
+                            Dari racikan klasik hingga kreasi unik, jelajahi pilihan menu terbaik yang siap menemani
+                            perjalananmu hari ini.
                         </p>
                     </div>
 
@@ -251,7 +249,7 @@
                 <div class="tracker-contact-inner">
                     <section class="tracker-contact-brand">
                         <span class="eyebrow">Kontak Info</span>
-                        <h3>AD.A Coffee</h3>
+                        <h3><span class="brand-wordmark">FindMy<span class="brand-wordmark-accent">Coffee</span></span></h3>
                         <p>
                             Kopi keliling dengan tracker realtime. Hubungi kami untuk kolaborasi event,
                             pemesanan rombongan, atau info titik jual terdekat.
@@ -280,7 +278,7 @@
                 </div>
 
                 <div class="tracker-contact-bottom">
-                    <span>&copy; {{ now()->year }} AD.A Coffee. Seluruh hak cipta dilindungi.</span>
+                    <span>&copy; {{ now()->year }} <span class="brand-wordmark">FindMy<span class="brand-wordmark-accent">Coffee</span></span>. Seluruh hak cipta dilindungi.</span>
                 </div>
             </footer>
         </main>
@@ -322,4 +320,3 @@
     <script src="{{ $assetPath('js/tracker.js') }}"></script>
 </body>
 </html>
-

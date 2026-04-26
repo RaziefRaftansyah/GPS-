@@ -87,8 +87,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 20px;
-            padding: 14px var(--page-pad) 12px;
+            gap: 14px;
+            padding: 10px var(--page-pad);
             border-bottom: 1px solid var(--panel-border);
             background: rgba(255, 250, 242, 0.88);
             box-shadow: 0 16px 36px rgba(59, 36, 24, 0.08);
@@ -98,13 +98,13 @@
         .tracker-brand {
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 12px;
             min-width: 0;
         }
 
         .tracker-brand-mark {
-            width: 76px;
-            height: 76px;
+            width: clamp(48px, 4.2vw, 58px);
+            height: clamp(48px, 4.2vw, 58px);
             border-radius: 0;
             display: block;
             object-fit: contain;
@@ -113,21 +113,38 @@
             flex-shrink: 0;
         }
 
+        .brand-wordmark {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        .brand-wordmark-accent {
+            color: var(--caramel);
+        }
+
+        .hero-description-panel .brand-wordmark-accent {
+            color: #ffe3a3;
+        }
+
+        .tracker-contact-footer .brand-wordmark-accent {
+            color: #ffd28d;
+        }
+
         .tracker-brand-copy strong,
-        .tracker-brand-copy span {
+        .tracker-brand-copy > span {
             display: block;
         }
 
         .tracker-brand-copy strong {
-            font-size: 1.05rem;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
+            font-size: 1rem;
+            letter-spacing: 0.01em;
+            text-transform: none;
         }
 
-        .tracker-brand-copy span {
-            margin-top: 6px;
+        .tracker-brand-copy > span {
+            margin-top: 4px;
             color: var(--text-soft);
-            font-size: 0.92rem;
+            font-size: 0.88rem;
         }
 
         .tracker-topbar-actions {
@@ -156,17 +173,17 @@
         .tracker-nav-controls {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             margin-left: auto;
         }
 
         .tracker-scan-toggle {
             display: inline-grid;
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             place-items: center;
             border: 1px solid rgba(47, 107, 85, 0.28);
-            border-radius: 16px;
+            border-radius: 14px;
             background: rgba(47, 107, 85, 0.08);
             box-shadow: var(--shadow-sm);
             cursor: pointer;
@@ -174,8 +191,8 @@
         }
 
         .tracker-scan-toggle img {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             object-fit: contain;
             display: block;
         }
@@ -203,10 +220,10 @@
 
         .mobile-nav-toggle {
             display: inline-grid;
-            width: 44px;
-            height: 44px;
+            width: 40px;
+            height: 40px;
             border: 1px solid var(--panel-border);
-            border-radius: 16px;
+            border-radius: 14px;
             background: rgba(255, 252, 247, 0.92);
             box-shadow: var(--shadow-sm);
             color: var(--espresso);
@@ -1009,11 +1026,12 @@
 
         .about-copy h2 {
             margin-top: 16px;
-            max-width: 12ch;
-            font-size: clamp(2.6rem, 4.1vw, 4.8rem);
-            line-height: 1.02;
-            letter-spacing: -0.055em;
+            max-width: 18ch;
+            font-size: clamp(2.45rem, 3.5vw, 4.2rem);
+            line-height: 1.08;
+            letter-spacing: -0.045em;
             text-align: left;
+            text-wrap: balance;
         }
 
         .about-copy p {
@@ -1815,6 +1833,12 @@
             gap: 26px;
         }
 
+        .tracker-contact-footer .eyebrow {
+            background: rgba(255, 247, 233, 0.12);
+            border-color: rgba(255, 247, 233, 0.34);
+            color: #fff3df;
+        }
+
         .tracker-contact-brand h3 {
             margin: 10px 0 0;
             font-size: clamp(1.5rem, 2vw, 2rem);
@@ -1983,8 +2007,8 @@
             }
 
             .tracker-topbar {
-                padding-top: 12px;
-                padding-bottom: 12px;
+                padding-top: 8px;
+                padding-bottom: 8px;
                 align-items: center;
                 flex-direction: row;
             }

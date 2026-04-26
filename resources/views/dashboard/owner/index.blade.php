@@ -180,8 +180,12 @@
                                 <strong class="info-endpoint">{{ $traccarEndpoint }}</strong>
                             </div>
                             <div class="info-row">
-                                <span>Link QR Absensi Driver</span>
-                                <strong class="info-endpoint">{{ $driverAttendanceQrLink }}</strong>
+                                <span>URL untuk QR Absensi Driver</span>
+                                <strong class="info-endpoint">
+                                    <a href="{{ $driverAttendanceQrLink }}" target="_blank" rel="noopener" class="info-link">
+                                        {{ $driverAttendanceQrLink }}
+                                    </a>
+                                </strong>
                             </div>
                             <div class="info-row">
                                 <span>Assignment aktif</span>

@@ -426,6 +426,17 @@
             word-break: break-all;
         }
 
+        .info-link {
+            color: inherit;
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 0.16em;
+        }
+
+        .info-link:hover {
+            color: var(--accent);
+        }
+
         .status-banner {
             padding: 16px 18px;
             border-radius: 20px;

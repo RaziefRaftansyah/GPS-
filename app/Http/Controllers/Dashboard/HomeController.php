@@ -85,6 +85,8 @@ class HomeController extends BaseDashboardController
             ->latest('assigned_at')
             ->get();
 
+        $driverAttendanceQrPath = URL::signedRoute('dashboard.driver.attendance.qr', [], null, false);
+
         return view('dashboard.owner.index', [
             'activeUsers' => $activeUsers,
             'activeUserCount' => $activeUsers->count(),
@@ -99,7 +101,7 @@ class HomeController extends BaseDashboardController
             'driverCount' => $drivers->count(),
             'availableDrivers' => $drivers->filter(fn (User $driver) => $driver->activeDriverAssignment === null)->values(),
             'activeAssignments' => $activeAssignments,
-            'driverAttendanceQrLink' => URL::signedRoute('dashboard.driver.attendance.qr', [], null, false),
+            'driverAttendanceQrLink' => url($driverAttendanceQrPath),
         ]);
     }
 
