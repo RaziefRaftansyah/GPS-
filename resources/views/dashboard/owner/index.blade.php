@@ -177,13 +177,13 @@
                         <div class="info-grid">
                             <div class="info-row">
                                 <span>Endpoint Traccar</span>
-                                <strong class="info-endpoint">{{ $traccarEndpoint }}</strong>
+                                <strong class="info-endpoint">{{ $traccarEndpointDisplay }}</strong>
                             </div>
                             <div class="info-row">
                                 <span>URL untuk QR Absensi Driver</span>
                                 <strong class="info-endpoint">
                                     <a href="{{ $driverAttendanceQrLink }}" target="_blank" rel="noopener" class="info-link">
-                                        {{ $driverAttendanceQrLink }}
+                                        {{ $driverAttendanceQrDisplay }}
                                     </a>
                                 </strong>
                             </div>

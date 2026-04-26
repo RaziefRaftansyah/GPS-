@@ -94,6 +94,7 @@ class HomeController extends BaseDashboardController
             'latestLoginAt' => $activeUsers->first()['last_seen'] ?? null,
             'adminEmail' => $this->adminEmail(),
             'traccarEndpoint' => url('/api/location'),
+            'traccarEndpointDisplay' => '/api/location',
             'units' => $units,
             'unitCount' => $units->count(),
             'assignedUnitCount' => $units->where('active_assignment', '!=', null)->count(),
@@ -102,6 +103,7 @@ class HomeController extends BaseDashboardController
             'availableDrivers' => $drivers->filter(fn (User $driver) => $driver->activeDriverAssignment === null)->values(),
             'activeAssignments' => $activeAssignments,
             'driverAttendanceQrLink' => url($driverAttendanceQrPath),
+            'driverAttendanceQrDisplay' => $driverAttendanceQrPath,
         ]);
     }
 
