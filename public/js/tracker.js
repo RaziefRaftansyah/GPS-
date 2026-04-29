@@ -47,6 +47,9 @@ const endpoints = {
             lastProcessedText: '',
             lastProcessedAt: 0,
         };
+        const geolocationState = {
+            requested: false,
+        };
         const attendanceState = {
             value: initialAttendanceState,
             label: initialAttendanceLabel,
@@ -475,6 +478,7 @@ const endpoints = {
         if (mapCenterTrigger && mapSection) {
             mapCenterTrigger.addEventListener('click', (event) => {
                 event.preventDefault();
+                requestUserLocation();
 
                 const topbarHeight = trackerTopbar ? trackerTopbar.offsetHeight : 0;
                 const sectionTop = mapSection.getBoundingClientRect().top + window.pageYOffset;
@@ -812,6 +816,12 @@ const endpoints = {
         }
 
         function requestUserLocation() {
+            if (geolocationState.requested) {
+                return;
+            }
+
+            geolocationState.requested = true;
+
             if (!navigator.geolocation) {
                 const distanceEl = document.getElementById('nearest-distance');
                 const copyEl = document.getElementById('nearest-copy');
@@ -858,7 +868,6 @@ const endpoints = {
             renderMap();
         }
 
-        requestUserLocation();
         refreshLocations().catch(() => {
             renderMap();
         });
