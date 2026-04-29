@@ -86,6 +86,8 @@ class HomeController extends BaseDashboardController
             ->get();
 
         $driverAttendanceQrPath = URL::signedRoute('dashboard.driver.attendance.qr', [], null, false);
+        $publicAppUrl = rtrim((string) config('app.url'), '/');
+        $driverAttendanceQrUrl = ($publicAppUrl !== '' ? $publicAppUrl : url('/')).$driverAttendanceQrPath;
 
         return view('dashboard.owner.index', [
             'activeUsers' => $activeUsers,
@@ -102,8 +104,8 @@ class HomeController extends BaseDashboardController
             'driverCount' => $drivers->count(),
             'availableDrivers' => $drivers->filter(fn (User $driver) => $driver->activeDriverAssignment === null)->values(),
             'activeAssignments' => $activeAssignments,
-            'driverAttendanceQrLink' => url($driverAttendanceQrPath),
-            'driverAttendanceQrDisplay' => $driverAttendanceQrPath,
+            'driverAttendanceQrLink' => $driverAttendanceQrUrl,
+            'driverAttendanceQrDisplay' => $driverAttendanceQrUrl,
         ]);
     }
 

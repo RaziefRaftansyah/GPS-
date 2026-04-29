@@ -243,20 +243,47 @@ const endpoints = {
             `;
         }
 
+        function normalizeQrPayload(rawValue) {
+            return String(rawValue ?? '')
+                .trim()
+                .replace(/&amp;/gi, '&');
+        }
+
         function parseQrAsUrl(rawValue) {
-            if (!rawValue) {
+            const normalizedValue = normalizeQrPayload(rawValue);
+
+            if (!normalizedValue) {
                 return null;
             }
 
             try {
-                return new URL(rawValue);
+                return new URL(normalizedValue);
             } catch (error) {
                 try {
-                    return new URL(rawValue, window.location.origin);
+                    return new URL(normalizedValue, window.location.origin);
                 } catch (nestedError) {
                     return null;
                 }
             }
+        }
+
+        function sanitizeAttendanceQrUrl(parsedUrl) {
+            const sanitizedUrl = new URL(parsedUrl.toString());
+            const signature = sanitizedUrl.searchParams.get('signature');
+            const expires = sanitizedUrl.searchParams.get('expires');
+
+            if (!signature) {
+                return sanitizedUrl;
+            }
+
+            sanitizedUrl.search = '';
+            sanitizedUrl.searchParams.set('signature', signature);
+
+            if (expires) {
+                sanitizedUrl.searchParams.set('expires', expires);
+            }
+
+            return sanitizedUrl;
         }
 
         async function handleAttendanceQrUrl(scannedUrl) {
@@ -267,16 +294,18 @@ const endpoints = {
                 return;
             }
 
-            if (parsedUrl.origin !== window.location.origin) {
+            const attendanceUrl = sanitizeAttendanceQrUrl(parsedUrl);
+
+            if (attendanceUrl.origin !== window.location.origin) {
                 setQrStatus('Mengarahkan ke domain QR absensi...', 'is-info');
-                window.location.href = parsedUrl.toString();
+                window.location.href = attendanceUrl.toString();
                 return;
             }
 
             setQrStatus('Memproses absensi dari QR...', 'is-info');
 
             try {
-                const response = await fetch(parsedUrl.toString(), {
+                const response = await fetch(attendanceUrl.toString(), {
                     method: 'GET',
                     headers: {
                         Accept: 'application/json',

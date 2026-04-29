@@ -38,7 +38,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::post('/driver/attendance/clock-in', [AttendanceController::class, 'clockIn'])->name('driver.attendance.clock-in');
         Route::post('/driver/attendance/clock-out', [AttendanceController::class, 'clockOut'])->name('driver.attendance.clock-out');
         Route::get('/driver/attendance/qr', [AttendanceController::class, 'viaQr'])
-            ->middleware('signed:relative')
+            ->middleware('signed:relative,utm_source,utm_medium,utm_campaign,utm_content,utm_term,fbclid,gclid')
             ->name('driver.attendance.qr');
 
         Route::get('/driver/products', [DriverProductController::class, 'index'])->name('driver.products.index');
